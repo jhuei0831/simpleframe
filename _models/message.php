@@ -1,29 +1,14 @@
 <?php
     namespace _models;
     
-    class Test
+    class Message
     {
-        public static $val;
-
-        public static function add($var){
-            static::$val+=$var;
-            return new static;
+        //JS前往指定URL
+        public static function redirect($url)
+        {
+            echo '<script>window.location="'.$url.'";</script>';
+            exit(0);
         }
-
-        public static function sub($var){
-            static::$val-=$var;
-            return new static;
-        }
-
-        public static function out(){
-            return static::$val;
-        }
-
-        public static function init($var){
-            static::$val=$var;
-            return new static;      
-        }
-
         //跳出JS對話框
         public static function show_message($msg)
         {
@@ -38,3 +23,4 @@
             echo '<script>console.log("'.$msg.'");</script>';
         }
     }
+    

@@ -1,13 +1,20 @@
 <?php 
 	ini_set('session.cookie_lifetime', 0);
+	session_start();
 	// 自動載入 Composer 的套件
 	require_once('autoload.php');
-
+	
 	//設定時區
 	date_default_timezone_set($_ENV['APP_TIMEZONE']);
 
 	// 載入類別
 	include('_models/autoloader.php');
+
+	// 產生驗證CRSF的Token
+	if(!isset($_SESSION['token']))
+	{
+		$_SESSION['token'] = hash('sha256', uniqid());
+	}
 
 	// 定義常數
 	define("WEB_PROTOCOL", 		isset($_SERVER["REQUEST_SCHEME"]) ? $_SERVER["REQUEST_SCHEME"] : "http");
@@ -15,7 +22,8 @@
 	define("WEB_FOLDER", 		$_ENV['APP_FOLDER']);
 	define("WEB_CODE", 			$_ENV['APP_NAME']);
 	define("WEB_ADDRESS",		WEB_PROTOCOL."://".WEB_DOMAIN."/".WEB_FOLDER.WEB_CODE."/");
-	define("IS_DEBUG", 			$_ENV['APP_DEBUG']);
+	define("IS_DEBUG", 			strtoupper($_ENV['APP_DEBUG']));
+	define('TOKEN',				$_SESSION['token']);
 
 	// 例外清單，可以看到錯誤訊息
 	$except_ip_list = array(
