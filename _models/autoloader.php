@@ -1,9 +1,7 @@
 <?php
-
     function autoloader($class) {
-        include $class.'.php';
+        include APP_URL.$class.'.php';
     }
 
     spl_autoload_register('autoloader');
-    
 ?>

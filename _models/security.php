@@ -8,8 +8,8 @@
         /**
          * check_csrf 防止跨站請求偽造 (Cross-site request forgery)
          *
-         * @param  mixed $data
-         * @return void
+         * @param  array $data
+         * @return boolean
          */
         public static function check_csrf($data)
         {
@@ -34,8 +34,8 @@
         /**
          * defend_filter 用 addslashes防SQL Injection、filter_var防XSS
          *
-         * @param  mixed $data
-         * @return array
+         * @param  array|string $data
+         * @return array|string
          */
         public static function defend_filter($data)
         {

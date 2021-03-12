@@ -7,9 +7,6 @@
 	//設定時區
 	date_default_timezone_set($_ENV['APP_TIMEZONE']);
 
-	// 載入類別
-	include('_models/autoloader.php');
-
 	// 產生驗證CRSF的Token
 	if(!isset($_SESSION['token']))
 	{
@@ -17,17 +14,17 @@
 	}
 
 	// 定義常數
-	define("WEB_PROTOCOL", 		isset($_SERVER["REQUEST_SCHEME"]) ? $_SERVER["REQUEST_SCHEME"] : "http");
-	define("WEB_DOMAIN", 		isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "localhost");
-	define("WEB_FOLDER", 		$_ENV['APP_FOLDER']);
-	define("WEB_CODE", 			$_ENV['APP_NAME']);
-	define("WEB_ADDRESS",		WEB_PROTOCOL."://".WEB_DOMAIN."/".WEB_FOLDER.WEB_CODE."/");
+	define("APP_PROTOCOL", 		isset($_SERVER["REQUEST_SCHEME"]) ? $_SERVER["REQUEST_SCHEME"] : "http");
+	define("APP_DOMAIN", 		isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "localhost");
+	define("APP_FOLDER", 		$_ENV['APP_FOLDER']);
+	define("APP_NAME", 			$_ENV['APP_NAME']);
+	define("APP_ADDRESS",		APP_PROTOCOL."://".APP_DOMAIN."/".APP_FOLDER.APP_NAME."/");
 	define("IS_DEBUG", 			strtoupper($_ENV['APP_DEBUG']));
 	define('TOKEN',				$_SESSION['token']);
 
 	// 例外清單，可以看到錯誤訊息
 	$except_ip_list = array(
-		//
+		"140.122.109.160"
 	);
 
 	// 不在清單內的關閉錯誤訊息
@@ -37,10 +34,13 @@
 	}
 
 	// 網站設定
-	define("WEB_URL",		$root);
-	define("WEB_SRC",		$root."src/");
-	define("WEB_IMG",		WEB_SRC."img/");
-	define("WEB_CSS",		WEB_SRC."css/");
-	define("WEB_JS",		WEB_SRC."js/");
-	define("WEB_FILE",		WEB_SRC."file/");
+	define("APP_URL",		$root);
+	define("APP_SRC",		APP_URL."src/");
+	define("APP_IMG",		APP_SRC."img/");
+	define("APP_CSS",		APP_SRC."css/");
+	define("APP_JS",		APP_SRC."js/");
+	define("APP_FILE",		APP_SRC."file/");
+
+	// 載入類別
+	require_once(APP_URL.'_models/autoloader.php');
 ?>
