@@ -5,7 +5,8 @@
         <ul class="mt-6">
             <li class="relative px-6 py-3">
                 <span
-                    class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                    <?=(strpos(strtolower($_SERVER['REQUEST_URI']), 'roles') !== false)?'class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"':''?>
+                    
                     aria-hidden="true"
                 ></span>
                 <a
@@ -14,6 +15,19 @@
                 >
                     <i class="bi-person icon"></i>
                     <span class="ml-4">Roles</span>
+                </a>
+            </li>
+            <li class="relative px-6 py-3">
+                <span
+                <?=(strpos(strtolower($_SERVER['REQUEST_URI']), 'users') !== false)?'class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"':''?>
+                    aria-hidden="true"
+                ></span>
+                <a
+                    class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                    href="<?=APP_ADDRESS?>manage/users"
+                >
+                    <i class="bi bi-people icon"></i>
+                    <span class="ml-4">Users</span>
                 </a>
             </li>
         </ul>

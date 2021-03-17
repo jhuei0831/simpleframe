@@ -40,6 +40,7 @@
 	define("APP_CSS",		APP_SRC."css/");
 	define("APP_JS",		APP_SRC."js/");
 	define("APP_FILE",		APP_SRC."file/");
+	define("APP_NODE",		APP_URL."node_modules/");
 
 	// 載入類別
 	require_once(APP_URL.'_models/autoloader.php');

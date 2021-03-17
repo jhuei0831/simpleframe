@@ -5,6 +5,7 @@
     "require": {
         "vlucas/phpdotenv": "^5.3",
         "robmorgan/phinx": "^0.12.5",
-        "fzaninotto/faker": "^1.9"
+        "fzaninotto/faker": "^1.9",
+        "wixel/gump": "^1.12"
     }
 }

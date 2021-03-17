@@ -8,6 +8,7 @@
 
 	class Database
 	{
+		private static $database;
 		private static $select = array();
 		private static $table;
 		private static $where;
@@ -24,11 +25,11 @@
 	     *
 	     * @return object
 	     */
-	    private static function connection()
+	    public static function connection()
 		{
 			// 資料庫預設值
 			$host     = $_ENV['DB_HOST'];
-			$database = $_ENV['DB_DATABASE'];
+			$database = static::$database != null ? static::$database : $_ENV['DB_DATABASE'];
 			$account  = $_ENV['DB_USERNAME'];
 			$password = $_ENV['DB_PASSWORD'];
 			$charset  = $_ENV['DB_CHARSET'];
@@ -61,6 +62,29 @@
 			{
 				self::connection();
 			}
+		}
+
+		/**
+		 * 取得資料的總數
+		 *
+		 * @param  string $db
+		 * @return object
+		 */
+		public static function count()
+		{
+			return count(self::getAll());
+		}
+		
+		/**
+		 * 使用指定資料庫
+		 *
+		 * @param  string $db
+		 * @return object
+		 */
+		public static function database($db)
+		{
+			static::$database = $db;
+			return new static;
 		}
 		
 		/**
@@ -103,7 +127,7 @@
 		{
 			return self::getAll();
 		}
-	
+
 		/**
 		 * PDO取全部的值
 		 *
@@ -189,8 +213,8 @@
 		 * @param integer $limit 
 		 * @return object
 		 */
-		public static function limit($limit) {
-			static::$limit = $limit;
+		public static function limit() {
+			static::$limit = func_get_args();
 			return new static;
 		}
 		
@@ -274,7 +298,7 @@
 		 *
 		 * @return object
 		 */
-		private static function query_select()
+		public static function query_select()
 		{
 			$query[] = "SELECT";
 			// 如果select空值或*字號，則取全部
@@ -329,7 +353,7 @@
 			// 處理Limit資料數量
 			if (!empty(static::$limit)) {
 				$query[] = "LIMIT";
-				$query[] = static::$limit;
+				$query[] = join(', ', static::$limit);;
 			}
 			
 			static::$query = join(' ', $query);

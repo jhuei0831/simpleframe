@@ -15,6 +15,7 @@ final class CreateUsersTable extends AbstractMigration
         ->addColumn('role', 'integer', ['comment' => '角色'])
         ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
         ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+        ->addIndex(['email'], ['unique' => true])
         ->create();
     }
 

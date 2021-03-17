@@ -8,7 +8,7 @@
     MG::show_flash();
 ?>    
 <div class="container px-6 mx-auto grid">
-    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Roles</h2>
+    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Users</h2>
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
         <div class="w-full overflow-x-auto">
             <table id="table" class="w-full whitespace-no-wrap row-border hover">
@@ -18,6 +18,7 @@
                     >
                         <th class="px-4 py-3">ID</th>
                         <th class="px-4 py-3">Name</th>
+                        <th class="px-4 py-3">Email</th>
                         <th class="px-4 py-3">Created At</th>
                         <th class="px-4 py-3">Action</th>
                     </tr>
@@ -26,15 +27,19 @@
         </div>
     </div>
 </div>
+
 <?php include($root.'_layouts/manage/bottom.php') ?>
 <script type="text/javascript">
-    let url = "ajax_roles.php";
-    let columns = [ 
+    let url = "ajax_users.php";
+    let columns = [
         {
             "data": "id"
         },
         {
             "data": "name"
+        },
+        {
+            "data": "email"
         },
         {
             "data": "created_at"
