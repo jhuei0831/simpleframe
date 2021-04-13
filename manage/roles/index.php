@@ -1,14 +1,22 @@
 <?php
     $root = '../../';
 
-    use _models\Message as MG;
-
     include($root.'_config/settings.php');
+    use _models\Message as MG;
+    use _models\Permission;
+    
+    if (!Permission::can('roles-list')) {
+        MG::flash('Permission Denied!', 'error');
+        MG::redirect(APP_ADDRESS);
+    }
     include($root.'_layouts/manage/top.php');
     MG::show_flash();
 ?>    
 <div class="container px-6 mx-auto grid">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Roles</h2>
+    <div class="flex justify-start mb-2">
+        <a href="./create.php" class="px-3 py-1 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"><i class="bi bi-person-plus "></i> Create</a>
+    </div>
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
         <div class="w-full overflow-x-auto">
             <table id="table" class="w-full whitespace-no-wrap row-border hover">

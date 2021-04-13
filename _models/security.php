@@ -41,7 +41,12 @@
         {
             if (is_array($data)) {
                 foreach ($data as $key => $value) {
-                    $value  = addslashes($value);
+                    if (is_array($value)) {
+                        self::defend_filter($value);
+                    }
+                    else {
+                        $value  = addslashes($value);
+                    }
                 }
                 $data[$key] = $value;
                 return filter_var_array($data, FILTER_SANITIZE_STRING);

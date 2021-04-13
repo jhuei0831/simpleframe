@@ -7,7 +7,7 @@
     use _models\Security as SC;
 
     // DB::table('users')->where('id = 2')->update(['token' =>TOKEN, 'role' => '2']);
-
+    
     $users = DB::table('users')->limit(5)->get();
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
         $data = SC::defend_filter($_POST);
@@ -21,6 +21,7 @@
             MG::redirect(APP_ADDRESS);
         }
     }
+    MG::show_flash();
 ?>
 <!DOCTYPE html>
 <html lang="zh-TW">
@@ -57,7 +58,7 @@
             <input type="hidden" name="token" value="<?=TOKEN?>">
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="name" name="name" class="form-control" id="email" value="<?=$user['name']?>">
+                <input type="name" name="name" class="form-control" id="name" value="<?=$user['name']?>">
             </div>
             <div class="form-group">
                 <label for="email">Email address</label>

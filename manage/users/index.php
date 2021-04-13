@@ -1,10 +1,16 @@
 <?php
     $root = '../../';
 
-    use _models\Message as MG;
-
     include($root.'_config/settings.php');
     include($root.'_layouts/manage/top.php');
+
+    use _models\Message as MG;
+    use _models\Permission;
+    
+    if (!Permission::can('users-list')) {
+        MG::flash('Permission Denied!', 'error');
+        MG::redirect(APP_ADDRESS);
+    }
     MG::show_flash();
 ?>    
 <div class="container px-6 mx-auto grid">

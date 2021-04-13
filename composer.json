@@ -6,6 +6,10 @@
         "vlucas/phpdotenv": "^5.3",
         "robmorgan/phinx": "^0.12.5",
         "fzaninotto/faker": "^1.9",
-        "wixel/gump": "^1.12"
+        "wixel/gump": "^1.12",
+        "nesk/puphpeteer": "^2.0",
+        "symfony/dom-crawler": "^5.2",
+        "spatie/browsershot": "^3.44",
+        "symfony/css-selector": "^5.2"
     }
 }

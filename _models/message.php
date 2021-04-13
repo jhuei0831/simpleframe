@@ -77,15 +77,17 @@
          */
         public static function show_swal($msg, $type = 'success')
         {
-            echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
+            // echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
             echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>';
             echo "<script>
+                window.onload = function(){
                     Swal.fire({
                         icon: '{$type}',
                         title: '{$msg}',
                         confirmButtonColor: 'LightSeaGreen',
                         background: '#fcf8eb',
-                    })
+                    });
+                };
                 </script>";
         }
     }

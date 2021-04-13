@@ -218,7 +218,6 @@
             },
             password_confirm: {
                 required: true,
-                min: 8,
                 rangelength: [8, 30]
             }      
         },

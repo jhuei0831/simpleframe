@@ -1,0 +1,46 @@
+# ===============================================================
+# 說明：
+# 	1. 專案資料夾名稱都會不同，所以「一、客製化錯誤頁面」的路徑都需要調整
+#	2. 敏感檔案不想被外部從URL存取，請在「四、讓所有瀏覽機敏目錄內檔案的請求導向至403」設定
+# 	3. 如果有重要的外部資源需要引入，例如JS或CSS的CDN，需要改「五、標頭的防禦」
+# 	4. 當伺服器沒有SSL的時候請不要使用「（一）阻止javascript直接存取cookie」
+# ===============================================================
+# 零、設定基礎路徑
+	Options +FollowSymLinks -MultiViews
+	RewriteEngine On
+	RewriteBase /jhuei0831/basic/
+
+# 一、客製化錯誤頁面
+#	ErrorDocument 403 /_error/403.php
+#	ErrorDocument 404 /_error/404.php
+
+# 二、關閉目錄瀏覽
+	Options -Indexes
+
+# 三、為了防止http動詞竄改，做以下設定
+	<LimitExcept GET POST PUT DELETE>
+		Order Allow,Deny
+		Deny from all
+	</LimitExcept>
+
+# 四、讓所有瀏覽機敏目錄內檔案的請求導向至403
+	RewriteRule ^_config/?$ - [F,L]
+	RewriteRule ^_database/?$ - [F,L]
+	RewriteRule ^_error/?$ - [F,L]
+	RewriteRule ^_layouts/?$ - [F,L]
+	RewriteRule ^_models/?$ - [F,L]
+	RewriteRule ^_partials/?$ - [F,L]
+	RewriteRule ^_service/?$ - [F,L]
+	RewriteRule ^src/?$ - [F,L]
+	RewriteRule ^vendor/?$ - [F,L]
+
+	# 將某些特定檔案設定為拒絕存取
+	<FilesMatch ".(env|example|bowerrc|json|rb|lock|txt|cer)$|phinx.php">
+		Order Allow,Deny
+		Deny from all
+	</FilesMatch>
+
+# 五、取消網址php副檔名
+	RewriteCond %{REQUEST_FILENAME} !-f 
+	RewriteRule ^([^.]+)$ $1.php [NC,L] 
+

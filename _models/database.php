@@ -74,6 +74,26 @@
 		{
 			return count(self::getAll());
 		}
+
+		/**
+		 * 新增或更新資料庫資料
+		 *
+		 * @return boolean
+		 */
+		public static function CreateOrUpdate($data)
+		{
+			try{
+				return self::query_replace($data);
+			}
+			catch(Exception $e) {
+				if (IS_DEBUG === 'TRUE') {
+					throw $e;
+				}
+				else{
+					return false;
+				}
+			}
+		}
 		
 		/**
 		 * 使用指定資料庫
@@ -250,12 +270,13 @@
 		}
 
 		/**
-		 * 產生query並執行插入的動作
+		 * 產生query並執行新增的動作
 		 *
 		 * @param  array $data
+		 * @param  mixed $getInsertId
 		 * @return iterable|object
-		 */
-		private static function query_insert($data)
+		 */		
+		public static function query_insert($data, $getInsertId = false)
 		{
 			// 輸入只能是array型態
 			if (!is_array($data)) {
@@ -283,6 +304,57 @@
 
 			$db = self::connection();
 			$sql = 'INSERT INTO '.static::$table.' ('.$column.') VALUES ('.$values.')';
+
+			// 取得新增的id
+			if ($getInsertId) {
+				$sql .= ';SELECT LAST_INSERT_ID() as id;';
+			}
+
+			$sth = $db->prepare($sql);
+			foreach ($data as $key => $value) 
+			{
+				$attr = $key;
+				$sth->bindValue(':'.$attr, $value);	
+			}
+			
+			unset($_SESSION["token"]);
+			return $sql;
+		}
+
+		/**
+		 * 產生query並執行更新或新增的動作
+		 *
+		 * @param  array $data
+		 * @return iterable|object
+		 */
+		private static function query_replace($data)
+		{
+			// 輸入只能是array型態
+			if (!is_array($data)) {
+				throw new Exception('Replace的參數必須是array');
+			}
+
+			// CSRF驗證
+			if (Security::check_csrf($data)) {
+				unset($data['token']);
+			}
+
+			$column = '';
+			$values = '';
+			
+			//表單欄位名稱→資料表欄位名稱，表單欄位資料→資料表欄位資料，去除最後的逗點
+			foreach ($data as $key => $value) 
+			{
+				$attr = $key;
+				$column .= $attr.',';
+				$values .= ':'.$attr.',';
+			}
+
+			$column = substr($column, 0, -1);
+			$values = substr($values, 0, -1);
+
+			$db = self::connection();
+			$sql = 'REPLACE INTO '.static::$table.' ('.$column.') VALUES ('.$values.')';
 			$sth = $db->prepare($sql);
 			foreach ($data as $key => $value) 
 			{
@@ -298,7 +370,7 @@
 		 *
 		 * @return object
 		 */
-		public static function query_select()
+		private static function query_select()
 		{
 			$query[] = "SELECT";
 			// 如果select空值或*字號，則取全部
@@ -417,8 +489,8 @@
 			static::$query = '';
 			static::$leftJoin_table = '';
 			static::$leftJoin_condition = '';
-			static::$join_table = '';
-			static::$join_condition = '';
+			static::$join_table  = array();
+			static::$join_condition = array();
 			static::$order_by = '';
 		}
 

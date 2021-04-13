@@ -7,9 +7,9 @@ final class CreateRoleHasPermissionsTable extends AbstractMigration
 {
     public function up()
     {
-        $table = $this->table('role_has_permissions', ['id' => false]);
-        $table->addColumn('permission_id', 'integer', ['comment' => '權限id'])
-        ->addColumn('role_id', 'integer', ['comment' => '角色id'])
+        $table = $this->table('role_has_permissions', ['id' => false, 'primary_key' => ['permission_id', 'role_id']]);
+        $table->addColumn('permission_id', 'integer', ['null' => false, 'comment' => '權限id'])
+        ->addColumn('role_id', 'integer', ['null' => false, 'comment' => '角色id'])
         ->addForeignKey('role_id', 'roles', 'id', ['delete' => 'CASCADE'])
         ->addForeignKey('permission_id', 'permissions', 'id', ['delete' => 'CASCADE'])
         ->create();
