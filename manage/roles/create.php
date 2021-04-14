@@ -46,7 +46,7 @@
         }
         else {
             $insert = DB::table('roles')->query_insert(TB::only($valid_data, ['token', 'name']));
-            $role_id = DB::table('roles')->where('name ='.$valid_data['name'])->getOne();
+            $role_id = DB::table('roles')->where('name ="'.$valid_data['name'].'"')->first();
             foreach ($valid_data['permission'] as $key => $value) {
                 DB::table('role_has_permissions')->CreateOrUpdate(['token' => $valid_data['token'], 'permission_id' => $value, 'role_id' => $role_id['id']]);
             }  

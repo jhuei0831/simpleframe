@@ -137,6 +137,16 @@
 		{
 			return self::where("id = {$id}")->getOne();
 		}
+
+		/**
+		 * 使用fetch找特定query資料
+		 *
+		 * @return array
+		 */
+		public static function first()
+		{
+			return self::getOne();
+		}
 	
 		/**
 		 * 使用fetchAll取得資料
@@ -276,7 +286,7 @@
 		 * @param  mixed $getInsertId
 		 * @return iterable|object
 		 */		
-		public static function query_insert($data, $getInsertId = false)
+		public static function query_insert($data)
 		{
 			// 輸入只能是array型態
 			if (!is_array($data)) {
@@ -305,11 +315,6 @@
 			$db = self::connection();
 			$sql = 'INSERT INTO '.static::$table.' ('.$column.') VALUES ('.$values.')';
 
-			// 取得新增的id
-			if ($getInsertId) {
-				$sql .= ';SELECT LAST_INSERT_ID() as id;';
-			}
-
 			$sth = $db->prepare($sql);
 			foreach ($data as $key => $value) 
 			{
@@ -318,7 +323,7 @@
 			}
 			
 			unset($_SESSION["token"]);
-			return $sql;
+			return $sth->execute();
 		}
 
 		/**

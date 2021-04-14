@@ -1,0 +1,12 @@
+.icon{
+    font-size: 20px;
+}
+
+label.error{
+    color: red;
+    font-size: 12px;
+}
+
+.swal2-container {
+    top: 10% !important;
+}

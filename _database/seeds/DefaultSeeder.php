@@ -17,11 +17,12 @@ class DefaultSeeder extends AbstractSeed
     public function run()
     {
         // 建立角色
-        $role = ['name' => 'admin'];
-        $this->table('roles')->insert(['name' => $role['name']])->saveData();
+        $this->table('roles')->insert(['name' => 'admin'])->saveData();
+        $this->table('roles')->insert(['name' => 'guest'])->saveData();
 
         // 建立權限並將角色賦予權限
         $permissions = [
+            'manage-read',
             'users-list',
             'users-create',
             'users-edit',

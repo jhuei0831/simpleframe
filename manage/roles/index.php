@@ -2,15 +2,16 @@
     $root = '../../';
 
     include($root.'_config/settings.php');
+
     use _models\Message as MG;
     use _models\Permission;
-    
+
     if (!Permission::can('roles-list')) {
-        MG::flash('Permission Denied!', 'error');
-        MG::redirect(APP_ADDRESS);
+        include_once($root.'_error/404.php');
+        exit;
     }
-    include($root.'_layouts/manage/top.php');
     MG::show_flash();
+    include($root.'_layouts/manage/top.php');
 ?>    
 <div class="container px-6 mx-auto grid">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Roles</h2>

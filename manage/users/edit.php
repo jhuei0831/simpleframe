@@ -1,12 +1,18 @@
 <?php
     $root = '../../';
 
+    include($root.'_config/settings.php');
+
     use _models\database as DB;
     use _models\Message as MG;
     use _models\Security as SC;
+    use _models\Permission;
 
-    include($root.'_config/settings.php');
-    include($root.'_layouts/manage/top.php');
+
+    if (!Permission::can('users-edit')) {
+        MG::flash('Permission Denied!', 'error');
+        MG::redirect(APP_ADDRESS.'manage/users');
+    }
 
     $id = SC::defend_filter($_GET['id']);
     $user = DB::table('users')->find($id);
@@ -81,6 +87,7 @@
             }
         }
     }
+    include($root.'_layouts/manage/top.php');
 ?>    
 <div class="container px-6 mx-auto grid">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">User Edit</h2>

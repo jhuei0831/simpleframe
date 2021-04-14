@@ -1,3 +1,10 @@
+<?php
+    use _models\Message as MG;
+    if (empty($_SESSION['USER_ID'])) {
+        MG::flash('Permission Denied!', 'error');
+        MG::redirect(APP_ADDRESS);
+    }
+?>
 <!DOCTYPE html>
 <html :class="{ 'theme-dark': dark }" x-data="data()" lang="zh-TW">
 <head>

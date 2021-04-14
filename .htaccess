@@ -11,8 +11,8 @@
 	RewriteBase /jhuei0831/basic/
 
 # 一、客製化錯誤頁面
-#	ErrorDocument 403 /_error/403.php
-#	ErrorDocument 404 /_error/404.php
+	ErrorDocument 403 /jhuei0831/basic/_error/404.php
+	ErrorDocument 404 /jhuei0831/basic/_error/404.php
 
 # 二、關閉目錄瀏覽
 	Options -Indexes
@@ -39,8 +39,4 @@
 		Order Allow,Deny
 		Deny from all
 	</FilesMatch>
-
-# 五、取消網址php副檔名
-	RewriteCond %{REQUEST_FILENAME} !-f 
-	RewriteRule ^([^.]+)$ $1.php [NC,L] 
 

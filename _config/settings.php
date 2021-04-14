@@ -13,6 +13,11 @@
 		$_SESSION['token'] = hash('sha256', uniqid());
 	}
 
+	// 使用者資訊
+	if (empty($_SESSION['USER_ID'])) {
+		$_SESSION['USER_ID'] = NULL;
+	}
+
 	// 定義常數
 	define("APP_PROTOCOL", 		isset($_SERVER["REQUEST_SCHEME"]) ? $_SERVER["REQUEST_SCHEME"] : "http");
 	define("APP_DOMAIN", 		isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "localhost");

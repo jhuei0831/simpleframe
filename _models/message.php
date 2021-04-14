@@ -82,10 +82,15 @@
             echo "<script>
                 window.onload = function(){
                     Swal.fire({
+                        toast: true,
+                        position: 'top',
                         icon: '{$type}',
                         title: '{$msg}',
+                        showConfirmButton: false,
                         confirmButtonColor: 'LightSeaGreen',
                         background: '#fcf8eb',
+                        timer: 5000,
+                        timerProgressBar: true,
                     });
                 };
                 </script>";
