@@ -1,7 +1,7 @@
 <?php
-    namespace _models;
+    namespace _models\framework;
 
-    use _models\Database;
+    use _models\framework\Database;
 
     class Permission
     {        
@@ -49,7 +49,7 @@
             }
             $role_list = array_column($roles, 'id');
             
-            $check = Database::table('users')->where('id = '.$_SESSION['USER_ID'].' and role in('.join(', ', $role_list).')')->count();
+            $check = Database::table('users')->where('id = "'.$_SESSION['USER_ID'].'" and role in('.join(', ', $role_list).')')->count();
 
             return $check > 0 ? true : false;
         }

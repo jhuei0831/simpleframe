@@ -3,10 +3,10 @@
 
     include($root.'_config/settings.php');
 
-    use _models\Message as MG;
-    use _models\Permission;
+    use _models\framework\Message as MG;
+    use _models\framework\Role;
     
-    if (!Permission::can('manage-read')) {
+    if (!Role::has('admin')) {
         include_once($root.'_error/404.php');
         exit;
     }

@@ -3,10 +3,10 @@
 
     include($root.'_config/settings.php');
 
-    use _models\database as DB;
-    use _models\Message as MG;
-    use _models\Security as SC;
-    use _models\Permission;
+    use _models\framework\database as DB;
+    use _models\framework\Message as MG;
+    use _models\framework\Security as SC;
+    use _models\framework\Permission;
 
 
     if (!Permission::can('users-edit')) {
@@ -41,7 +41,7 @@
             $valid_data = $gump->run($data);
             
             if (!$gump->errors()) {
-                $update = DB::table('users')->where('id = '.$id)->update($valid_data);
+                $update = DB::table('users')->where("id = '{$id}'")->update($valid_data);
                 MG::flash('修改成功，謝謝。', 'success');
                 MG::redirect(APP_ADDRESS.'manage/users');
             }
@@ -81,7 +81,7 @@
             else {
                 unset($valid_data['password_confirm']);
                 $valid_data['password'] = md5($valid_data['password']);
-                $update = DB::table('users')->where('id = '.$id)->update($valid_data);
+                $update = DB::table('users')->where("id = '{$id}'")->update($valid_data);
                 MG::flash('修改成功，謝謝。', 'success');
                 MG::redirect(APP_ADDRESS.'manage/users');
             }
@@ -110,7 +110,7 @@
                 <span class="text-gray-700 dark:text-gray-400">Name</span>
                 <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
                     <input
-                        name="name" value="<?=isset($_POST['name'])?$_POST['name']:$user['name']?>"
+                        name="name" value="<?=isset($_POST['name'])?$_POST['name']:$user->name?>"
                         class="block w-full pr-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
                         placeholder="Jane Doe" required
                     />
@@ -124,7 +124,7 @@
                 <span class="text-gray-700 dark:text-gray-400">Email</span>
                 <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
                     <input
-                        name="email" value="<?=isset($_POST['email'])?$_POST['email']:$user['email']?>"
+                        name="email" value="<?=isset($_POST['email'])?$_POST['email']:$user->email?>"
                         class="block w-full pr-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
                         placeholder="example@example.com" required
                     />
@@ -141,7 +141,7 @@
                     class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                 >
                     <?php foreach($roles as $role): ?>
-                        <option value="<?=$role['id']?>" <?= $user['role'] == $role['id'] ? 'selected' : '' ?> ><?=$role['name']?></option>
+                        <option value="<?=$role->id?>" <?= $user->role == $role->id ? 'selected' : '' ?> ><?=$role->name?></option>
                     <?php endforeach;?>
                 </select>
             </label>

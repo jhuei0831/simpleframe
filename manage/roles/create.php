@@ -3,11 +3,11 @@
     
     include($root.'_config/settings.php');
 
-    use _models\database as DB;
-    use _models\Message as MG;
-    use _models\Security as SC;
-    use _models\Toolbox as TB;
-    use _models\Permission;
+    use _models\framework\database as DB;
+    use _models\framework\Message as MG;
+    use _models\framework\Security as SC;
+    use _models\framework\Toolbox as TB;
+    use _models\framework\Permission;
     
     if (!Permission::can('roles-create')) {
         MG::flash('Permission Denied!', 'error');
@@ -45,10 +45,9 @@
             // MG::redirect(APP_ADDRESS.'manage/roles/edit.php?id='.$id);
         }
         else {
-            $insert = DB::table('roles')->query_insert(TB::only($valid_data, ['token', 'name']));
-            $role_id = DB::table('roles')->where('name ="'.$valid_data['name'].'"')->first();
+            $insert = DB::table('roles')->insert(TB::only($valid_data, ['token', 'name']), TRUE);
             foreach ($valid_data['permission'] as $key => $value) {
-                DB::table('role_has_permissions')->CreateOrUpdate(['token' => $valid_data['token'], 'permission_id' => $value, 'role_id' => $role_id['id']]);
+                DB::table('role_has_permissions')->CreateOrUpdate(['token' => $valid_data['token'], 'permission_id' => $value, 'role_id' => $insert]);
             }  
             MG::flash('新增成功。', 'success');
             MG::redirect(APP_ADDRESS.'manage/roles');
@@ -94,10 +93,10 @@
                 <?php foreach($permissions as $permission): ?>
                     <label class="mt-4 mr-2 items-center dark:text-gray-400">
                         <input
-                            type="checkbox" name="permission[]" value="<?=$permission['id']?>"
+                            type="checkbox" name="permission[]" value="<?=$permission->id?>"
                             class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         />
-                        <span class="ml-2"><?=$permission['name']?></span>
+                        <span class="ml-2"><?=$permission->name?></span>
                     </label>
                 <?php endforeach; ?>
                 </div>

@@ -1,6 +1,8 @@
 <?php
 
-    namespace _models;
+    namespace _models\framework;
+
+    use Ramsey\Uuid\Uuid;
 
     class Toolbox {
                 
@@ -52,4 +54,13 @@
             $keys = (array) $keys;
             return array_intersect_key($array, array_flip($keys));
         }
+
+		/**
+		 * 產生version 4 UUID
+		 *
+		 * @return void
+		 */
+		public static function UUIDv4() {
+		    return Uuid::uuid4();
+		}
     }

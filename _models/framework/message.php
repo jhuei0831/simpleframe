@@ -1,5 +1,5 @@
 <?php
-    namespace _models;
+    namespace _models\framework;
     
     class Message
     {

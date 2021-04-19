@@ -3,8 +3,8 @@
 
     include($root.'_config/settings.php');
 
-    use _models\Message as MG;
-    use _models\Permission;
+    use _models\framework\Message as MG;
+    use _models\framework\Permission;
 
     if (!Permission::can('roles-list')) {
         include_once($root.'_error/404.php');

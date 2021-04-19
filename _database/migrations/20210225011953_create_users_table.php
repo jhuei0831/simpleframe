@@ -7,10 +7,12 @@ final class CreateUsersTable extends AbstractMigration
 {
     public function up()
     {
-        $table = $this->table('users', ['id' => 'id']);
-        $table->addColumn('name', 'string', ['comment' => '姓名'])
+        $table = $this->table('users', ['id' => false, 'primary_key' => ['id']]);
+        $table->addColumn('id', 'string')
+        ->addColumn('name', 'string', ['comment' => '姓名'])
         ->addColumn('email', 'string', ['comment' => '信箱'])
         ->addColumn('email_varified_at', 'timestamp', ['null' => true, 'default' => NULL, 'comment' => '信箱'])
+        ->addColumn('auth_code', 'string', ['comment' => '信箱驗證碼'])
         ->addColumn('password', 'string', ['comment' => '密碼'])
         ->addColumn('role', 'integer', ['comment' => '角色'])
         ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])

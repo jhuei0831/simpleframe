@@ -3,8 +3,8 @@
 
     include($root.'_config/settings.php');
 
-    use _models\Message as MG;
-    use _models\Permission;
+    use _models\framework\Message as MG;
+    use _models\framework\Permission;
     
     if (!Permission::can('users-list')) {
         include_once($root.'_error/404.php');
@@ -23,7 +23,6 @@
                     <tr
                         class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
                     >
-                        <th class="px-4 py-3">ID</th>
                         <th class="px-4 py-3">Name</th>
                         <th class="px-4 py-3">Email</th>
                         <th class="px-4 py-3">Created At</th>
@@ -39,9 +38,6 @@
 <script type="text/javascript">
     let url = "ajax_users.php";
     let columns = [
-        {
-            "data": "id"
-        },
         {
             "data": "name"
         },

@@ -4,11 +4,11 @@
     
     include($root.'_config/settings.php');
 
-    use _models\database as DB;
-    use _models\Message as MG;
-    use _models\Security as SC;
-    use _models\Toolbox as TB;
-    use _models\Permission;
+    use _models\framework\database as DB;
+    use _models\framework\Message as MG;
+    use _models\framework\Security as SC;
+    use _models\framework\Toolbox as TB;
+    use _models\framework\Permission;
     
     if (!Permission::can('roles-edit')) {
         MG::flash('Permission Denied!', 'error');
@@ -17,7 +17,7 @@
 
     $id = SC::defend_filter($_GET['id']);
     $role = DB::table('roles')->find(SC::defend_filter($_GET['id']));
-    $role_has_permissions = array_column(DB::table('role_has_permissions')->where('role_id = '.$role['id'])->get(), 'permission_id');
+    $role_has_permissions = array_column(DB::table('role_has_permissions')->where('role_id = '.$role->id)->get(), 'permission_id');
     $permissions = DB::table('permissions')->get();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
@@ -38,7 +38,7 @@
 
         $check_role = DB::table('roles')->where('name ="'.$valid_data['name'].'"')->count();
 
-        if ($check_role > 0 && $role['name'] != $valid_data['name']) {
+        if ($check_role > 0 && $role->name != $valid_data['name']) {
             $error = true;
             MG::flash('名稱已存在。', 'error');
         }
@@ -49,9 +49,9 @@
         }
         else {
             DB::table('roles')->where('id = '.$id)->update(TB::only($valid_data, ['token', 'name']));
-            DB::table('role_has_permissions')->where('role_id ='.$role['id'])->delete();
+            DB::table('role_has_permissions')->where('role_id ='.$role->id)->delete();
             foreach ($valid_data['permission'] as $key => $value) {
-                DB::table('role_has_permissions')->CreateOrUpdate(['token' => $valid_data['token'], 'permission_id' => $value, 'role_id' => $role['id']]);
+                DB::table('role_has_permissions')->CreateOrUpdate(['token' => $valid_data['token'], 'permission_id' => $value, 'role_id' => $role->id]);
             }  
             MG::flash('修改成功，謝謝。', 'success');
             MG::redirect(APP_ADDRESS.'manage/roles');
@@ -79,7 +79,7 @@
                 <span class="text-gray-700 dark:text-gray-400">Name</span>
                 <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
                     <input
-                        name="name" value="<?=isset($_POST['name'])?$_POST['name']:$role['name']?>"
+                        name="name" value="<?=isset($_POST['name'])?$_POST['name']:$role->name?>"
                         class="block w-full pr-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
                         placeholder="Jane Doe" required
                     />
@@ -96,10 +96,10 @@
                 <?php foreach($permissions as $permission): ?>
                     <label class="mt-4 mr-2 items-center dark:text-gray-400">
                         <input
-                            type="checkbox" name="permission[]" value="<?=$permission['id']?>" <?= in_array($permission['id'], $role_has_permissions) ? 'checked' : '';?>
+                            type="checkbox" name="permission[]" value="<?=$permission->id?>" <?= in_array($permission->id, $role_has_permissions) ? 'checked' : '';?>
                             class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         />
-                        <span class="ml-2"><?=$permission['name']?></span>
+                        <span class="ml-2"><?=$permission->name?></span>
                     </label>
                 <?php endforeach; ?>
                 </div>

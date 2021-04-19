@@ -40,3 +40,14 @@
 		Deny from all
 	</FilesMatch>
 
+# 五、X-Frame-Options
+Header always unset X-Frame-Options
+Header set X-Frame-Options SAMEORIGIN
+
+# 六、Cookie
+Header edit Set-Cookie ^(.*)$ $1;HttpOnly;Secure;SameSite=None
+
+# 七、HSTS
+Header unset Strict-Transport-Security env=!HTTPS
+Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" env=HTTPS
+

@@ -1,10 +1,10 @@
 <?php
-	namespace _models;
+	namespace _models\framework;
 
 	use PDO;
 	use Exception;
 
-	use _models\Security;
+	use _models\framework\Security;
 
 	class Database
 	{
@@ -135,7 +135,7 @@
 		 */
 		public static function find($id)
 		{
-			return self::where("id = {$id}")->getOne();
+			return self::where("id = '{$id}'")->getOne();
 		}
 
 		/**
@@ -163,14 +163,14 @@
 		 *
 		 * @return array
 		 */
-		public static function getAll()
+		private static function getAll()
 		{
 			self::query_select();
 			$db = self::connection();
 			$sth = $db->prepare(static::$query);
 			$sth->execute();
 			self::Reset();
-			return $sth->fetchAll(PDO::FETCH_ASSOC);
+			return $sth->fetchAll(PDO::FETCH_OBJ);
 		}
 	
 		/**
@@ -178,14 +178,14 @@
 		 *
 		 * @return void
 		 */
-		public static function getOne()
+		private static function getOne()
 		{
 			self::query_select();
 			$db = self::connection();
 			$sth = $db->prepare(static::$query);
 			$sth->execute();
 			self::Reset();
-			return $sth->fetch(PDO::FETCH_ASSOC);
+			return $sth->fetch(PDO::FETCH_OBJ);
 		}
 
 		/**
@@ -194,10 +194,10 @@
 		 * @param  array $data
 		 * @return iterable|object
 		 */
-		public static function insert($data)
+		public static function insert($data, $getInsertId = false)
 		{
 			try{
-				return self::query_insert($data);
+				return self::query_insert($data, $getInsertId);
 			}
 			catch(Exception $e) {
 				if (IS_DEBUG === 'TRUE') {
@@ -286,7 +286,7 @@
 		 * @param  mixed $getInsertId
 		 * @return iterable|object
 		 */		
-		public static function query_insert($data)
+		private static function query_insert($data, $getInsertId = false)
 		{
 			// 輸入只能是array型態
 			if (!is_array($data)) {
@@ -323,7 +323,14 @@
 			}
 			
 			unset($_SESSION["token"]);
-			return $sth->execute();
+			
+			if ($getInsertId) {
+				$sth->execute();
+				return $db->lastInsertId();
+			}
+			else {
+				return $sth->execute();
+			}
 		}
 
 		/**

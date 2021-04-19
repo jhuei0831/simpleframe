@@ -1,11 +1,13 @@
 <?php
     $root = '../';
-
+    $page_title = 'Register';
     include_once($root.'_config/settings.php');
 
-    use _models\Security as SC;
-    use _models\Database as DB;
-    use _models\Message as MG;
+    use _models\framework\Security as SC;
+    use _models\framework\Database as DB;
+    use _models\framework\Message as MG;
+    use _models\framework\Toolbox;
+    use _models\framework\Mail;
 
     if (!is_null($_SESSION['USER_ID'])) {
         MG::redirect(APP_ADDRESS);
@@ -47,12 +49,23 @@
         }
         else {
             unset($valid_data['password_confirm']);
+            $auth_code = uniqid(mt_rand());
             $valid_data['password'] = md5($valid_data['password']);
+            $valid_data['id'] = Toolbox::UUIDv4();
             $valid_data['role'] = 2;
-            $insert = DB::table('users')->insert($valid_data);
-            $_SESSION['USER_ID'] = (DB::table('users')->where('email ="'.$valid_data['email'].'" and password ="'.$valid_data['password'].'"')->first())['id'];
-            MG::flash('註冊成功', 'success');
-            MG::redirect(APP_ADDRESS);
+            $valid_data['auth_code'] = $auth_code;
+            $insert = DB::table('users')->insert($valid_data, TRUE);
+            $id = $insert_id->id;
+            $name = $valid_data['name'];
+            // 取得剛剛註冊的帳號ID
+            $insert_id = DB::table('users')->where("email = '{$valid_data['email']}'")->first();
+            include_once('./email/content.php');
+            $mail = Mail::send($subject, $message, $valid_data['email'], $valid_data['name']);
+            $_SESSION['USER_ID'] = $id;
+            if ($mail) {
+                MG::flash('註冊成功，請前往註冊信箱收取認證信。', 'success');
+                MG::redirect(APP_ADDRESS.'auth/email/verified.php');
+            }   
         }
     }
     MG::show_flash();

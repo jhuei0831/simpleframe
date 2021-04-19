@@ -2,7 +2,7 @@
     $root = '../../';
     include($root.'_config/settings.php');
 
-    use _models\Database as DB;
+    use _models\framework\Database as DB;
 
     $where="1=1";
     if( !empty($_REQUEST['search']['value']) ) { 

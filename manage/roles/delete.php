@@ -2,10 +2,10 @@
     $root = "../../";
     include($root.'_config/settings.php');
 
-    use _models\database as DB;
-    use _models\message as MG;
-    use _models\Security as SC;
-    use _models\Permission;
+    use _models\framework\database as DB;
+    use _models\framework\message as MG;
+    use _models\framework\Security as SC;
+    use _models\framework\Permission;
     
     if (!Permission::can('roles-delete')) {
         MG::flash('Permission Denied!', 'error');

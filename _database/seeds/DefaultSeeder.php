@@ -1,8 +1,7 @@
 <?php
 
-
 use Phinx\Seed\AbstractSeed;
-use _models\Permission;
+use Ramsey\Uuid\Uuid;
 
 class DefaultSeeder extends AbstractSeed
 {
@@ -17,12 +16,11 @@ class DefaultSeeder extends AbstractSeed
     public function run()
     {
         // 建立角色
-        $this->table('roles')->insert(['name' => 'admin'])->saveData();
-        $this->table('roles')->insert(['name' => 'guest'])->saveData();
+        $role = ['name' => 'admin'];
+        $this->table('roles')->insert(['name' => $role['name']])->saveData();
 
         // 建立權限並將角色賦予權限
         $permissions = [
-            'manage-read',
             'users-list',
             'users-create',
             'users-edit',
@@ -42,6 +40,7 @@ class DefaultSeeder extends AbstractSeed
 
         // 建立管理者
         $admin = [
+            'id' => Uuid::uuid4(),
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => md5('password'),

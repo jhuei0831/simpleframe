@@ -2,7 +2,7 @@
 	$root = '../';
 	include_once($root.'_config/settings.php');
 
-    use _models\Message as MG;
+    use _models\framework\Message as MG;
 
 	// 登出功能
 	unset($_SESSION['USER_ID']);

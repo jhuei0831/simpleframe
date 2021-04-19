@@ -1,7 +1,7 @@
 <?php
-    namespace _models;
+    namespace _models\framework;
 
-    use _models\Database;
+    use _models\framework\Database;
     
     class Role 
     {        
@@ -25,9 +25,9 @@
          */
         private static function getRoleID($role)
         {
-            $role = Database::table('roles')->select('id')->where("name ='{$role}'")->get();
+            $role = Database::table('roles')->select('id')->where("name ='{$role}'")->first();
 
-            return count($role) > 0 ? $role[0]['id'] : false;
+            return $role->id ?? false;
         }
 
                 
@@ -43,7 +43,8 @@
             if ($role_id === false) {
                 return false;
             }
-            $check = Database::table('users')->where('id ='.$_SESSION['USER_ID'].' and role ='.$role_id)->count();
+            // var_dump($role_id);exit;
+            $check = Database::table('users')->where('id ="'.$_SESSION['USER_ID'].'" and role ="'.$role_id.'"')->count();
             return $check > 0 ? true : false;
         }
     }
