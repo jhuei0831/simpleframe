@@ -25,6 +25,7 @@
 	define("APP_NAME", 			$_ENV['APP_NAME']);
 	define("APP_ADDRESS",		APP_PROTOCOL."://".APP_DOMAIN."/".APP_FOLDER.APP_NAME."/");
 	define("IS_DEBUG", 			strtoupper($_ENV['APP_DEBUG']));
+	define("PASSWORD_SECURE", 	strtoupper($_ENV['AUTH_PASSWORD_SECURITY']));
 	define('TOKEN',				$_SESSION['token']);
 
 	// 例外清單，可以看到錯誤訊息

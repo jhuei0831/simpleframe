@@ -9,8 +9,8 @@
         $where.=" and id LIKE '%".$_REQUEST['search']['value']."%' ";    
         $where.="OR name LIKE '%".$_REQUEST['search']['value']."%'";
     }
-    $count = DB::table('roles')->get();
-    $totalRecords=count($count);
+
+    $totalRecords = DB::table('roles')->count();
     
     $columns = array( 
         0 => 'id', 

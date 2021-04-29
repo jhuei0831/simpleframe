@@ -22,8 +22,7 @@
                         </button>
                     </div>
                     <nav class="hidden md:block space-x-10">
-                        <a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900">Pricing</a>
-                        <a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900">Docs</a>
+                        <a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900">¯\_(ツ)_/¯</a>
                     </nav>
                     <div class="hidden md:block items-center justify-end">
                     <?php if(is_null($_SESSION['USER_ID'])): ?>
@@ -33,8 +32,8 @@
                         <div class="relative inline-block text-left">
                             <!-- 選單按鈕 -->
                             <div class="cursor-pointer">
-                                <span @click="open = true" class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-gray-500">
-                                    <span class="font-medium leading-none text-white">TW</span>
+                                <span @click="open = true" @keydown.escape="open = false" class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-gray-500">
+                                    <span class="font-medium leading-none text-white">HIT</span>
                                 </span>
                             </div>
 
@@ -62,8 +61,8 @@
                                 <? endif; ?>
                                 <div class="py-1 flex" role="none">
                                     <a href="<?=APP_ADDRESS?>auth/logout.php" class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" role="menuitem">
-                                        <svg class="w-4 h-4 mr-3" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" >
-                                            <path d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                         </svg>
                                         Sign out
                                     </a>
@@ -135,8 +134,8 @@
                             </p>
                             <?php else: ?>
                                 <a href="<?=APP_ADDRESS?>auth/logout.php" class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
-                                    <svg class="w-4 h-4 mr-3" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" >
-                                        <path d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                     </svg>
                                     Sign out
                                 </a>

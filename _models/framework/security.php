@@ -35,21 +35,22 @@
          * defend_filter 用 addslashes防SQL Injection、filter_var防XSS
          *
          * @param  array|string $data
-         * @return array|string
+         * @return array|string|object
          */
         public static function defend_filter($data)
         {
-            if (is_array($data)) {
+            if (is_array($data) || is_object($data)) {
+                $origin_type = gettype($data);
+                $data = (array) $data;
                 foreach ($data as $key => $value) {
-                    if (is_array($value)) {
-                        self::defend_filter($value);
+                    if (is_array($value) || is_object($value)) {
+                        $data[$key] = self::defend_filter($value);
                     }
                     else {
-                        $value  = addslashes($value);
+                        $data[$key]  = filter_var(addslashes($value), FILTER_SANITIZE_STRING);
                     }
-                }
-                $data[$key] = $value;
-                return filter_var_array($data, FILTER_SANITIZE_STRING);
+                }   
+                return $origin_type == 'array' ? $data : (object) $data;
             }
             else{
                 $data  = addslashes($data);

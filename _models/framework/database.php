@@ -131,61 +131,66 @@
 		 * 使用fetch找特定id資料
 		 *
 		 * @param  string $id
+		 * @param  mixed $filter 是否過濾
 		 * @return array
 		 */
-		public static function find($id)
+		public static function find($id, $filter=true)
 		{
-			return self::where("id = '{$id}'")->getOne();
+			return self::where("id = '{$id}'")->getOne($filter);
 		}
 
 		/**
 		 * 使用fetch找特定query資料
 		 *
+		 * @param  mixed $filter 是否過濾
 		 * @return array
 		 */
-		public static function first()
+		public static function first($filter=true)
 		{
-			return self::getOne();
+			return self::getOne($filter);
 		}
 	
 		/**
 		 * 使用fetchAll取得資料
 		 *
+		 * @param  mixed $filter 是否過濾
 		 * @return array
 		 */
-		public static function get()
+		public static function get($filter=true)
 		{
-			return self::getAll();
+			return self::getAll($filter);
 		}
 
 		/**
 		 * PDO取全部的值
 		 *
+		 * @param  mixed $filter 是否過濾
 		 * @return array
 		 */
-		private static function getAll()
+		private static function getAll($filter=true)
 		{
 			self::query_select();
 			$db = self::connection();
 			$sth = $db->prepare(static::$query);
 			$sth->execute();
 			self::Reset();
-			return $sth->fetchAll(PDO::FETCH_OBJ);
+			return !$filter ? $sth->fetchAll(PDO::FETCH_OBJ) : Security::defend_filter($sth->fetchAll(PDO::FETCH_OBJ));
 		}
 	
 		/**
 		 * PDO取單一筆的值
 		 *
+		 * @param  mixed $filter 是否過濾
 		 * @return void
-		 */
-		private static function getOne()
+		 */		
+		private static function getOne($filter=true)
 		{
 			self::query_select();
 			$db = self::connection();
 			$sth = $db->prepare(static::$query);
 			$sth->execute();
 			self::Reset();
-			return $sth->fetch(PDO::FETCH_OBJ);
+			return !$filter ? $sth->fetch(PDO::FETCH_OBJ) : Security::defend_filter($sth->fetch(PDO::FETCH_OBJ));
 		}
 
 		/**
