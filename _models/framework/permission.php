@@ -44,7 +44,7 @@
         public static function can($permission)
         {
             $roles = self::permission_belong_roles($permission);
-            if (empty($roles)) {
+            if (empty($roles) || empty($_SESSION['USER_ID'])) {
                 return false;
             }
             $role_list = array_column($roles, 'id');
