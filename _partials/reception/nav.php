@@ -1,14 +1,11 @@
-<?php
-    use _models\framework\Role;
-?>
 <div class="flex flex-col flex-1 w-full" x-data="{ open: false, menu: false }">
     <header class="z-10 dark:bg-gray-800">
         <!-- This example requires Tailwind CSS v2.0+ -->
         <div class="relative bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6">
-                <div class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
+                <div class="flex flex-row justify-between items-center border-b-2 border-gray-100 py-6 md:space-x-10">
                     <div class="flex justify-start">
-                        <a href="#">
+                        <a href="<?=APP_ADDRESS?>">
                             <span class="sr-only">icon</span>
                             <img class="h-8 w-auto sm:h-10" src="<?=APP_IMG?>grapes.png" alt="icon">
                         </a>
@@ -32,9 +29,7 @@
                         <div class="relative inline-block text-left">
                             <!-- 選單按鈕 -->
                             <div class="cursor-pointer">
-                                <span @click="open = true" @keydown.escape="open = false" class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-gray-500">
-                                    <span class="font-medium leading-none text-white">HIT</span>
-                                </span>
+                                <img @click="open = true" @keydown.escape="open = false" class="h-8 w-8 rounded-full" src="<?=APP_IMG?>no-avatar.png" alt="avatar">
                             </div>
 
                             <!-- 下拉選單動畫 -->
@@ -49,7 +44,7 @@
                             ></div>
                             <!-- 選單內容 -->
                             <div x-show="open" @click.away="open = false" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                <? if(Role::has('admin')): ?>
+                                <? if(_models\framework\Role::has('admin')): ?>
                                 <div class="py-1 flex" role="none">
                                     <a href="<?=APP_ADDRESS?>manage/" class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" role="menuitem">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-3" viewBox="0 0 20 20" fill="currentColor">
@@ -101,9 +96,9 @@
                         </div>
                         <div class="mt-6">
                             <nav class="grid gap-y-8">
-                                <? if(Role::has('admin')): ?>
+                                <? if(_models\framework\Role::has('admin')): ?>
                                 <a href="<?=APP_ADDRESS?>manage/" class="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 h-6 w-6 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                    <svg class="flex-shrink-0 h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 h-6 w-6 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"/>
                                     </svg>
                                     <span class="ml-3 text-base font-medium text-gray-900">
@@ -111,14 +106,6 @@
                                     </span>
                                 </a>
                                 <? endif; ?>
-                                <a href="#" class="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50">
-                                    <svg class="flex-shrink-0 h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                    </svg>
-                                    <span class="ml-3 text-base font-medium text-gray-900">
-                                        Analytics
-                                    </span>
-                                </a>
                             </nav>
                         </div>
                     </div>

@@ -4,5 +4,7 @@ composer.lock
 /node_modules
 /package-lock.json
 /test
+/src/dist
 *.mp3
 *.wav
+*.generated.css
