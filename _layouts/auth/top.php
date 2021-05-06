@@ -10,7 +10,11 @@
         <?php include_once($root.'_partials/reception/meta.php'); ?>
         <?php include_once($root.'_partials/reception/css.php'); ?>
         <title><?=isset($page_title) ? $page_title : APP_NAME?></title>
+        <!-- debug bar -->
         <?php echo IS_DEBUG === 'TRUE' ? $debugbarRenderer->renderHead() : '' ?>
+        <!-- webpack -->
+        <script src="<?=APP_SRC?>dist/bundle.js" defer></script>
+        <!-- font -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
     </head>

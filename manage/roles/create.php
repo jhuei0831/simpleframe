@@ -56,11 +56,11 @@
 
     include($root.'_layouts/manage/top.php');
 ?>
+<!-- breadcrumb -->
+<?=TB::breadcrumb(APP_ADDRESS.'manage', ['Roles'=> APP_ADDRESS.'manage/roles', 'Roles Create' => '#'])?>
 
 <div class="container px-6 mx-auto grid">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Role Create</h2>
-
-    <!-- General elements -->
     <form method="post" id="form_role">
         <input type="hidden" name="token" value="<?=TOKEN?>">
         <?php if (isset($error) && $error): ?>
@@ -76,11 +76,11 @@
                 <span class="text-gray-700 dark:text-gray-400">Name</span>
                 <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
                     <input
-                        name="name"
-                        class="block w-full pr-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                        name="name" type="text"
+                        class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300"
                         placeholder="Jane Doe" required
                     />
-                    <div class="absolute inset-y-0 right-0 flex items-center mr-3 pointer-events-none">
+                    <div class="mt-2 absolute inset-y-0 right-0 flex items-center mr-3 pointer-events-none">
                         <i class="bi bi-person"></i>
                     </div>
                 </div>
@@ -113,13 +113,3 @@
 </div>
 
 <?php include($root.'_layouts/manage/bottom.php'); ?>
-
-<script>
-    $("#form_role").validate({
-        rules: {
-            name: {
-                required: true
-            }   
-        },
-    });
-</script>

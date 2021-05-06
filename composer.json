@@ -1,16 +1,12 @@
 {
-    "name": "jhuei0831/myweb",
-    "description": "",
+    "name": "jhuei/myweb",
+    "description": "simple framework with auth",
     "version": "1.0.0",
     "require": {
         "vlucas/phpdotenv": "^5.3",
         "robmorgan/phinx": "^0.12.5",
         "fzaninotto/faker": "^1.9",
         "wixel/gump": "^1.12",
-        "nesk/puphpeteer": "^2.0",
-        "symfony/dom-crawler": "^5.2",
-        "spatie/browsershot": "^3.44",
-        "symfony/css-selector": "^5.2",
         "phpmailer/phpmailer": "^6.4",
         "ramsey/uuid": "^4.1",
         "maximebf/debugbar": "^1.16"

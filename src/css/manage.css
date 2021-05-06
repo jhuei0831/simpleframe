@@ -41,7 +41,7 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06); 	/*shadow*/
     font-weight: 700;					/*font-bold*/
     border-radius: .25rem;				/*rounded*/
-    background: #97a4da !important;		/*bg-indigo-500*/
+    background: rgba(165, 243, 252, var(--tw-text-opacity)) !important;		/*bg-indigo-500*/
     border: 1px solid transparent;		/*border border-transparent*/
 }
 
@@ -51,7 +51,7 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);	 /*shadow*/
     font-weight: 700;					/*font-bold*/
     border-radius: .25rem;				/*rounded*/
-    background: #97a4da !important;		/*bg-indigo-500*/
+    background: rgba(165, 243, 252, var(--tw-text-opacity)) !important;		/*bg-indigo-500*/
     border: 1px solid transparent;		/*border border-transparent*/
 }
 
@@ -64,7 +64,7 @@ table.dataTable.no-footer {
 
 /*Change colour of responsive icon*/
 table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before, table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
-    background-color: #97a4da !important; /*bg-indigo-500*/
+    background-color: rgba(165, 243, 252, var(--tw-text-opacity)) !important; /*bg-indigo-500*/
 }
 
 .dataTables_info{
@@ -72,7 +72,12 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before, table.dataT
 }
 
 .dataTables_length{
-    margin-left: .5rem;
+    margin-left: .5rem;   
+}
+
+.dataTables_length select {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
 }
 
 table.dataTable thead th {

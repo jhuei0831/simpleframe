@@ -71,15 +71,17 @@
     MG::show_flash();
     include_once($root.'_layouts/auth/top.php');
 ?>
-<div class="flex items-center justify-center bg-gray-50 py-32 px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-center bg-gray-50 py-32 px-4 sm:px-6 lg:px-8" x-data={loading:false}>
     <div class="max-w-md w-full space-y-8 mt-12">
         <div>
-            <a href="<?=APP_ADDRESS?>"><img class="mx-auto h-12 w-auto" src="<?=APP_IMG?>grapes.png" alt="Workflow"></a>
+            <a href="<?=APP_ADDRESS?>">
+                <img :class="{ 'animate-spin': loading === true }" class="mx-auto h-12 w-auto" src="<?=APP_IMG?>grapes.png" alt="Workflow">
+            </a>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
                 Sign up your account
             </h2>
         </div>
-        <form id="form_register" class="mt-8 space-y-6" method="POST">
+        <form id="form_register" class="mt-8 space-y-6" method="POST" @submit="loading = true">
             <input type="hidden" name="token" value="<?=TOKEN?>">
             <div class="mb-4">
             <?php include_once($root.'_partials/error_message.php'); ?>
@@ -116,27 +118,6 @@
         </form>
     </div>
 </div>
-<script>
-    $("#form_register").validate({
-        rules: {
-            name: {
-                required: true
-            },
-            email: {
-                required: true,
-                email: true
-            },
-            password: {
-                required: true,
-                rangelength: [8, 30]
-            },
-            password_confirm: {
-                required: true,
-                rangelength: [8, 30]
-            }       
-        },
-    });
-</script>
 <?php include_once($root.'_layouts/auth/bottom.php'); ?>
 
 

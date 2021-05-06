@@ -1,10 +1,17 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
-    purge: [],
-    darkMode: false, // or 'media' or 'class'
+    // 設定有使用到tailwindcss的檔案，production會排除purge以外的檔案
+    purge: [
+        './**/*.php',
+    ],
+    darkMode: false,
     theme: {
-        screens: {
-            'xs': '375px',
-        },
+        extend: {
+            colors: {
+                cyan: colors.cyan,
+            }
+        }
     },
     variants: {
         extend: {},

@@ -11,16 +11,21 @@
     }
 ?>
 <!DOCTYPE html>
-<html :class="{ 'theme-dark': dark }" x-data="data()" lang="zh-TW">
+<html lang="zh-TW">
 <head>
     <?php include_once($root.'_partials/manage/meta.php'); ?>
     <?php include_once($root.'_partials/manage/css.php'); ?>
     <title><?=isset($page_title) ? $page_title : APP_NAME?></title>
+    <!-- debug bar -->
     <?php echo IS_DEBUG === 'TRUE' ? $debugbarRenderer->renderHead() : '' ?>
+    <!-- webpack -->
+    <script src="<?=APP_SRC?>dist/bundle.js" defer></script>
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="flex h-screen bg-gray-50 dark:bg-gray-900" :class="{ 'overflow-hidden': isSideMenuOpen }">
+    <div style="font-family: 'RocknRoll One', sans-serif;">
         <?php include_once($root.'_partials/manage/sidebar.php'); ?>
         <?php include_once($root.'_partials/manage/nav.php'); ?>
-        <main class="h-full overflow-y-auto">
-            <div class="container px-6 mx-auto grid">
+        <main class="flex-1 relative pb-8 z-0 overflow-y-auto">

@@ -24,7 +24,13 @@
             MG::redirect(APP_ADDRESS.'auth/email/verified.php');
         }
         else{
-            DB::table('users')->where("id = '{$_SESSION['USER_ID']}'")->update(['token' => TOKEN, 'email_varified_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')]);
+            DB::table('users')
+                ->where("id = '{$_SESSION['USER_ID']}'")
+                ->update([
+                    'token' => TOKEN, 
+                    'email_varified_at' => date('Y-m-d H:i:s'), 
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
             MG::flash('信箱驗證成功，謝謝。', 'success');
             MG::redirect(APP_ADDRESS);
         }

@@ -4,6 +4,7 @@
     include($root.'_config/settings.php');
 
     use _models\framework\Message as MG;
+    use _models\framework\Toolbox as TB;
     use _models\framework\Permission;
     
     if (!Permission::can('users-list')) {
@@ -14,6 +15,9 @@
     MG::show_flash();
     include($root.'_layouts/manage/top.php');
 ?>    
+<!-- breadcrumb -->
+<?=TB::breadcrumb(APP_ADDRESS.'manage', ['Users'=> '#'])?>
+
 <div class="container px-6 mx-auto grid">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Users</h2>
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
@@ -33,8 +37,6 @@
         </div>
     </div>
 </div>
-
-<?php include($root.'_layouts/manage/bottom.php') ?>
 <script type="text/javascript">
     let url = "ajax_users.php";
     let columns = [
@@ -57,5 +59,5 @@
         },
     ];
 </script>
-<!-- 刪除跟修改按鈕 -->
-<script src="<?=APP_JS?>datatable.js"></script>
+<?php include($root.'_layouts/manage/bottom.php') ?>
+

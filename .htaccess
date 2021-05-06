@@ -30,7 +30,6 @@
 	RewriteRule ^_layouts/?$ - [F,L]
 	RewriteRule ^_models/?$ - [F,L]
 	RewriteRule ^_partials/?$ - [F,L]
-	RewriteRule ^_service/?$ - [F,L]
 	RewriteRule ^src/?$ - [F,L]
 	RewriteRule ^vendor/?$ - [F,L]
 
