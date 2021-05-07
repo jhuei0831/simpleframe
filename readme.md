@@ -1,3 +1,24 @@
+### 系統資訊
+
+* 開發環境
+
+<table>
+    <tr>
+        <td>PHP</td>
+        <td>7.4.13</td>
+    </tr>
+    <tr>
+        <td>MariaDB</td>
+        <td>10.4.17</td>
+    </tr>
+    <tr>
+        <td>Apache</td>
+        <td>2.4.46</td>
+    </tr>
+</table>
+
+---
+
 ### 1. 安裝composer套件
 
 ```
@@ -64,6 +85,6 @@ npm run serve
 ### 8. 建立資料庫及資料
 
 ```
-vender\bin\phinx migrate
-vender\bin\phinx seed:run
+vendor\bin\phinx migrate
+vendor\bin\phinx seed:run
 ```

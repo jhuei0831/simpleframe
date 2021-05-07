@@ -35,7 +35,11 @@
             ]);
             MG::flash('請前往註冊信箱收取密碼重設信，謝謝。', 'success');
             MG::redirect(APP_ADDRESS.'auth/password/password_forgot.php');
-        }   
+        }
+        else{
+            MG::flash('獲取信件失敗', 'error');
+            MG::redirect(APP_ADDRESS.'auth/password/password_forgot.php');
+        }    
     }
     MG::show_flash();
     include_once($root.'_layouts/auth/top.php');

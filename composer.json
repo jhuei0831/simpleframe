@@ -1,5 +1,5 @@
 {
-    "name": "jhuei/myweb",
+    "name": "jhuei/simpleframe",
     "description": "simple framework with auth",
     "version": "1.0.0",
     "require": {

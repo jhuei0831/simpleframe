@@ -1,6 +1,5 @@
 <div class="flex flex-col flex-1 w-full" x-data="{ open: false, menu: false }">
     <header class="z-10 dark:bg-gray-800">
-        <!-- This example requires Tailwind CSS v2.0+ -->
         <div class="relative bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6">
                 <div class="flex flex-row justify-between items-center border-b-2 border-gray-100 py-6 md:space-x-10">

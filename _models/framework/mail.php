@@ -26,7 +26,7 @@
                 $mail->AddAddress($email, $name);
                 return $mail->Send();
             } catch (Exception $e) {
-                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                echo "Message could not be sent. Mailer Error: {$e->getMessage()}";
             }
             
         }
