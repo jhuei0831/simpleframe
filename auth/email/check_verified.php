@@ -35,5 +35,9 @@
             MG::redirect(APP_ADDRESS);
         }
     }
+    else{
+        include_once($root.'_error/404.php');
+        exit;
+    }
     
 ?>

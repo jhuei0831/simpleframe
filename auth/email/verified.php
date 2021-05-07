@@ -9,7 +9,7 @@
     use _models\framework\Mail;
     use _models\framework\Auth;
 
-    if (is_null($_SESSION['USER_ID']) || !empty(Auth::user()->email_varified_at)) {
+    if (is_null($_SESSION['USER_ID']) || !empty(Auth::user()->email_varified_at) || EMAIL_VERIFY==='FALSE') {
         include_once($root.'_error/404.php');
         exit;
     }

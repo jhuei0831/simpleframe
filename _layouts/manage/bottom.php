@@ -1,5 +1,5 @@
+                            <?php include_once($root.'_partials/manage/footer.php') ?>
                         </main>
-                        <?php include_once($root.'_partials/manage/footer.php') ?>
                     </div>
                 </div>
             </div>

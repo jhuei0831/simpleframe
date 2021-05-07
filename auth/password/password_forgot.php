@@ -31,7 +31,7 @@
                 'password' => isset($password_resets->password) ? $password_resets->password : json_encode([$user->password]),
                 'email_token' => $auth_code, 
                 'token_updated_at' => date('Y-m-d H:i:s'), 
-                'password_updated_at' => $password_resets->password_updated_at, 
+                'password_updated_at' => isset($password_resets->password_updated_at) ? $password_resets->password_updated_at : $user->created_at, 
             ]);
             MG::flash('請前往註冊信箱收取密碼重設信，謝謝。', 'success');
             MG::redirect(APP_ADDRESS.'auth/password/password_forgot.php');

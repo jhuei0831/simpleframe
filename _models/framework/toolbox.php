@@ -5,7 +5,14 @@
     use Ramsey\Uuid\Uuid;
 
     class Toolbox {
-
+        
+        /**
+         * breadcrumb 路徑
+         *
+         * @param  string $home 首頁url
+         * @param  array $breadcrumbs 如果是當下頁面url用#
+         * @return void
+         */
         public static function breadcrumb($home, $breadcrumbs)
         {
             // HOME PAGE

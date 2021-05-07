@@ -61,3 +61,9 @@ npm run serve
 
 * RewriteBase 你的路徑
 
+### 8. 建立資料庫及資料
+
+```
+vender\bin\phinx migrate
+vender\bin\phinx seed:run
+```
