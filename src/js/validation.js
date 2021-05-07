@@ -34,38 +34,3 @@ $("#form_password").validate({
         }      
     },
 });
-
-// auth/password/password_reset.php
-$("#form_reset").validate({
-    rules: {
-        password: {
-            required: true,
-            rangelength: [8, 30]
-        },
-        password_confirm: {
-            required: true,
-            rangelength: [8, 30]
-        }       
-    },
-});
-
-// auth/register.php
-$("#form_register").validate({
-    rules: {
-        name: {
-            required: true
-        },
-        email: {
-            required: true,
-            email: true
-        },
-        password: {
-            required: true,
-            rangelength: [8, 30]
-        },
-        password_confirm: {
-            required: true,
-            rangelength: [8, 30]
-        }       
-    },
-});

@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 $(document).ready(function () {
     let table = $('#table').DataTable({
         "bProcessing": true,

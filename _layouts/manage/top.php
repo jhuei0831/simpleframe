@@ -24,8 +24,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div style="font-family: 'RocknRoll One', sans-serif;">
+<body style="font-family: 'RocknRoll One', sans-serif;">
+    <div>
         <?php include_once($root.'_partials/manage/sidebar.php'); ?>
         <?php include_once($root.'_partials/manage/nav.php'); ?>
         <main class="flex-1 relative pb-8 z-0 overflow-y-auto">

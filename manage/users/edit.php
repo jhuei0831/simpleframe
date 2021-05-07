@@ -28,7 +28,7 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
 
         // 輸入驗證
         $gump->validation_rules([
-            'name'    => 'required|alpha_numeric|max_len,30',
+            'name'    => 'required|max_len,30',
             'email'   => 'required|valid_email',
             'role'    => 'required'
         ]);
@@ -176,7 +176,6 @@ include($root . '_layouts/manage/top.php');
                 </button>
             </div>
     </form>
-</div>
 </div>
 
 <?php include($root . '_layouts/manage/bottom.php'); ?>

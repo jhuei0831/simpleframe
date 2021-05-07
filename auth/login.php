@@ -14,7 +14,7 @@
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
         $data = SC::defend_filter($_POST);
         $user = DB::table('users')->where('email ="'.$data['email'].'" and password ="'.md5($data['password']).'"')->first();
-        if ($user && empty($user->email_varified_at)) {
+        if ($user && empty($user->email_varified_at) && EMAIL_VERIFY==='TRUE') {
             $_SESSION['USER_ID'] = $user->id;
             MG::flash('登入成功，尚未完成信箱驗證', 'warning');
             MG::redirect(APP_ADDRESS.'auth/email/verified.php');
@@ -55,7 +55,7 @@
             </div>
 
             <div class="justify-center">
-                <a href="<?=APP_ADDRESS?>auth/password<?=PASSWORD_SECURE==='TRUE'?'_secure':''?>/password_forgot.php" class="font-medium text-indigo-600 hover:text-indigo-500">
+                <a href="<?=APP_ADDRESS?>auth/password/password_forgot.php" class="font-medium text-indigo-600 hover:text-indigo-500">
                     Forgot your password?
                 </a>
             </div>
