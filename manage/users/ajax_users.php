@@ -5,23 +5,25 @@
     use _models\framework\Database as DB;
 
     $where="1=1";
-    if( !empty($_REQUEST['search']['value']) ) {  
-        $where.="and name LIKE '%".$_REQUEST['search']['value']."%'";
+    if( !empty($_REQUEST['search']['value']) ) { 
+        $where.=" and id LIKE '%".$_REQUEST['search']['value']."%' ";    
+        $where.="OR name LIKE '%".$_REQUEST['search']['value']."%'";
         $where.="OR email LIKE '%".$_REQUEST['search']['value']."%'";
     }
     $count = DB::table('users')->get();
     $totalRecords=count($count);
     
     $columns = array( 
-        0 => 'name', 
-        1 => 'email',
-        2 => 'created_at',
+        0 => 'id', 
+        1 => 'name',
+        2 => 'email',
+        3 => 'created_at',
     );
 
     $roles = DB::table('users')
-        ->select('name', 'email', 'created_at')
+        ->select('id', 'name', 'email', 'created_at')
         ->where($where)
-        ->orderby([[$columns[$_REQUEST['order'][0]['column']], $_REQUEST['order'][0]['dir']]])
+        ->orderby([[$columns[$_REQUEST['order'][0]['column']+1], $_REQUEST['order'][0]['dir']]])
         ->limit($_REQUEST['start'], $_REQUEST['length'])
         ->get();
 
