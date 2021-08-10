@@ -34,7 +34,7 @@
                     <div class="text-lg mb-8">
                         You may have mistyped the address or the page may have moved.
                     </div>
-                    <a href="<?=APP_ADDRESS?>" class="border border-white rounded p-4">Go Home</a>
+                    <a href="<?php echo APP_ADDRESS?>" class="border border-white rounded p-4">Go Home</a>
                 </div>
             </div>
         </div>

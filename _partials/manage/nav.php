@@ -39,7 +39,7 @@
                             <img class="h-8 w-8 rounded-full" src="https://uybor.uz/borless/avtobor/img/user-images/no-avatar.png" alt="avatar">
                             <span class="hidden ml-3 text-gray-700 text-sm font-medium lg:block">
                                 <span class="sr-only">Open user menu for </span>
-                                <?=_models\framework\Auth::user()->name?>
+                                <?php echo _models\framework\Auth::user()->name?>
                             </span>
                             <svg class="hidden flex-shrink-0 ml-1 h-5 w-5 text-gray-400 lg:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -64,7 +64,7 @@
                         style="display: none;"
                     >
                         <a 
-                            href="<?=APP_ADDRESS?>" 
+                            href="<?php echo APP_ADDRESS?>" 
                             class="flex items-center px-4 py-2 text-sm text-gray-700" 
                             :class="{ 'bg-gray-100': activeIndex === 0 }" 
                             role="menuitem" 
@@ -97,7 +97,7 @@
                             Settings
                         </a>
                         <a 
-                            href="<?=APP_ADDRESS?>auth/logout.php" 
+                            href="<?php echo APP_ADDRESS?>auth/logout.php" 
                             class="flex items-center px-4 py-2 text-sm text-gray-700" 
                             :class="{ 'bg-gray-100': activeIndex === 2 }" 
                             role="menuitem" 

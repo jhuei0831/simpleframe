@@ -57,17 +57,17 @@
     include($root.'_layouts/manage/top.php');
 ?>
 <!-- breadcrumb -->
-<?=TB::breadcrumb(APP_ADDRESS.'manage', ['Roles'=> APP_ADDRESS.'manage/roles', 'Roles Create' => '#'])?>
+<?php echo TB::breadcrumb(APP_ADDRESS.'manage', ['Roles'=> APP_ADDRESS.'manage/roles', 'Roles Create' => '#'])?>
 
 <div class="container px-6 mx-auto grid">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Role Create</h2>
     <form method="post" id="form_role">
-        <input type="hidden" name="token" value="<?=TOKEN?>">
+        <input type="hidden" name="token" value="<?php echo TOKEN?>">
         <?php if (isset($error) && $error): ?>
             <?php MG::show_flash();?>
             <div class="mb-4">
                 <?php foreach($gump->get_readable_errors() as $error_message): ?>
-                    <li><font color="red"><?=$error_message?></font></li>
+                    <li><font color="red"><?php echo $error_message?></font></li>
                 <?php endforeach; ?>
             </div>    
         <?php endif; ?>
@@ -93,10 +93,10 @@
                 <?php foreach($permissions as $permission): ?>
                     <label class="mt-4 mr-2 items-center dark:text-gray-400">
                         <input
-                            type="checkbox" name="permission[]" value="<?=$permission->id?>"
+                            type="checkbox" name="permission[]" value="<?php echo $permission->id?>"
                             class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         />
-                        <span class="ml-2"><?=$permission->name?></span>
+                        <span class="ml-2"><?php echo $permission->name?></span>
                     </label>
                 <?php endforeach; ?>
                 </div>

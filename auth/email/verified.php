@@ -34,15 +34,15 @@
 <div class="flex items-center justify-center bg-gray-50 py-32 px-4 sm:px-6 lg:px-8" x-data={loading:false}>
     <div class="max-w-md w-full space-y-8 mt-12">
         <div>
-            <a href="<?=APP_ADDRESS?>">
-                <img :class="{ 'animate-spin': loading === true }" class="mx-auto h-12 w-auto" src="<?=APP_IMG?>grapes.png" alt="Workflow">
+            <a href="<?php echo APP_ADDRESS?>">
+                <img :class="{ 'animate-spin': loading === true }" class="mx-auto h-12 w-auto" src="<?php echo APP_IMG?>grapes.png" alt="Workflow">
             </a>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
                 Email Verified
             </h2>
         </div>
         <form action="./verified.php" class="mt-8 space-y-6" method="POST" @submit="loading = true">
-            <input type="hidden" name="token" value="<?=TOKEN?>">
+            <input type="hidden" name="token" value="<?php echo TOKEN?>">
             <div class="rounded-md shadow-sm -space-y-px text-center">
                 註冊成功，請至註冊填寫的電子信箱中收取驗證信，如果沒有收到認證信，請點下方按鈕獲取，謝謝。
             </div>
@@ -56,7 +56,7 @@
                     </span>
                     獲取信箱驗證信
                 </button>
-                <a href="<?=APP_ADDRESS?>auth/logout.php" class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" role="menuitem">
+                <a href="<?php echo APP_ADDRESS?>auth/logout.php" class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" role="menuitem">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>

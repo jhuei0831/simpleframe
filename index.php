@@ -26,7 +26,7 @@
                             Name
                         </dt>
                         <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            <span class="flex-grow"><?=Auth::user()->name?></span>
+                            <span class="flex-grow"><?php echo Auth::user()->name?></span>
                         </dd>
                     </div>
                     <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
@@ -34,7 +34,7 @@
                             Email
                         </dt>
                         <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            <span class="flex-grow"><?=Auth::user()->email?></span>
+                            <span class="flex-grow"><?php echo Auth::user()->email?></span>
                         </dd>
                     </div>
                 </dl>

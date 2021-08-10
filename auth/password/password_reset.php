@@ -106,15 +106,15 @@
 <div class="flex h-full items-center justify-center bg-gray-50 pb-32 px-4 sm:px-6 lg:px-8" x-data="{loading: false, password: '', password_confirm: ''}">
     <div class="max-w-md w-full space-y-8 mt-12">
         <div>
-            <a href="<?=APP_ADDRESS?>">
-                <img :class="{'animate-spin': loading === true}" class="mx-auto h-12 w-auto" src="<?=APP_IMG?>grapes.png" alt="Workflow">
+            <a href="<?php echo APP_ADDRESS?>">
+                <img :class="{'animate-spin': loading === true}" class="mx-auto h-12 w-auto" src="<?php echo APP_IMG?>grapes.png" alt="Workflow">
             </a>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
                 Password Reset
             </h2>
         </div>
         <form class="mt-8 space-y-6" method="POST" id="form_reset" @submit="loading = true">
-            <input type="hidden" name="token" value="<?=TOKEN?>">
+            <input type="hidden" name="token" value="<?php echo TOKEN?>">
             <div class="rounded-md shadow-sm -space-y-px text-center">
                 請輸入新的密碼，謝謝。
             </div>

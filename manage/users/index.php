@@ -16,7 +16,7 @@
     include($root.'_layouts/manage/top.php');
 ?>    
 <!-- breadcrumb -->
-<?=TB::breadcrumb(APP_ADDRESS.'manage', ['Users'=> '#'])?>
+<?php echo TB::breadcrumb(APP_ADDRESS.'manage', ['Users'=> '#'])?>
 
 <div class="container px-6 mx-auto grid">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Users</h2>

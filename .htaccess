@@ -8,11 +8,11 @@
 # 零、設定基礎路徑
 	Options +FollowSymLinks -MultiViews
 	RewriteEngine On
-	RewriteBase /jhuei0831/basic/
+	RewriteBase /simpleframe
 
 # 一、客製化錯誤頁面
-	ErrorDocument 403 /jhuei0831/basic/_error/404.php
-	ErrorDocument 404 /jhuei0831/basic/_error/404.php
+	ErrorDocument 403 /simpleframe/_error/404.php
+	ErrorDocument 404 /simpleframe/_error/404.php
 
 # 二、關閉目錄瀏覽
 	Options -Indexes

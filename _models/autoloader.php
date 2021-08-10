@@ -1,7 +1,8 @@
 <?php
-    function autoloader($class) {
-        include APP_URL.$class.'.php';
-    }
-
-    spl_autoload_register('autoloader');
+    spl_autoload_register(function ($class) {
+    	$class = str_replace('\\', '/', strtolower($class));
+	    if (file_exists(__DIR__ . DIRECTORY_SEPARATOR . "../{$class}.php")){
+	        require_once (__DIR__ . DIRECTORY_SEPARATOR . "../{$class}.php");
+	    };
+	});
 ?>

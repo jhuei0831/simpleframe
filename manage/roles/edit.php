@@ -60,17 +60,17 @@
     include($root.'_layouts/manage/top.php');
 ?>
 <!-- breadcrumb -->
-<?=TB::breadcrumb(APP_ADDRESS.'manage', ['Roles'=> APP_ADDRESS.'manage/roles', 'Roles Edit' => '#'])?>
+<?php echo TB::breadcrumb(APP_ADDRESS.'manage', ['Roles'=> APP_ADDRESS.'manage/roles', 'Roles Edit' => '#'])?>
 
 <div class="container px-6 mx-auto grid">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Role Edit</h2>
     <form method="post" id="form_role">
-        <input type="hidden" name="token" value="<?=TOKEN?>">
+        <input type="hidden" name="token" value="<?php echo TOKEN?>">
         <?php if (isset($error) && $error): ?>
             <?php MG::show_flash();?>
             <div class="mb-4">
                 <?php foreach($gump->get_readable_errors() as $error_message): ?>
-                    <li><font color="red"><?=$error_message?></font></li>
+                    <li><font color="red"><?php echo $error_message?></font></li>
                 <?php endforeach; ?>
             </div>    
         <?php endif; ?>
@@ -79,7 +79,7 @@
                 <span class="text-gray-700 dark:text-gray-400">Name</span>
                 <div class="relative text-gray-500 focus-within:text-purple-600">
                     <input
-                        name="name" value="<?=isset($_POST['name'])?$_POST['name']:$role->name?>" type="text"
+                        name="name" value="<?php echo isset($_POST['name'])?$_POST['name']:$role->name?>" type="text"
                         class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300"
                         placeholder="Jane Doe" required
                     />
@@ -96,10 +96,10 @@
                 <?php foreach($permissions as $permission): ?>
                     <label class="mt-4 mr-2 items-center dark:text-gray-400">
                         <input
-                            type="checkbox" name="permission[]" value="<?=$permission->id?>" <?= in_array($permission->id, $role_has_permissions) ? 'checked' : '';?>
+                            type="checkbox" name="permission[]" value="<?php echo $permission->id?>" <?php echo  in_array($permission->id, $role_has_permissions) ? 'checked' : '';?>
                             class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         />
-                        <span class="ml-2"><?=$permission->name?></span>
+                        <span class="ml-2"><?php echo $permission->name?></span>
                     </label>
                 <?php endforeach; ?>
                 </div>
