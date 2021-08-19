@@ -17,7 +17,7 @@
     <?php include_once($root.'_partials/manage/css.php'); ?>
     <title><?php echo isset($page_title) ? $page_title : APP_NAME?></title>
     <!-- debug bar -->
-    <?php echo IS_DEBUG === 'TRUE' ? $debugbarRenderer->renderHead() : '' ?>
+    <?php echo (IS_DEBUG === 'TRUE' && in_array($_SERVER["REMOTE_ADDR"], $except_ip_list)) ? $debugbarRenderer->renderHead() : '' ?>
     <!-- webpack -->
     <script src="<?php echo APP_SRC?>dist/bundle.js" defer></script>
     <!-- font -->
