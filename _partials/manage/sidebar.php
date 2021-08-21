@@ -1,5 +1,5 @@
 <?php
-    use _models\framework\Permission;
+    use Kerwin\Core\Permission;
 ?>
 <!-- Desktop sidebar -->
 <div x-data="{ sidebar: false, profile: false, activeIndex:-1 }">

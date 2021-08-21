@@ -1,7 +1,7 @@
 <?php
     namespace _models;
 
-    use _models\framework\Database;
+    use Kerwin\Core\Database;
 
     class Test extends Database
     {

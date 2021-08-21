@@ -3,21 +3,21 @@
     
     include($root.'_config/settings.php');
 
-    use _models\framework\database as DB;
-    use _models\framework\Message as MG;
-    use _models\framework\Security as SC;
-    use _models\framework\Toolbox as TB;
-    use _models\framework\Permission;
+    use Kerwin\Core\Database;
+    use Kerwin\Core\Message;
+    use Kerwin\Core\Security;
+    use Kerwin\Core\Toolbox;
+    use Kerwin\Core\Permission;
     
     if (!Permission::can('roles-create')) {
-        MG::flash('Permission Denied!', 'error');
-        MG::redirect(APP_ADDRESS.'manage/roles');
+        Message::flash('Permission Denied!', 'error');
+        Message::redirect(APP_ADDRESS.'manage/roles');
     }
 
-    $permissions = DB::table('permissions')->get();
+    $permissions = Database::table('permissions')->get();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $data = SC::defend_filter($_POST);
+        $data = Security::defend_filter($_POST);
         $gump = new GUMP();
 
         // 輸入驗證
@@ -33,38 +33,38 @@
 
         $valid_data = $gump->run($data);
 
-        $check_role = DB::table('roles')->where("name = '".$valid_data['name']."'")->count();
+        $check_role = Database::table('roles')->where("name = '".$valid_data['name']."'")->count();
 
         if ($check_role > 0) {
             $error = true;
-            MG::flash('名稱已存在。', 'error');
+            Message::flash('名稱已存在。', 'error');
         }
         elseif ($gump->errors()) {
             $error = true;
-            MG::flash('新增失敗，請檢查輸入。', 'error');
-            // MG::redirect(APP_ADDRESS.'manage/roles/edit.php?id='.$id);
+            Message::flash('新增失敗，請檢查輸入。', 'error');
+            // Message::redirect(APP_ADDRESS.'manage/roles/edit.php?id='.$id);
         }
         else {
-            $insert = DB::table('roles')->insert(TB::only($valid_data, ['token', 'name']), TRUE);
+            $insert = Database::table('roles')->insert(Toolbox::only($valid_data, ['token', 'name']), TRUE);
             foreach ($valid_data['permission'] as $key => $value) {
-                DB::table('role_has_permissions')->CreateOrUpdate(['token' => $valid_data['token'], 'permission_id' => $value, 'role_id' => $insert]);
+                Database::table('role_has_permissions')->CreateOrUpdate(['token' => $valid_data['token'], 'permission_id' => $value, 'role_id' => $insert]);
             }  
-            MG::flash('新增成功。', 'success');
-            MG::redirect(APP_ADDRESS.'manage/roles');
+            Message::flash('新增成功。', 'success');
+            Message::redirect(APP_ADDRESS.'manage/roles');
         }
     }
 
     include($root.'_layouts/manage/top.php');
 ?>
 <!-- breadcrumb -->
-<?php echo TB::breadcrumb(APP_ADDRESS.'manage', ['Roles'=> APP_ADDRESS.'manage/roles', 'Roles Create' => '#'])?>
+<?php echo Toolbox::breadcrumb(APP_ADDRESS.'manage', ['Roles'=> APP_ADDRESS.'manage/roles', 'Roles Create' => '#'])?>
 
 <div class="container px-6 mx-auto grid">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Role Create</h2>
     <form method="post" id="form_role">
         <input type="hidden" name="token" value="<?php echo TOKEN?>">
         <?php if (isset($error) && $error): ?>
-            <?php MG::show_flash();?>
+            <?php Message::show_flash();?>
             <div class="mb-4">
                 <?php foreach($gump->get_readable_errors() as $error_message): ?>
                     <li><font color="red"><?php echo $error_message?></font></li>

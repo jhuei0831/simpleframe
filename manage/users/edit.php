@@ -3,24 +3,24 @@ $root = '../../';
 
 include($root . '_config/settings.php');
 
-use _models\framework\database as DB;
-use _models\framework\Message as MG;
-use _models\framework\Security as SC;
-use _models\framework\Toolbox as TB;
-use _models\framework\Permission;
+use Kerwin\Core\Database;
+use Kerwin\Core\Message;
+use Kerwin\Core\Security;
+use Kerwin\Core\Toolbox;
+use Kerwin\Core\Permission;
 
 
 if (!Permission::can('users-edit')) {
-    MG::flash('Permission Denied!', 'error');
-    MG::redirect(APP_ADDRESS . 'manage/users');
+    Message::flash('Permission Denied!', 'error');
+    Message::redirect(APP_ADDRESS . 'manage/users');
 }
 
-$id = SC::defend_filter($_GET['id']);
-$user = DB::table('users')->find($id);
-$roles = DB::table('roles')->get();
+$id = Security::defend_filter($_GET['id']);
+$user = Database::table('users')->find($id);
+$roles = Database::table('roles')->get();
 
 if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-    $data = SC::defend_filter($_POST);
+    $data = Security::defend_filter($_POST);
     if ($data['type'] == 'profile') {
         $profile_error = false;
         unset($data['type']);
@@ -42,13 +42,13 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
         $valid_data = $gump->run($data);
 
         if (!$gump->errors()) {
-            $update = DB::table('users')->where("id = '{$id}'")->update($valid_data);
-            MG::flash('修改成功，謝謝。', 'success');
-            MG::redirect(APP_ADDRESS . 'manage/users');
+            $update = Database::table('users')->where("id = '{$id}'")->update($valid_data);
+            Message::flash('修改成功，謝謝。', 'success');
+            Message::redirect(APP_ADDRESS . 'manage/users');
         } else {
             $profile_error = true;
-            MG::flash('修改失敗，請檢查輸入。', 'error');
-            // MG::redirect(APP_ADDRESS.'manage/users/edit.php?id='.$id);
+            Message::flash('修改失敗，請檢查輸入。', 'error');
+            // Message::redirect(APP_ADDRESS.'manage/users/edit.php?id='.$id);
         }
     } else {
         $password_error = false;
@@ -70,24 +70,24 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
 
         if ($data['password'] != $data['password_confirm']) {
             $password_error = true;
-            MG::flash('密碼要和確認密碼相同!。', 'error');
+            Message::flash('密碼要和確認密碼相同!。', 'error');
         } elseif ($gump->errors()) {
             $password_error = true;
-            MG::flash('修改失敗，請檢查輸入。', 'error');
-            // MG::redirect(APP_ADDRESS.'manage/users/edit.php?id='.$id); 
+            Message::flash('修改失敗，請檢查輸入。', 'error');
+            // Message::redirect(APP_ADDRESS.'manage/users/edit.php?id='.$id); 
         } else {
             unset($valid_data['password_confirm']);
             $valid_data['password'] = md5($valid_data['password']);
-            $update = DB::table('users')->where("id = '{$id}'")->update($valid_data);
-            MG::flash('修改成功，謝謝。', 'success');
-            MG::redirect(APP_ADDRESS . 'manage/users');
+            $update = Database::table('users')->where("id = '{$id}'")->update($valid_data);
+            Message::flash('修改成功，謝謝。', 'success');
+            Message::redirect(APP_ADDRESS . 'manage/users');
         }
     }
 }
 include($root . '_layouts/manage/top.php');
 ?>
 <!-- breadcrumb -->
-<?php echo TB::breadcrumb(APP_ADDRESS.'manage', ['Users'=> APP_ADDRESS.'manage/users', 'User Edit' => '#'])?>
+<?php echo Toolbox::breadcrumb(APP_ADDRESS.'manage', ['Users'=> APP_ADDRESS.'manage/users', 'User Edit' => '#'])?>
 
 <div class="container px-6 mx-auto grid">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">User Edit</h2>
@@ -96,7 +96,7 @@ include($root . '_layouts/manage/top.php');
         <input type="hidden" name="type" value="profile">
         <input type="hidden" name="token" value="<?php echo  TOKEN ?>">
         <?php if (isset($profile_error) && $profile_error) : ?>
-            <?php MG::show_flash(); ?>
+            <?php Message::show_flash(); ?>
             <div class="mb-4">
                 <?php foreach ($gump->get_readable_errors() as $error_message) : ?>
                     <li>
@@ -147,7 +147,7 @@ include($root . '_layouts/manage/top.php');
         <input type="hidden" name="type" value="password">
         <input type="hidden" name="token" value="<?php echo  TOKEN ?>">
         <?php if (isset($password_error) && $password_error) : ?>
-            <?php MG::show_flash(); ?>
+            <?php Message::show_flash(); ?>
             <div class="mb-4">
                 <?php foreach ($gump->get_readable_errors() as $error_message) : ?>
                     <li>

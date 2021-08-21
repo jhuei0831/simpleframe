@@ -3,15 +3,15 @@
     $page_title = 'Password Reset';
     include_once($root.'_config/settings.php');
 
-    use _models\framework\Security as SC;
-    use _models\framework\Database as DB;
-    use _models\framework\Message as MG;
-    use _models\framework\Auth;
+    use Kerwin\Core\Security;
+    use Kerwin\Core\Database;
+    use Kerwin\Core\Message;
+    use Kerwin\Core\Auth;
 
     Auth::password_reset();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $data = SC::defend_filter($_POST);
+        $data = Security::defend_filter($_POST);
         $gump = new GUMP();
 
         // 輸入驗證
@@ -50,20 +50,20 @@
                 array_push($SafeCheck, '有特殊符號');
             }
         }
-        $password_resets = DB::table('password_resets')->where("id='{$_GET['id']}' and email_token='{$_GET['auth']}'")->first(false);
+        $password_resets = Database::table('password_resets')->where("id='{$_GET['id']}' and email_token='{$_GET['auth']}'")->first(false);
         $password = json_decode($password_resets->password);
         if ($gump->errors()) {
             $errors[] = $gump->get_readable_errors();
-            MG::flash('重設密碼失敗，請檢查輸入', 'error');
+            Message::flash('重設密碼失敗，請檢查輸入', 'error');
         }
         elseif (PASSWORD_SECURE === 'TRUE' && (count($SafeCheck) <= 3 || !preg_match('/.{8,}/',$valid_data['password']))) {
-            MG::flash('密碼不符合規則，請參考密碼規則並再次確認', 'error');
+            Message::flash('密碼不符合規則，請參考密碼規則並再次確認', 'error');
         }
         elseif ($valid_data['password'] != $valid_data['password_confirm']) {
-            MG::flash('密碼要和確認密碼相同', 'error');
+            Message::flash('密碼要和確認密碼相同', 'error');
         }
         elseif (in_array(md5($valid_data['password']), $password)) {
-            MG::flash('密碼不能與前三次相同', 'error');
+            Message::flash('密碼不能與前三次相同', 'error');
         }
         else {
             unset($valid_data['password_confirm']);
@@ -78,7 +78,7 @@
 			}
 
             // 更新使用者密碼
-            $update_users = DB::table('users')
+            $update_users = Database::table('users')
                 ->where("id='{$password_resets->id}'")
                 ->update([
                     'token' => $valid_data['token'],
@@ -87,7 +87,7 @@
                 ]);
 
             // 更新密碼重設資料
-            $update_password_resets = DB::table('password_resets')
+            $update_password_resets = Database::table('password_resets')
                 ->where("id='{$password_resets->id}'")
                 ->update([
                     'token' => $valid_data['token'], 
@@ -95,12 +95,12 @@
                     'password_updated_at' => date('Y-m-d H:i:s'),
                 ]);
             if ($update_users && $update_password_resets) {
-                MG::flash('密碼修改成功，請使用新密碼登入。', 'success');
-                MG::redirect(APP_ADDRESS.'auth/login.php');
+                Message::flash('密碼修改成功，請使用新密碼登入。', 'success');
+                Message::redirect(APP_ADDRESS.'auth/login.php');
             }   
         }
     }
-    MG::show_flash();
+    Message::show_flash();
     include_once($root.'_layouts/auth/top.php');
 ?>
 <div class="flex h-full items-center justify-center bg-gray-50 pb-32 px-4 sm:px-6 lg:px-8" x-data="{loading: false, password: '', password_confirm: ''}">

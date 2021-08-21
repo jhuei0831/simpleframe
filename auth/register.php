@@ -3,18 +3,18 @@
     $page_title = 'Register';
     include_once($root.'_config/settings.php');
 
-    use _models\framework\Security as SC;
-    use _models\framework\Database as DB;
-    use _models\framework\Message as MG;
-    use _models\framework\Toolbox;
-    use _models\framework\Mail;
+    use Kerwin\Core\Security;
+    use Kerwin\Core\Database;
+    use Kerwin\Core\Message;
+    use Kerwin\Core\Toolbox;
+    use Kerwin\Core\Mail;
 
     if (!is_null($_SESSION['USER_ID'])) {
-        MG::redirect(APP_ADDRESS);
+        Message::redirect(APP_ADDRESS);
     }
     
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $data = SC::defend_filter($_POST);
+        $data = Security::defend_filter($_POST);
         $gump = new GUMP();
 
         // 輸入驗證
@@ -35,7 +35,7 @@
 
         $valid_data = $gump->run($data);
 
-        $check_user = DB::table('users')->where('email ="'.$valid_data['email'].'"')->first();
+        $check_user = Database::table('users')->where('email ="'.$valid_data['email'].'"')->first();
         $errors = [];
         // 密碼規則驗證
         $SafeCheck = array();
@@ -59,17 +59,17 @@
             }
         }
         if ($check_user) {
-            MG::flash('信箱已被註冊使用', 'error');
+            Message::flash('信箱已被註冊使用', 'error');
         }
         elseif (PASSWORD_SECURE === 'TRUE' && (count($SafeCheck) <= 3 || !preg_match('/.{8,}/',$valid_data['password']))) {
-            MG::flash('密碼不符合規則，請參考密碼規則並再次確認', 'error');
+            Message::flash('密碼不符合規則，請參考密碼規則並再次確認', 'error');
         }
         elseif ($valid_data['password'] != $valid_data['password_confirm']) {
-            MG::flash('密碼要和確認密碼相同', 'error');
+            Message::flash('密碼要和確認密碼相同', 'error');
         }
         elseif ($gump->errors()) {
             $errors[] = $gump->get_readable_errors();
-            MG::flash('註冊失敗，請檢查輸入', 'error');
+            Message::flash('註冊失敗，請檢查輸入', 'error');
         }
         else {
             unset($valid_data['password_confirm']);
@@ -78,25 +78,25 @@
             $valid_data['id'] = Toolbox::UUIDv4();
             $valid_data['role'] = 2;
             $valid_data['auth_code'] = $auth_code;
-            $insert = DB::table('users')->insert($valid_data, TRUE);
+            $insert = Database::table('users')->insert($valid_data, TRUE);
             // 取得剛剛註冊的帳號ID
-            $insert_id = DB::table('users')->where("email = '{$valid_data['email']}'")->first();
+            $insert_id = Database::table('users')->where("email = '{$valid_data['email']}'")->first();
             $id = $insert_id->id;
             $_SESSION['USER_ID'] = $id;
             if (EMAIL_VERIFY==='TRUE') {
                 $name = $valid_data['name'];
                 include_once('./email/content.php');
                 $mail = Mail::send($subject, $message, $valid_data['email'], $valid_data['name']);
-                MG::flash('註冊成功，請前往註冊信箱收取認證信。', 'success');
-                MG::redirect(APP_ADDRESS.'auth/email/verified.php');
+                Message::flash('註冊成功，請前往註冊信箱收取認證信。', 'success');
+                Message::redirect(APP_ADDRESS.'auth/email/verified.php');
             }
             else {
-                MG::flash('註冊成功。', 'success');
-                MG::redirect(APP_ADDRESS);
+                Message::flash('註冊成功。', 'success');
+                Message::redirect(APP_ADDRESS);
             }
         }
     }
-    MG::show_flash();
+    Message::show_flash();
     include_once($root.'_layouts/auth/top.php');
 ?>
 <div class="flex items-center justify-center bg-gray-50 py-32 px-4 sm:px-6 lg:px-8" x-data="{loading: false, password: '', password_confirm: ''}">

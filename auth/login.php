@@ -3,37 +3,37 @@ $root = '../';
 
 include_once($root . '_config/settings.php');
 
-use _models\framework\Security as SC;
-use _models\framework\Database as DB;
-use _models\framework\Message as MG;
+use Kerwin\Core\Security;
+use Kerwin\Core\Database;
+use Kerwin\Core\Message;
 
 if (!is_null($_SESSION['USER_ID'])) {
-    MG::redirect(APP_ADDRESS);
+    Message::redirect(APP_ADDRESS);
 }
 
 if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-    $data = SC::defend_filter($_POST);
-    $user = DB::table('users')->where('email ="' . $data['email'] . '" and password ="' . md5($data['password']) . '"')->first();
+    $data = Security::defend_filter($_POST);
+    $user = Database::table('users')->where('email ="' . $data['email'] . '" and password ="' . md5($data['password']) . '"')->first();
     if ($data['checkword'] != $_SESSION['check_word']) {
-        MG::flash('驗證碼錯誤', 'error');
-        MG::redirect(APP_ADDRESS . 'auth/login.php');
+        Message::flash('驗證碼錯誤', 'error');
+        Message::redirect(APP_ADDRESS . 'auth/login.php');
     } 
     elseif ($user && empty($user->email_varified_at) && EMAIL_VERIFY === 'TRUE') {
         $_SESSION['USER_ID'] = $user->id;
-        MG::flash('登入成功，尚未完成信箱驗證', 'warning');
-        MG::redirect(APP_ADDRESS . 'auth/email/verified.php');
+        Message::flash('登入成功，尚未完成信箱驗證', 'warning');
+        Message::redirect(APP_ADDRESS . 'auth/email/verified.php');
     } 
     elseif ($user) {
         $_SESSION['USER_ID'] = $user->id;
-        MG::flash('登入成功', 'success');
-        MG::redirect(APP_ADDRESS);
+        Message::flash('登入成功', 'success');
+        Message::redirect(APP_ADDRESS);
     } 
     else {
-        MG::flash('登入失敗', 'error');
+        Message::flash('登入失敗', 'error');
     }
 }
 
-MG::show_flash();
+Message::show_flash();
 include_once($root . '_layouts/auth/top.php');
 ?>
 <script>

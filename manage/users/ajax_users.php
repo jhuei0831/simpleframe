@@ -2,7 +2,7 @@
     $root = '../../';
     include($root.'_config/settings.php');
 
-    use _models\framework\Database as DB;
+    use Kerwin\Core\Database;
 
     $where="1=1";
     if( !empty($_REQUEST['search']['value']) ) { 
@@ -10,7 +10,7 @@
         $where.="OR name LIKE '%".$_REQUEST['search']['value']."%'";
         $where.="OR email LIKE '%".$_REQUEST['search']['value']."%'";
     }
-    $count = DB::table('users')->get();
+    $count = Database::table('users')->get();
     $totalRecords=count($count);
     
     $columns = array( 
@@ -20,7 +20,7 @@
         3 => 'created_at',
     );
 
-    $roles = DB::table('users')
+    $roles = Database::table('users')
         ->select('id', 'name', 'email', 'created_at')
         ->where($where)
         ->orderby([[$columns[$_REQUEST['order'][0]['column']+1], $_REQUEST['order'][0]['dir']]])

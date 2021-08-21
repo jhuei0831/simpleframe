@@ -3,15 +3,15 @@
 
     include($root.'_config/settings.php');
 
-    use _models\framework\Message as MG;
-    use _models\framework\Role;
+    use Kerwin\Core\Message;
+    use Kerwin\Core\Role;
     
     if (!Role::has('admin')) {
         include_once($root.'_error/404.php');
         exit;
     }
     
-    MG::show_flash();
+    Message::show_flash();
     include($root.'_layouts/manage/top.php');
 ?>    
 <div class="container px-6 mx-auto grid">

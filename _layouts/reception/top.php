@@ -18,6 +18,7 @@
     <!-- font -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+    <link rel="icon" href="<?php echo APP_IMG?>favicon.ico">
 </head>
 <body style="font-family: 'RocknRoll One', sans-serif;">
     <div class="flex h-screen bg-gray-50 dark:bg-gray-900" :class="{ 'overflow-hidden': isSideMenuOpen }">
