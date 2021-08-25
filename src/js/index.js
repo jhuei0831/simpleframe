@@ -9,4 +9,5 @@ require('jquery-validation/dist/additional-methods');
 // custom js
 require('./validation');
 require('./datatable');
+require('./init-alpine');
 

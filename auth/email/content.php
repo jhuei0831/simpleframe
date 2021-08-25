@@ -55,7 +55,7 @@
                                             <p style="color:#455056; font-size:16px;line-height:24px; margin:0;">
                                                 如果點擊按鈕沒有反應，請複製或點擊下方連結：
                                             </p>
-                                            <a href="'.APP_ADDRESS.'auth/email/check_verified.php?auth='.$auth_code.'&id='.$id.'">'.APP_ADDRESS.'auth/email/check_verified.php?auth='.$auth_code.'&id='.$id.'</a>
+                                            <a href="'.APP_ADDRESS.'auth/email/check_verified.php?auth='.$auth_code.'&id='.$id.'">'.APP_ADDRESS.'auth/email/check_verified.php?auth='.$auth_code.'&id='.$id.'</a><br>
                                             <span style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"></span>
                                         </td>
                                     </tr>

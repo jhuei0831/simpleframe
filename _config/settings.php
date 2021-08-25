@@ -23,7 +23,7 @@
 	define("APP_DOMAIN", 		isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "localhost");
 	define("APP_FOLDER", 		$_ENV['APP_FOLDER']);
 	define("APP_NAME", 			$_ENV['APP_NAME']);
-	define("APP_ADDRESS",		APP_PROTOCOL."://".APP_DOMAIN."/".APP_FOLDER.APP_NAME."/");
+	define("APP_ADDRESS",		APP_PROTOCOL."://".APP_DOMAIN."/".APP_FOLDER."/");
 	define("IS_DEBUG", 			strtoupper($_ENV['APP_DEBUG']));
 	define("PASSWORD_SECURE", 	strtoupper($_ENV['AUTH_PASSWORD_SECURITY']));
 	define("EMAIL_VERIFY", 		strtoupper($_ENV['AUTH_EMAIL_VERIFY']));

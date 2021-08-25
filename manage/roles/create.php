@@ -57,10 +57,10 @@
     include($root.'_layouts/manage/top.php');
 ?>
 <!-- breadcrumb -->
-<?php echo Toolbox::breadcrumb(APP_ADDRESS.'manage', ['Roles'=> APP_ADDRESS.'manage/roles', 'Roles Create' => '#'])?>
+<?php echo Toolbox::breadcrumb(APP_ADDRESS.'manage', ['角色管理'=> APP_ADDRESS.'manage/roles', '新增角色' => '#'])?>
 
 <div class="container px-6 mx-auto grid">
-    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Role Create</h2>
+    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">新增角色</h2>
     <form method="post" id="form_role">
         <input type="hidden" name="token" value="<?php echo TOKEN?>">
         <?php if (isset($error) && $error): ?>
@@ -73,7 +73,7 @@
         <?php endif; ?>
         <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <label class="block text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Name</span>
+                <span class="text-gray-700 dark:text-gray-400">名稱</span>
                 <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
                     <input
                         name="name" type="text"
@@ -87,7 +87,7 @@
             </label>
 
             <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Permissions</span>
+                <span class="text-gray-700 dark:text-gray-400">權限</span>
                 <div class="flex flex-wrap">
                 
                 <?php foreach($permissions as $permission): ?>

@@ -15,7 +15,7 @@
     include($root.'_layouts/manage/top.php');
 ?>    
 <div class="container px-6 mx-auto grid">
-    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Manage</h2>
+    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">後臺管理</h2>
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
         <div class="w-full overflow-x-auto">
             

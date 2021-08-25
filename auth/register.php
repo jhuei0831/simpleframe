@@ -99,14 +99,14 @@
     Message::show_flash();
     include_once($root.'_layouts/auth/top.php');
 ?>
-<div class="flex items-center justify-center bg-gray-50 py-32 px-4 sm:px-6 lg:px-8" x-data="{loading: false, password: '', password_confirm: ''}">
+<div class="flex items-center justify-center bg-gray-50 py-32 px-4 sm:px-6 lg:px-8" x-data="register()">
     <div class="max-w-md w-full space-y-8 mt-12">
         <div>
             <a href="<?php echo APP_ADDRESS?>">
                 <img :class="{ 'animate-spin': loading === true }" class="mx-auto h-12 w-auto" src="<?php echo APP_IMG?>grapes.png" alt="Workflow">
             </a>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Sign up your account
+                會員註冊
             </h2>
         </div>
         <form id="form_register" class="mt-8 space-y-6" method="POST" @submit="loading = true">
@@ -116,82 +116,82 @@
             </div> 
             <div class="rounded-md shadow-sm -space-y-px">
                 <div>
-                    <label for="name" class="sr-only">Name</label>
-                    <input id="name" name="name" type="text" value="<?php echo isset($data['name'])?$data['name']:''?>" autocomplete="name" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Name">
+                    <label for="name" class="sr-only">名稱</label>
+                    <input id="name" name="name" type="text" value="<?php echo isset($data['name'])?$data['name']:''?>" autocomplete="name" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="名稱">
                 </div>
                 <div>
-                    <label for="email" class="sr-only">Email address</label>
-                    <input id="email" name="email" type="email" value="<?php echo isset($data['email'])?$data['email']:''?>" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address">
+                    <label for="email" class="sr-only">電子郵件</label>
+                    <input id="email" name="email" type="email" value="<?php echo isset($data['email'])?$data['email']:''?>" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="電子郵件">
                 </div>
                 <div>
-                    <label for="password" class="sr-only">Password</label>
-                    <input id="password" name="password" x-model="password" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password">
+                    <label for="password" class="sr-only">密碼</label>
+                    <input id="password" name="password" x-model="password" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="密碼">
                 </div>
                 <div>
-                    <label for="password_confirm" class="sr-only">Password Confirm</label>
-                    <input id="password_confirm" name="password_confirm" x-model="password_confirm" type="password" autocomplete="confirm-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password Confirm">
+                    <label for="password_confirm" class="sr-only">確認密碼</label>
+                    <input id="password_confirm" name="password_confirm" x-model="password_confirm" type="password" autocomplete="confirm-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="確認密碼">
                 </div>
             </div>
 
             <div class="flex justify-start mt-3 ml-4 p-1">
                 <ul>
                     <li class="flex items-center py-1">
-                        <span>Password Rule</span>
+                        <span>密碼規則</span>
                     </li>
                     <li class="flex items-center py-1">
-                        <div :class="{'bg-green-200 text-green-700': password == password_confirm && password.length > 0, 'bg-red-200 text-red-700':password != password_confirm || password.length == 0}" class=" rounded-full p-1 fill-current ">
+                        <div :class="passwordConfirmIcon()" class="rounded-full p-1 fill-current ">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path x-show="password == password_confirm && password.length > 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 <path x-show="password != password_confirm || password.length == 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                             </svg>
                         </div>
-                        <span :class="{'text-green-700': password == password_confirm && password.length > 0, 'text-red-700':password != password_confirm || password.length == 0}" class="font-medium text-sm ml-3" x-text="password == password_confirm && password.length > 0 ? 'Passwords match' : 'Passwords do not match' "></span>
+                        <span :class="passwordConfirmTextColor()" class="font-medium text-sm ml-3" x-text="passwordConfirmText()"></span>
                     </li>
                     <li class="flex items-center py-1">
-                        <div :class="{'bg-green-200 text-green-700': password.length > 7, 'bg-red-200 text-red-700':password.length <= 7 }" class=" rounded-full p-1 fill-current ">
+                        <div :class="passwordLengthIcon()" class="rounded-full p-1 fill-current ">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path x-show="password.length > 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 <path x-show="password.length <= 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                             </svg>
                         </div>
-                        <span :class="{'text-green-700': password.length > 7, 'text-red-700':password.length <= 7 }" class="font-medium text-sm ml-3" x-text="password.length > 7 ? 'The minimum length is reached' : 'At least 8 characters required' "></span>
+                        <span :class="passwordLengthTextColor()" class="font-medium text-sm ml-3" x-text="passwordLengthText()"></span>
                     </li>
                     <?if (PASSWORD_SECURE === 'TRUE'):?>
                     <li class="flex items-center py-1">
-                        <div :class="{'bg-green-200 text-green-700': password.search(/[0-9]/) >= 0, 'bg-red-200 text-red-700':password.search(/[0-9]/) < 0 }" class=" rounded-full p-1 fill-current ">
+                        <div :class="passwordDigitIcon()" class="rounded-full p-1 fill-current ">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path x-show="password.search(/[0-9]/) >= 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 <path x-show="password.search(/[0-9]/) < 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                             </svg>
                         </div>
-                        <span :class="{'text-green-700': password.search(/[0-9]/) >= 0, 'text-red-700':password.search(/[0-9]/) < 0 }" class="font-medium text-sm ml-3" x-text="password.search(/[0-9]/) >= 0 ? 'An digit is reached' : 'At lease one digit required' "></span>
+                        <span :class="passwordDigitTextColor()" class="font-medium text-sm ml-3" x-text="passwordDigitText()"></span>
                     </li>
                     <li class="flex items-center py-1">
-                        <div :class="{'bg-green-200 text-green-700': password.search(/[A-Z]/) >= 0, 'bg-red-200 text-red-700':password.search(/[A-Z]/) < 0 }" class=" rounded-full p-1 fill-current ">
+                        <div :class="passwordUpperCaseIcon()" class="rounded-full p-1 fill-current ">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path x-show="password.search(/[A-Z]/) >= 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 <path x-show="password.search(/[A-Z]/) < 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                             </svg>
                         </div>
-                        <span :class="{'text-green-700': password.search(/[A-Z]/) >= 0, 'text-red-700':password.search(/[A-Z]/) < 0 }" class="font-medium text-sm ml-3" x-text="password.search(/[A-Z]/) >= 0 ? 'An upper case letter is reached' : 'At lease one upper case letter required' "></span>
+                        <span :class="passwordUpperCaseTextColor()" class="font-medium text-sm ml-3" x-text="passwordUpperCaseText()"></span>
                     </li>
                     <li class="flex items-center py-1">
-                        <div :class="{'bg-green-200 text-green-700': password.search(/[a-z]/) >= 0, 'bg-red-200 text-red-700':password.search(/[a-z]/) < 0 }" class=" rounded-full p-1 fill-current ">
+                        <div :class="passwordLowerCaseIcon()" class="rounded-full p-1 fill-current ">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path x-show="password.search(/[a-z]/) >= 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 <path x-show="password.search(/[a-z]/) < 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                             </svg>
                         </div>
-                        <span :class="{'text-green-700': password.search(/[a-z]/) >= 0, 'text-red-700':password.search(/[a-z]/) < 0 }" class="font-medium text-sm ml-3" x-text="password.search(/[a-z]/) >= 0 ? 'An lower case letter is reached' : 'At lease one lower case letter required' "></span>
+                        <span :class="passwordLowerCaseTextColor()" class="font-medium text-sm ml-3" x-text="passwordLowerCaseText()"></span>
                     </li>
                     <li class="flex items-center py-1">
-                        <div :class="{'bg-green-200 text-green-700': password.search(/[!@#$%^&*+-]/) >= 0, 'bg-red-200 text-red-700':password.search(/[!@#$%^&*+-]/) < 0 }" class=" rounded-full p-1 fill-current ">
+                        <div :class="passwordSpecialCharacterIcon()" class="rounded-full p-1 fill-current ">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path x-show="password.search(/[!@#$%^&*+-]/) >= 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 <path x-show="password.search(/[!@#$%^&*+-]/) < 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                             </svg>
                         </div>
-                        <span :class="{'text-green-700': password.search(/[!@#$%^&*+-]/) >= 0, 'text-red-700':password.search(/[!@#$%^&*+-]/) < 0 }" class="font-medium text-sm ml-3" x-text="password.search(/[!@#$%^&*+-]/) >= 0 ? 'An special character is reached' : 'At lease one special character required' "></span>
+                        <span :class="passwordSpecialCharacterTextColor()" class="font-medium text-sm ml-3" x-text="passwordSpecialCharacterText()"></span>
                     </li>
                     <?endif;?>
                 </ul>
@@ -204,7 +204,7 @@
                             <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
                         </svg>
                     </span>
-                    Sign up
+                    註冊
                 </button>
             </div>
         </form>

@@ -77,7 +77,7 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before, table.dataT
 
 .dataTables_length select {
     padding-left: 15px !important;
-    padding-right: 15px !important;
+    padding-right: 30px !important;
 }
 
 table.dataTable thead th {

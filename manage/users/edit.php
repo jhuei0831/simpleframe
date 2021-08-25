@@ -90,8 +90,8 @@ include($root . '_layouts/manage/top.php');
 <?php echo Toolbox::breadcrumb(APP_ADDRESS.'manage', ['Users'=> APP_ADDRESS.'manage/users', 'User Edit' => '#'])?>
 
 <div class="container px-6 mx-auto grid">
-    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">User Edit</h2>
-    <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">Personal Profile</h4>
+    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">編輯使用者</h2>
+    <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">個人資料</h4>
     <form method="post" id="form_profile">
         <input type="hidden" name="type" value="profile">
         <input type="hidden" name="token" value="<?php echo  TOKEN ?>">
@@ -107,7 +107,7 @@ include($root . '_layouts/manage/top.php');
         <?php endif; ?>
         <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <label class="block text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Name</span>
+                <span class="text-gray-700 dark:text-gray-400">名稱</span>
                 <div class="relative text-black focus-within:text-blue-600 dark:focus-within:text-blue-400">
                     <input name="name" value="<?php echo  isset($_POST['name']) ? $_POST['name'] : $user->name ?>" type="text" class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300" placeholder="Jane Doe" required />
                     <div class="mt-2 absolute inset-y-0 right-0 flex items-center mr-3 pointer-events-none">
@@ -117,7 +117,7 @@ include($root . '_layouts/manage/top.php');
             </label>
 
             <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Email</span>
+                <span class="text-gray-700 dark:text-gray-400">電子郵件</span>
                 <div class="relative text-black focus-within:text-blue-600 dark:focus-within:text-blue-400">
                     <input name="email" value="<?php echo  isset($_POST['email']) ? $_POST['email'] : $user->email ?>" type="text" class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300" placeholder="example@example.com" required />
                     <div class="mt-2 absolute inset-y-0 right-0 flex items-center mr-3 pointer-events-none">
@@ -127,7 +127,7 @@ include($root . '_layouts/manage/top.php');
             </label>
 
             <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Role</span>
+                <span class="text-gray-700 dark:text-gray-400">角色</span>
                 <select name="role" class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300">
                     <?php foreach ($roles as $role) : ?>
                         <option value="<?php echo  $role->id ?>" <?php echo  $user->role == $role->id ? 'selected' : '' ?>><?php echo  $role->name ?></option>
@@ -142,7 +142,7 @@ include($root . '_layouts/manage/top.php');
         </div>
     </form>
 
-    <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">Password</h4>
+    <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">密碼重設</h4>
     <form id="form_password" method="post">
         <input type="hidden" name="type" value="password">
         <input type="hidden" name="token" value="<?php echo  TOKEN ?>">
@@ -158,14 +158,14 @@ include($root . '_layouts/manage/top.php');
         <?php endif; ?>
         <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <label class="block text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Password</span>
+                <span class="text-gray-700 dark:text-gray-400">密碼</span>
                 <div class="relative text-black focus-within:text-blue-600 dark:focus-within:text-blue-400">
                     <input name="password" type="password" class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300" placeholder="*********" />
                 </div>
             </label>
 
             <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Password Confirm</span>
+                <span class="text-gray-700 dark:text-gray-400">確認密碼</span>
                 <div class="relative text-black focus-within:text-blue-600 dark:focus-within:text-blue-400">
                     <input name="password_confirm" type="password" class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300" placeholder="*********" />
                 </div>
