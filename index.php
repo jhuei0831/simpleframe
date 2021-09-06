@@ -2,11 +2,11 @@
     $root = "./";
     include($root.'_config/settings.php');
 
-    use Kerwin\Core\Message;
-    use Kerwin\Core\Auth;
+    use Kerwin\Core\Support\Facades\Message;
+    use Kerwin\Core\Support\Facades\Auth;
 
     include($root.'_layouts/reception/top.php');
-    Message::show_flash();
+    Message::showFlash();
 ?>
 <?php if (Auth::user()): ?>
     <div class="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200 mt-6">

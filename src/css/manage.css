@@ -87,3 +87,7 @@ table.dataTable thead th {
 table.dataTable {
     border-color: #d5d6d7 !important;
 }
+
+[x-cloak] {
+    display: none;
+}

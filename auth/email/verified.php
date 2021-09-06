@@ -3,11 +3,11 @@
     $page_title = 'Email varified';
     include_once($root.'_config/settings.php');
 
-    use Kerwin\Core\Security;
-    use Kerwin\Core\Database;
-    use Kerwin\Core\Message;
     use Kerwin\Core\Mail;
-    use Kerwin\Core\Auth;
+    use Kerwin\Core\Support\Facades\Auth;
+    use Kerwin\Core\Support\Facades\Security;
+    use Kerwin\Core\Support\Facades\Database;
+    use Kerwin\Core\Support\Facades\Message;
 
     if (is_null($_SESSION['USER_ID']) || !empty(Auth::user()->email_varified_at) || EMAIL_VERIFY==='FALSE') {
         include_once($root.'_error/404.php');
@@ -15,20 +15,20 @@
     }
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $data = Security::defend_filter($_POST);
-        $auth_code = Security::defend_filter(uniqid(mt_rand()));
+        $data = Security::defendFilter($_POST);
+        $authCode = Security::defendFilter(uniqid(mt_rand()));
         $user = Database::table('users')->where("id = '{$_SESSION['USER_ID']}'")->first();
         $name = $user->name;
         $id = $_SESSION['USER_ID'];
         include_once('./content.php');
         $mail = Mail::send($subject, $message, $user->email, $user->name);
         if ($mail) {
-            Database::table('users')->where("id = '{$_SESSION['USER_ID']}'")->update(['token' => $data['token'], 'auth_code' => $auth_code, 'updated_at' => date('Y-m-d H:i:s')]);
+            Database::table('users')->where("id = '{$_SESSION['USER_ID']}'")->update(['token' => $data['token'], 'auth_code' => $authCode, 'updated_at' => date('Y-m-d H:i:s')]);
             Message::flash('請前往註冊信箱收取認證信，謝謝。', 'success');
             Message::redirect(APP_ADDRESS.'auth/email/verified.php');
         }   
     }
-    Message::show_flash();
+    Message::showFlash();
     include_once($root.'_layouts/auth/top.php');
 ?>
 <div class="flex items-center justify-center bg-gray-50 py-32 px-4 sm:px-6 lg:px-8" x-data={loading:false}>

@@ -10,3 +10,7 @@ label.error{
 .swal2-container {
     top: 10% !important;
 }
+
+[x-cloak] {
+    display: none;
+}

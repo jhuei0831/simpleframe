@@ -1,11 +1,11 @@
 <?php
     $root = '../../';
-    $page_title = 'Password Reset';
+    $page_title = '忘記密碼';
     include_once($root.'_config/settings.php');
 
-    use Kerwin\Core\Security;
-    use Kerwin\Core\Database;
-    use Kerwin\Core\Message;
+    use Kerwin\Core\Support\Facades\Security;
+    use Kerwin\Core\Support\Facades\Database;
+    use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Mail;
 
     // 已登入不能訪問此頁面
@@ -15,23 +15,23 @@
     }
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $data = Security::defend_filter($_POST);
-        $auth_code = Security::defend_filter(uniqid(mt_rand()));
+        $data = Security::defendFilter($_POST);
+        $authCode = Security::defendFilter(uniqid(mt_rand()));
         $user = Database::table('users')->where("email = '{$data['email']}'")->first();
         // 放到信中的變數
         $name = $user->name;
         $id = $user->id;
         include_once('./content.php');
         $mail = Mail::send($subject, $message, $user->email, $user->name);
-        $password_resets = Database::table('password_resets')->where("id = '{$user->id}'")->first(false);
+        $passwordResets = Database::table('password_resets')->where("id = '{$user->id}'")->first(false);
         if ($mail) {
             Database::table('password_resets')->CreateOrUpdate([
                 'token' => $data['token'], 
                 'id' => $id, 
-                'password' => isset($password_resets->password) ? $password_resets->password : json_encode([$user->password]),
-                'email_token' => $auth_code, 
+                'password' => isset($passwordResets->password) ? $passwordResets->password : json_encode([$user->password]),
+                'email_token' => $authCode, 
                 'token_updated_at' => date('Y-m-d H:i:s'), 
-                'password_updated_at' => isset($password_resets->password_updated_at) ? $password_resets->password_updated_at : $user->created_at, 
+                'password_updated_at' => isset($passwordResets->password_updated_at) ? $passwordResets->password_updated_at : $user->created_at, 
             ]);
             Message::flash('請前往註冊信箱收取密碼重設信，謝謝。', 'success');
             Message::redirect(APP_ADDRESS.'auth/password/password_forgot.php');
@@ -41,7 +41,7 @@
             Message::redirect(APP_ADDRESS.'auth/password/password_forgot.php');
         }    
     }
-    Message::show_flash();
+    Message::showFlash();
     include_once($root.'_layouts/auth/top.php');
 ?>
 <div class="flex h-full items-center justify-center bg-gray-50 pb-32 px-4 sm:px-6 lg:px-8" x-data={loading:false}>

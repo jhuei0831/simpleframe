@@ -2,13 +2,13 @@
     $root = '../../';
     include_once($root.'_config/settings.php');
 
-    use Kerwin\Core\Database;
-    use Kerwin\Core\Message;
-    use Kerwin\Core\Security;
-    use Kerwin\Core\Auth;
+    use Kerwin\Core\Support\Facades\Auth;
+    use Kerwin\Core\Support\Facades\Database;
+    use Kerwin\Core\Support\Facades\Message;
+    use Kerwin\Core\Support\Facades\Security;
 
     if (isset($_GET['auth']) && isset($_GET['id'])) {
-        $_GET = Security::defend_filter($_GET);
+        $_GET = Security::defendFilter($_GET);
         $user = Database::table('users')->where("id = '{$_GET['id']}'")->first();
         $_SESSION['USER_ID'] = $user->id;
         if (is_null($user->updated_at)) {

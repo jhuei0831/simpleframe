@@ -2,16 +2,16 @@
     $root = "../../";
     include($root.'_config/settings.php');
 
-    use Kerwin\Core\Database;
-    use Kerwin\Core\Message;
-    use Kerwin\Core\Security;
-    use Kerwin\Core\Permission;
+    use Kerwin\Core\Support\Facades\Database;
+    use Kerwin\Core\Support\Facades\Message;
+    use Kerwin\Core\Support\Facades\Security;
+    use Kerwin\Core\Support\Facades\Permission;
     
     if (!Permission::can('roles-delete')) {
         Message::flash('Permission Denied!', 'error');
         Message::redirect(APP_ADDRESS.'manage/roles');
     }
-    $id = Security::defend_filter($_GET['id']);
+    $id = Security::defendFilter($_GET['id']);
     $check = Database::table('users')->where('role ='.$id)->count();
     if ($check > 0) {
         Message::flash('此角色尚有使用者使用', 'warning');

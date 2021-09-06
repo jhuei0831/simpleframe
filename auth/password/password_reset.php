@@ -1,106 +1,18 @@
 <?php
     $root = '../../';
-    $page_title = 'Password Reset';
+    $page_title = '密碼重新設定';
     include_once($root.'_config/settings.php');
 
-    use Kerwin\Core\Security;
-    use Kerwin\Core\Database;
-    use Kerwin\Core\Message;
-    use Kerwin\Core\Auth;
+    use _models\Auth\Password;
+    use Kerwin\Core\Support\Facades\Message;
 
-    Auth::password_reset();
+    $passwordController = new Password();
+    $passwordController->passwordResetVerify();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $data = Security::defend_filter($_POST);
-        $gump = new GUMP();
-
-        // 輸入驗證
-        $gump->validation_rules([
-            'password'    => 'required|max_len,30|min_len,8',
-            'password_confirm'    => 'required|max_len,30|min_len,8',
-        ]);
-
-        // 輸入格式化
-        $gump->filter_rules([
-            'password'    => 'trim',
-            'password_confirm'   => 'trim',
-        ]);
-
-        $valid_data = $gump->run($data);
-
-        $errors = [];
-        // 密碼規則驗證
-        $SafeCheck = array();
-        if (PASSWORD_SECURE === 'TRUE') {
-
-            if(preg_match('/(?=.*[a-z])/',$_POST['password']))
-            {
-                array_push($SafeCheck, '有英文小寫');
-            }
-            if(preg_match('/(?=.*[A-Z])/',$_POST['password']))
-            {
-                array_push($SafeCheck, '有英文大寫');
-            }
-            if(preg_match('/(?=.*[0-9])/',$_POST['password']))
-            {
-                array_push($SafeCheck, '有數字');
-            }
-            if(preg_match('/[\Q!@#$%^&*+-\E]/',$_POST['password']))
-            {
-                array_push($SafeCheck, '有特殊符號');
-            }
-        }
-        $password_resets = Database::table('password_resets')->where("id='{$_GET['id']}' and email_token='{$_GET['auth']}'")->first(false);
-        $password = json_decode($password_resets->password);
-        if ($gump->errors()) {
-            $errors[] = $gump->get_readable_errors();
-            Message::flash('重設密碼失敗，請檢查輸入', 'error');
-        }
-        elseif (PASSWORD_SECURE === 'TRUE' && (count($SafeCheck) <= 3 || !preg_match('/.{8,}/',$valid_data['password']))) {
-            Message::flash('密碼不符合規則，請參考密碼規則並再次確認', 'error');
-        }
-        elseif ($valid_data['password'] != $valid_data['password_confirm']) {
-            Message::flash('密碼要和確認密碼相同', 'error');
-        }
-        elseif (in_array(md5($valid_data['password']), $password)) {
-            Message::flash('密碼不能與前三次相同', 'error');
-        }
-        else {
-            unset($valid_data['password_confirm']);
-            $valid_data['password'] = md5($valid_data['password']);
-            // 如果密碼有三筆，清除第一筆
-			if (count($password) == 3) {
-				$shift = array_shift($password);
-				array_push($password, $valid_data['password']);
-			}
-			else {
-				array_push($password, $valid_data['password']);
-			}
-
-            // 更新使用者密碼
-            $update_users = Database::table('users')
-                ->where("id='{$password_resets->id}'")
-                ->update([
-                    'token' => $valid_data['token'],
-                    'password' => $valid_data['password'],
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
-
-            // 更新密碼重設資料
-            $update_password_resets = Database::table('password_resets')
-                ->where("id='{$password_resets->id}'")
-                ->update([
-                    'token' => $valid_data['token'], 
-                    'password' => json_encode($password),
-                    'password_updated_at' => date('Y-m-d H:i:s'),
-                ]);
-            if ($update_users && $update_password_resets) {
-                Message::flash('密碼修改成功，請使用新密碼登入。', 'success');
-                Message::redirect(APP_ADDRESS.'auth/login.php');
-            }   
-        }
+        $passwordController->passwordReset($_POST);
     }
-    Message::show_flash();
+    Message::showFlash();
     include_once($root.'_layouts/auth/top.php');
 ?>
 <div class="flex h-full items-center justify-center bg-gray-50 pb-32 px-4 sm:px-6 lg:px-8" x-data="{loading: false, password: '', password_confirm: ''}">
@@ -110,7 +22,7 @@
                 <img :class="{'animate-spin': loading === true}" class="mx-auto h-12 w-auto" src="<?php echo APP_IMG?>grapes.png" alt="Workflow">
             </a>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Password Reset
+                密碼重新設定
             </h2>
         </div>
         <form class="mt-8 space-y-6" method="POST" id="form_reset" @submit="loading = true">
@@ -124,12 +36,12 @@
             </div> 
             <div class="rounded-md shadow-sm -space-y-px">
                 <div>
-                    <label for="password" class="sr-only">Password</label>
-                    <input id="password" name="password" x-model="password" type="password" autocomplete="current-password" required class="appearance-none rounded-t-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password">
+                    <label for="password" class="sr-only">密碼</label>
+                    <input id="password" name="password" x-model="password" type="password" autocomplete="current-password" required class="appearance-none rounded-t-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="密碼">
                 </div>
                 <div>
-                    <label for="password_confirm" class="sr-only">Password Confirm</label>
-                    <input id="password_confirm" name="password_confirm" x-model="password_confirm" type="password" autocomplete="confirm-password" required class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password Confirm">
+                    <label for="password_confirm" class="sr-only">確認密碼</label>
+                    <input id="password_confirm" name="password_confirm" x-model="password_confirm" type="password" autocomplete="confirm-password" required class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="確認密碼">
                 </div>
             </div>
 

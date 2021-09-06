@@ -3,11 +3,11 @@
     
     include($root.'_config/settings.php');
 
-    use Kerwin\Core\Database;
-    use Kerwin\Core\Message;
-    use Kerwin\Core\Security;
-    use Kerwin\Core\Toolbox;
-    use Kerwin\Core\Permission;
+    use Kerwin\Core\Support\Toolbox;
+    use Kerwin\Core\Support\Facades\Database;
+    use Kerwin\Core\Support\Facades\Message;
+    use Kerwin\Core\Support\Facades\Security;
+    use Kerwin\Core\Support\Facades\Permission;
     
     if (!Permission::can('roles-create')) {
         Message::flash('Permission Denied!', 'error');
@@ -17,7 +17,7 @@
     $permissions = Database::table('permissions')->get();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $data = Security::defend_filter($_POST);
+        $data = Security::defendFilter($_POST);
         $gump = new GUMP();
 
         // 輸入驗證
@@ -47,7 +47,7 @@
         else {
             $insert = Database::table('roles')->insert(Toolbox::only($valid_data, ['token', 'name']), TRUE);
             foreach ($valid_data['permission'] as $key => $value) {
-                Database::table('role_has_permissions')->CreateOrUpdate(['token' => $valid_data['token'], 'permission_id' => $value, 'role_id' => $insert]);
+                Database::table('role_has_permissions')->CreateOrUpdate(['permission_id' => $value, 'role_id' => $insert], false);
             }  
             Message::flash('新增成功。', 'success');
             Message::redirect(APP_ADDRESS.'manage/roles');
@@ -64,7 +64,7 @@
     <form method="post" id="form_role">
         <input type="hidden" name="token" value="<?php echo TOKEN?>">
         <?php if (isset($error) && $error): ?>
-            <?php Message::show_flash();?>
+            <?php Message::showFlash();?>
             <div class="mb-4">
                 <?php foreach($gump->get_readable_errors() as $error_message): ?>
                     <li><font color="red"><?php echo $error_message?></font></li>

@@ -4,24 +4,24 @@
     
     include($root.'_config/settings.php');
     
-    use Kerwin\Core\Database;
-    use Kerwin\Core\Message;
-    use Kerwin\Core\Security;
-    use Kerwin\Core\Toolbox;
-    use Kerwin\Core\Permission;
+    use Kerwin\Core\Support\Toolbox;
+    use Kerwin\Core\Support\Facades\Database;
+    use Kerwin\Core\Support\Facades\Message;
+    use Kerwin\Core\Support\Facades\Security;
+    use Kerwin\Core\Support\Facades\Permission;
 
     if (!Permission::can('roles-edit')) {
         Message::flash('Permission Denied!', 'error');
         Message::redirect(APP_ADDRESS.'manage/roles');
     }
 
-    $id = Security::defend_filter($_GET['id']);
-    $role = Database::table('roles')->find(Security::defend_filter($_GET['id']));
+    $id = Security::defendFilter($_GET['id']);
+    $role = Database::table('roles')->find(Security::defendFilter($_GET['id']));
     $role_has_permissions = array_column(Database::table('role_has_permissions')->where('role_id = '.$role->id)->get(), 'permission_id');
     $permissions = Database::table('permissions')->get();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $data = Security::defend_filter($_POST);
+        $data = Security::defendFilter($_POST);
         $gump = new GUMP();
 
         // 輸入驗證
@@ -51,9 +51,9 @@
             Database::table('roles')->where('id = '.$id)->update(Toolbox::only($valid_data, ['token', 'name']));
             Database::table('role_has_permissions')->where('role_id ='.$role->id)->delete();
             foreach ($valid_data['permission'] as $key => $value) {
-                $newPermissions[] = ['token' => $valid_data['token'], 'permission_id' => $value, 'role_id' => $role->id];
+                $newPermissions[] = ['permission_id' => $value, 'role_id' => $role->id];
             }  
-            Database::table('role_has_permissions')->CreateOrUpdate($newPermissions);
+            Database::table('role_has_permissions')->CreateOrUpdate($newPermissions, false);
             Message::flash('修改成功，謝謝。', 'success');
             Message::redirect(APP_ADDRESS.'manage/roles');
         }
@@ -68,7 +68,7 @@
     <form method="post" id="form_role">
         <input type="hidden" name="token" value="<?php echo TOKEN?>">
         <?php if (isset($error) && $error): ?>
-            <?php Message::show_flash();?>
+            <?php Message::showFlash();?>
             <div class="mb-4">
                 <?php foreach($gump->get_readable_errors() as $error_message): ?>
                     <li><font color="red"><?php echo $error_message?></font></li>

@@ -3,18 +3,18 @@
     $page_title = 'Register';
     include_once($root.'_config/settings.php');
 
-    use Kerwin\Core\Security;
-    use Kerwin\Core\Database;
-    use Kerwin\Core\Message;
-    use Kerwin\Core\Toolbox;
     use Kerwin\Core\Mail;
+    use Kerwin\Core\Support\Toolbox;
+    use Kerwin\Core\Support\Facades\Security;
+    use Kerwin\Core\Support\Facades\Database;
+    use Kerwin\Core\Support\Facades\Message;
 
     if (!is_null($_SESSION['USER_ID'])) {
         Message::redirect(APP_ADDRESS);
     }
     
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $data = Security::defend_filter($_POST);
+        $data = Security::defendFilter($_POST);
         $gump = new GUMP();
 
         // 輸入驗證
@@ -73,11 +73,11 @@
         }
         else {
             unset($valid_data['password_confirm']);
-            $auth_code = uniqid(mt_rand());
+            $authCode = uniqid(mt_rand());
             $valid_data['password'] = md5($valid_data['password']);
             $valid_data['id'] = Toolbox::UUIDv4();
             $valid_data['role'] = 2;
-            $valid_data['auth_code'] = $auth_code;
+            $valid_data['auth_code'] = $authCode;
             $insert = Database::table('users')->insert($valid_data, TRUE);
             // 取得剛剛註冊的帳號ID
             $insert_id = Database::table('users')->where("email = '{$valid_data['email']}'")->first();
@@ -96,7 +96,7 @@
             }
         }
     }
-    Message::show_flash();
+    Message::showFlash();
     include_once($root.'_layouts/auth/top.php');
 ?>
 <div class="flex items-center justify-center bg-gray-50 py-32 px-4 sm:px-6 lg:px-8" x-data="register()">

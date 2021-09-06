@@ -3,15 +3,15 @@
 
     include($root.'_config/settings.php');
 
-    use Kerwin\Core\Message;
-    use Kerwin\Core\Role;
+    use Kerwin\Core\Support\Facades\Message;
+    use Kerwin\Core\Support\Facades\Role;
     
     if (!Role::has('admin')) {
         include_once($root.'_error/404.php');
         exit;
     }
     
-    Message::show_flash();
+    Message::showFlash();
     include($root.'_layouts/manage/top.php');
 ?>    
 <div class="container px-6 mx-auto grid">

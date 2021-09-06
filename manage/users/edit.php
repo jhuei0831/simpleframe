@@ -3,11 +3,11 @@ $root = '../../';
 
 include($root . '_config/settings.php');
 
-use Kerwin\Core\Database;
-use Kerwin\Core\Message;
-use Kerwin\Core\Security;
-use Kerwin\Core\Toolbox;
-use Kerwin\Core\Permission;
+use Kerwin\Core\Support\Facades\Database;
+use Kerwin\Core\Support\Toolbox;
+use Kerwin\Core\Support\Facades\Message;
+use Kerwin\Core\Support\Facades\Security;
+use Kerwin\Core\Support\Facades\Permission;
 
 
 if (!Permission::can('users-edit')) {
@@ -15,12 +15,12 @@ if (!Permission::can('users-edit')) {
     Message::redirect(APP_ADDRESS . 'manage/users');
 }
 
-$id = Security::defend_filter($_GET['id']);
+$id = Security::defendFilter($_GET['id']);
 $user = Database::table('users')->find($id);
 $roles = Database::table('roles')->get();
 
 if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-    $data = Security::defend_filter($_POST);
+    $data = Security::defendFilter($_POST);
     if ($data['type'] == 'profile') {
         $profile_error = false;
         unset($data['type']);
@@ -87,7 +87,7 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
 include($root . '_layouts/manage/top.php');
 ?>
 <!-- breadcrumb -->
-<?php echo Toolbox::breadcrumb(APP_ADDRESS.'manage', ['Users'=> APP_ADDRESS.'manage/users', 'User Edit' => '#'])?>
+<?php echo Toolbox::breadcrumb(APP_ADDRESS.'manage', ['使用者管理'=> APP_ADDRESS.'manage/users', '編輯使用者' => '#'])?>
 
 <div class="container px-6 mx-auto grid">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">編輯使用者</h2>
@@ -96,7 +96,7 @@ include($root . '_layouts/manage/top.php');
         <input type="hidden" name="type" value="profile">
         <input type="hidden" name="token" value="<?php echo  TOKEN ?>">
         <?php if (isset($profile_error) && $profile_error) : ?>
-            <?php Message::show_flash(); ?>
+            <?php Message::showFlash(); ?>
             <div class="mb-4">
                 <?php foreach ($gump->get_readable_errors() as $error_message) : ?>
                     <li>
@@ -147,7 +147,7 @@ include($root . '_layouts/manage/top.php');
         <input type="hidden" name="type" value="password">
         <input type="hidden" name="token" value="<?php echo  TOKEN ?>">
         <?php if (isset($password_error) && $password_error) : ?>
-            <?php Message::show_flash(); ?>
+            <?php Message::showFlash(); ?>
             <div class="mb-4">
                 <?php foreach ($gump->get_readable_errors() as $error_message) : ?>
                     <li>

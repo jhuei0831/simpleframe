@@ -2,7 +2,7 @@
 	$root = '../';
 	include_once($root.'_config/settings.php');
 
-    use Kerwin\Core\Message;
+    use Kerwin\Core\Support\Facades\Message;
 
 	// 登出功能
 	unset($_SESSION['USER_ID']);

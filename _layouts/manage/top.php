@@ -1,9 +1,9 @@
 <?php
     use DebugBar\StandardDebugBar;
-    use Kerwin\Core\Message as MG;
+    use Kerwin\Core\Support\Facades\Message;
     if (empty($_SESSION['USER_ID'])) {
-        MG::flash('Permission Denied!', 'error');
-        MG::redirect(APP_ADDRESS);
+        Message::flash('Permission Denied!', 'error');
+        Message::redirect(APP_ADDRESS);
     }
     if (IS_DEBUG === 'TRUE' && in_array($_SERVER["REMOTE_ADDR"], $except_ip_list)) {
         $debugbar = new StandardDebugBar();

@@ -2,7 +2,7 @@
     $root = '../../';
     include($root.'_config/settings.php');
 
-    use Kerwin\Core\Database;
+    use Kerwin\Core\Support\Facades\Database;
 
     $where="1=1";
     if( !empty($_REQUEST['search']['value']) ) { 
