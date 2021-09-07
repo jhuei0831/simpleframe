@@ -1,40 +1,22 @@
 <?php
-$root = '../';
+    $root = '../';
 
-include_once($root . '_config/settings.php');
+    include_once($root . '_config/settings.php');
 
-use Kerwin\Core\Support\Facades\Security;
-use Kerwin\Core\Support\Facades\Database;
-use Kerwin\Core\Support\Facades\Message;
+    use _models\Auth\User;
+    use Kerwin\Core\Support\Facades\Message;
 
-if (!is_null($_SESSION['USER_ID'])) {
-    Message::redirect(APP_ADDRESS);
-}
-
-if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-    $data = Security::defendFilter($_POST);
-    $user = Database::table('users')->where('email ="' . $data['email'] . '" and password ="' . md5($data['password']) . '"')->first();
-    if ($data['checkword'] != $_SESSION['check_word']) {
-        Message::flash('驗證碼錯誤', 'error');
-        Message::redirect(APP_ADDRESS . 'auth/login.php');
-    } 
-    elseif ($user && empty($user->email_varified_at) && EMAIL_VERIFY === 'TRUE') {
-        $_SESSION['USER_ID'] = $user->id;
-        Message::flash('登入成功，尚未完成信箱驗證', 'warning');
-        Message::redirect(APP_ADDRESS . 'auth/email/verified.php');
-    } 
-    elseif ($user) {
-        $_SESSION['USER_ID'] = $user->id;
-        Message::flash('登入成功', 'success');
+    if (!is_null($_SESSION['USER_ID'])) {
         Message::redirect(APP_ADDRESS);
-    } 
-    else {
-        Message::flash('登入失敗', 'error');
     }
-}
 
-Message::showFlash();
-include_once($root . '_layouts/auth/top.php');
+    if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
+        $user = new User();
+        $user->login($_POST);
+    }
+
+    Message::showFlash();
+    include_once($root . '_layouts/auth/top.php');
 ?>
 <script>
     function refresh_code() {

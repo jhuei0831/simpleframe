@@ -61,7 +61,7 @@ function data() {
 }
 
 // 註冊頁面
-function register() {
+function password() {
     return {
         loading: false, 
         password: '', 
@@ -129,4 +129,4 @@ function register() {
     }
 }
 
-window.register = register;
+window.password = password;

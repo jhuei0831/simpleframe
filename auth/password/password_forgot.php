@@ -3,10 +3,8 @@
     $page_title = '忘記密碼';
     include_once($root.'_config/settings.php');
 
-    use Kerwin\Core\Support\Facades\Security;
-    use Kerwin\Core\Support\Facades\Database;
+    use _models\Auth\User;
     use Kerwin\Core\Support\Facades\Message;
-    use Kerwin\Core\Mail;
 
     // 已登入不能訪問此頁面
     if (!is_null($_SESSION['USER_ID'])) {
@@ -15,32 +13,10 @@
     }
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $data = Security::defendFilter($_POST);
-        $authCode = Security::defendFilter(uniqid(mt_rand()));
-        $user = Database::table('users')->where("email = '{$data['email']}'")->first();
-        // 放到信中的變數
-        $name = $user->name;
-        $id = $user->id;
-        include_once('./content.php');
-        $mail = Mail::send($subject, $message, $user->email, $user->name);
-        $passwordResets = Database::table('password_resets')->where("id = '{$user->id}'")->first(false);
-        if ($mail) {
-            Database::table('password_resets')->CreateOrUpdate([
-                'token' => $data['token'], 
-                'id' => $id, 
-                'password' => isset($passwordResets->password) ? $passwordResets->password : json_encode([$user->password]),
-                'email_token' => $authCode, 
-                'token_updated_at' => date('Y-m-d H:i:s'), 
-                'password_updated_at' => isset($passwordResets->password_updated_at) ? $passwordResets->password_updated_at : $user->created_at, 
-            ]);
-            Message::flash('請前往註冊信箱收取密碼重設信，謝謝。', 'success');
-            Message::redirect(APP_ADDRESS.'auth/password/password_forgot.php');
-        }
-        else{
-            Message::flash('獲取信件失敗', 'error');
-            Message::redirect(APP_ADDRESS.'auth/password/password_forgot.php');
-        }    
+         $user = new User();
+         $user->passwordForgot($_POST);
     }
+    
     Message::showFlash();
     include_once($root.'_layouts/auth/top.php');
 ?>

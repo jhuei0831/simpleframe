@@ -7,15 +7,16 @@
     use Kerwin\Core\Support\Facades\Message;
 
     $passwordController = new Password();
-    $passwordController->passwordResetVerify();
+    $passwordController->resetVerify();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $passwordController->passwordReset($_POST);
+        $passwordController->reset($_POST);
     }
+    
     Message::showFlash();
     include_once($root.'_layouts/auth/top.php');
 ?>
-<div class="flex h-full items-center justify-center bg-gray-50 pb-32 px-4 sm:px-6 lg:px-8" x-data="{loading: false, password: '', password_confirm: ''}">
+<div class="flex h-full items-center justify-center bg-gray-50 pb-32 px-4 sm:px-6 lg:px-8" x-data="password()">
     <div class="max-w-md w-full space-y-8 mt-12">
         <div>
             <a href="<?php echo APP_ADDRESS?>">
@@ -48,59 +49,82 @@
             <div class="flex justify-start mt-3 ml-4 p-1">
                 <ul>
                     <li class="flex items-center py-1">
-                        <div :class="{'bg-green-200 text-green-700': password == password_confirm && password.length > 0, 'bg-red-200 text-red-700':password != password_confirm || password.length == 0}" class=" rounded-full p-1 fill-current ">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path x-show="password == password_confirm && password.length > 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                <path x-show="password != password_confirm || password.length == 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                            </svg>
-                        </div>
-                        <span :class="{'text-green-700': password == password_confirm && password.length > 0, 'text-red-700':password != password_confirm || password.length == 0}" class="font-medium text-sm ml-3" x-text="password == password_confirm && password.length > 0 ? 'Passwords match' : 'Passwords do not match' "></span>
+                        <span>密碼規則</span>
                     </li>
                     <li class="flex items-center py-1">
-                        <div :class="{'bg-green-200 text-green-700': password.length > 7, 'bg-red-200 text-red-700':password.length <= 7 }" class=" rounded-full p-1 fill-current ">
+                        <div :class="passwordConfirmIcon()" class="rounded-full p-1 fill-current ">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path x-show="password.length > 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                <path x-show="password.length <= 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                <path x-show="password == password_confirm && password.length > 0"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                                <path x-show="password != password_confirm || password.length == 0"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </div>
-                        <span :class="{'text-green-700': password.length > 7, 'text-red-700':password.length <= 7 }" class="font-medium text-sm ml-3" x-text="password.length > 7 ? 'The minimum length is reached' : 'At least 8 characters required' "></span>
+                        <span :class="passwordConfirmTextColor()" class="font-medium text-sm ml-3"
+                            x-text="passwordConfirmText()"></span>
+                    </li>
+                    <li class="flex items-center py-1">
+                        <div :class="passwordLengthIcon()" class="rounded-full p-1 fill-current ">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path x-show="password.length > 7" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M5 13l4 4L19 7" />
+                                <path x-show="password.length <= 7" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                        <span :class="passwordLengthTextColor()" class="font-medium text-sm ml-3"
+                            x-text="passwordLengthText()"></span>
                     </li>
                     <?if (PASSWORD_SECURE === 'TRUE'):?>
                     <li class="flex items-center py-1">
-                        <div :class="{'bg-green-200 text-green-700': password.search(/[0-9]/) >= 0, 'bg-red-200 text-red-700':password.search(/[0-9]/) < 0 }" class=" rounded-full p-1 fill-current ">
+                        <div :class="passwordDigitIcon()" class="rounded-full p-1 fill-current ">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path x-show="password.search(/[0-9]/) >= 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                <path x-show="password.search(/[0-9]/) < 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                <path x-show="password.search(/[0-9]/) >= 0" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                <path x-show="password.search(/[0-9]/) < 0" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </div>
-                        <span :class="{'text-green-700': password.search(/[0-9]/) >= 0, 'text-red-700':password.search(/[0-9]/) < 0 }" class="font-medium text-sm ml-3" x-text="password.search(/[0-9]/) >= 0 ? 'An digit is reached' : 'At lease one digit required' "></span>
+                        <span :class="passwordDigitTextColor()" class="font-medium text-sm ml-3"
+                            x-text="passwordDigitText()"></span>
                     </li>
                     <li class="flex items-center py-1">
-                        <div :class="{'bg-green-200 text-green-700': password.search(/[A-Z]/) >= 0, 'bg-red-200 text-red-700':password.search(/[A-Z]/) < 0 }" class=" rounded-full p-1 fill-current ">
+                        <div :class="passwordUpperCaseIcon()" class="rounded-full p-1 fill-current ">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path x-show="password.search(/[A-Z]/) >= 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                <path x-show="password.search(/[A-Z]/) < 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                <path x-show="password.search(/[A-Z]/) >= 0" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                <path x-show="password.search(/[A-Z]/) < 0" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </div>
-                        <span :class="{'text-green-700': password.search(/[A-Z]/) >= 0, 'text-red-700':password.search(/[A-Z]/) < 0 }" class="font-medium text-sm ml-3" x-text="password.search(/[A-Z]/) >= 0 ? 'An upper case letter is reached' : 'At lease one upper case letter required' "></span>
+                        <span :class="passwordUpperCaseTextColor()" class="font-medium text-sm ml-3"
+                            x-text="passwordUpperCaseText()"></span>
                     </li>
                     <li class="flex items-center py-1">
-                        <div :class="{'bg-green-200 text-green-700': password.search(/[a-z]/) >= 0, 'bg-red-200 text-red-700':password.search(/[a-z]/) < 0 }" class=" rounded-full p-1 fill-current ">
+                        <div :class="passwordLowerCaseIcon()" class="rounded-full p-1 fill-current ">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path x-show="password.search(/[a-z]/) >= 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                <path x-show="password.search(/[a-z]/) < 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                <path x-show="password.search(/[a-z]/) >= 0" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                <path x-show="password.search(/[a-z]/) < 0" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </div>
-                        <span :class="{'text-green-700': password.search(/[a-z]/) >= 0, 'text-red-700':password.search(/[a-z]/) < 0 }" class="font-medium text-sm ml-3" x-text="password.search(/[a-z]/) >= 0 ? 'An lower case letter is reached' : 'At lease one lower case letter required' "></span>
+                        <span :class="passwordLowerCaseTextColor()" class="font-medium text-sm ml-3"
+                            x-text="passwordLowerCaseText()"></span>
                     </li>
                     <li class="flex items-center py-1">
-                        <div :class="{'bg-green-200 text-green-700': password.search(/[!@#$%^&*+-]/) >= 0, 'bg-red-200 text-red-700':password.search(/[!@#$%^&*+-]/) < 0 }" class=" rounded-full p-1 fill-current ">
+                        <div :class="passwordSpecialCharacterIcon()" class="rounded-full p-1 fill-current ">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path x-show="password.search(/[!@#$%^&*+-]/) >= 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                <path x-show="password.search(/[!@#$%^&*+-]/) < 0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                <path x-show="password.search(/[!@#$%^&*+-]/) >= 0" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                <path x-show="password.search(/[!@#$%^&*+-]/) < 0" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </div>
-                        <span :class="{'text-green-700': password.search(/[!@#$%^&*+-]/) >= 0, 'text-red-700':password.search(/[!@#$%^&*+-]/) < 0 }" class="font-medium text-sm ml-3" x-text="password.search(/[!@#$%^&*+-]/) >= 0 ? 'An special character is reached' : 'At lease one special character required' "></span>
+                        <span :class="passwordSpecialCharacterTextColor()" class="font-medium text-sm ml-3"
+                            x-text="passwordSpecialCharacterText()"></span>
                     </li>
                     <?endif;?>
                 </ul>

@@ -13,12 +13,12 @@
         /**
          * 密碼重設資料驗證、更新
          *
-         * @param  array $post
+         * @param  array $request
          * @return void
          */
-        public function passwordReset($post)
+        public function reset(array $request): void
         {
-            $data = Security::defendFilter($post);
+            $data = Security::defendFilter($request);
             $gump = new GUMP();
 
             // 輸入驗證
@@ -37,25 +37,8 @@
 
             $errors = [];
             // 密碼規則驗證
-            $SafeCheck = array();
             if (PASSWORD_SECURE === 'TRUE') {
-
-                if(preg_match('/(?=.*[a-z])/',$_POST['password']))
-                {
-                    array_push($SafeCheck, '有英文小寫');
-                }
-                if(preg_match('/(?=.*[A-Z])/',$_POST['password']))
-                {
-                    array_push($SafeCheck, '有英文大寫');
-                }
-                if(preg_match('/(?=.*[0-9])/',$_POST['password']))
-                {
-                    array_push($SafeCheck, '有數字');
-                }
-                if(preg_match('/[\Q!@#$%^&*+-\E]/',$_POST['password']))
-                {
-                    array_push($SafeCheck, '有特殊符號');
-                }
+                $safeCheck = self::rule($_POST['password']);
             }
             $passwordResets = Database::table('password_resets')->where("id='{$_GET['id']}' and email_token='{$_GET['auth']}'")->first(false);
             $password = json_decode($passwordResets->password);
@@ -63,7 +46,7 @@
                 $errors[] = $gump->get_readable_errors();
                 Message::flash('重設密碼失敗，請檢查輸入', 'error');
             }
-            elseif (PASSWORD_SECURE === 'TRUE' && (count($SafeCheck) <= 3 || !preg_match('/.{8,}/',$validData['password']))) {
+            elseif (PASSWORD_SECURE === 'TRUE' && (count($safeCheck) <= 3 || !preg_match('/.{8,}/',$validData['password']))) {
                 Message::flash('密碼不符合規則，請參考密碼規則並再次確認', 'error');
             }
             elseif ($validData['password'] != $validData['password_confirm']) {
@@ -110,10 +93,10 @@
         /**
          * 密碼重設規範
          *
-         * @param  mixed $root 路徑
+         * @param  string $root 路徑
          * @return void
          */
-        public function passwordResetVerify($root='../../')
+        public function resetVerify($root='../../'): void
         {
             // 禁止已登入或連結錯誤訪問
             if (!is_null($_SESSION['USER_ID']) && empty($_GET['auth']) && empty($_GET['id'])) {
@@ -137,8 +120,36 @@
                 Message::redirect(Config::getAppAddress());
             }
             else {
-                return true;
+                return;
             }
+        }
+        
+        /**
+         * 密碼規則驗證
+         *
+         * @param string $password
+         * @return array
+         */
+        public static function rule(string $password): array
+        {
+            $safeCheck = array();
+            if(preg_match('/(?=.*[a-z])/',$password))
+            {
+                array_push($safeCheck, '有英文小寫');
+            }
+            if(preg_match('/(?=.*[A-Z])/',$password))
+            {
+                array_push($safeCheck, '有英文大寫');
+            }
+            if(preg_match('/(?=.*[0-9])/',$password))
+            {
+                array_push($safeCheck, '有數字');
+            }
+            if(preg_match('/[\Q!@#$%^&*+-\E]/',$password))
+            {
+                array_push($safeCheck, '有特殊符號');
+            }
+            return $safeCheck;
         }
     }
     

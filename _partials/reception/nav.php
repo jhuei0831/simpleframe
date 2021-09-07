@@ -115,7 +115,7 @@
                                 註冊
                             </a>
                             <p class="mt-6 text-center text-base font-medium text-gray-500">
-                                Existing customer?
+                                已經加入會員?
                                 <a href="<?php echo APP_ADDRESS?>auth/login.php" class="text-indigo-600 hover:text-indigo-500">登入</a>
                             </p>
                             <?php else: ?>
