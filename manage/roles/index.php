@@ -23,7 +23,7 @@
         <a href="./create.php" class="px-3 py-1 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-cyan-600 border border-transparent rounded-md active:bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:shadow-outline-cyan"><i class="bi bi-person-plus "></i> 新增</a>
     </div>
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
-        <div class="w-full overflow-x-auto">
+        <div class="w-full lg:overflow-x-hidden overflow-x-scroll shadow">
             <table id="table" class="whitespace-no-wrap row-border hover">
                 <thead>
                     <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">

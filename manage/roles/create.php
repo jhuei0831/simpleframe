@@ -3,10 +3,10 @@
     
     include($root.'_config/settings.php');
 
+    use _models\Auth\Role;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
-    use Kerwin\Core\Support\Facades\Security;
     use Kerwin\Core\Support\Facades\Permission;
     
     if (!Permission::can('roles-create')) {
@@ -17,41 +17,8 @@
     $permissions = Database::table('permissions')->get();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $data = Security::defendFilter($_POST);
-        $gump = new GUMP();
-
-        // 輸入驗證
-        $gump->validation_rules([
-            'name'    => 'required|max_len,30',
-            'permission' => 'required'
-        ]);
-
-        // 輸入格式化
-        $gump->filter_rules([
-            'name'    => 'trim|sanitize_string',
-        ]);
-
-        $valid_data = $gump->run($data);
-
-        $check_role = Database::table('roles')->where("name = '".$valid_data['name']."'")->count();
-
-        if ($check_role > 0) {
-            $error = true;
-            Message::flash('名稱已存在。', 'error');
-        }
-        elseif ($gump->errors()) {
-            $error = true;
-            Message::flash('新增失敗，請檢查輸入。', 'error');
-            // Message::redirect(APP_ADDRESS.'manage/roles/edit.php?id='.$id);
-        }
-        else {
-            $insert = Database::table('roles')->insert(Toolbox::only($valid_data, ['token', 'name']), TRUE);
-            foreach ($valid_data['permission'] as $key => $value) {
-                Database::table('role_has_permissions')->CreateOrUpdate(['permission_id' => $value, 'role_id' => $insert], false);
-            }  
-            Message::flash('新增成功。', 'success');
-            Message::redirect(APP_ADDRESS.'manage/roles');
-        }
+        $role = new Role();
+        $role->create($_POST);
     }
 
     include($root.'_layouts/manage/top.php');

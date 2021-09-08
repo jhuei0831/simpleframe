@@ -1,0 +1,104 @@
+/*Form fields*/
+.dataTables_wrapper select,
+.dataTables_wrapper .dataTables_filter input {
+    color: #4a5568; 			/*text-gray-700*/
+    padding-left: 1rem; 		/*pl-4*/
+    padding-right: 1rem; 		/*pl-4*/
+    padding-top: .5rem; 		/*pl-2*/
+    padding-bottom: .5rem; 		/*pl-2*/
+    margin:  .5rem .5rem .5rem .5rem;
+    line-height: 1.25; 			/*leading-tight*/
+    border-width: 2px; 			/*border-2*/
+    border-radius: .25rem; 		
+    border-color: #edf2f7; 		/*border-gray-200*/
+    background-color: #edf2f7; 	/*bg-gray-200*/
+}
+
+/*Row Hover*/
+table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+    background-color: #ebf4ff;	/*bg-indigo-100*/
+}
+
+/*Pagination Buttons*/
+.dataTables_wrapper .dataTables_paginate .paginate_button		{
+    font-weight: 700;				/*font-bold*/
+    border-radius: .25rem;			/*rounded*/
+    border: 1px solid transparent;	/*border border-transparent*/
+}
+
+/*Pagination Buttons - Current selected */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current	{
+    margin:  .5rem .5rem .5rem .5rem;
+    color: #fff !important;				/*text-white*/
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06); 	/*shadow*/
+    font-weight: 700;					/*font-bold*/
+    border-radius: .25rem;				/*rounded*/
+    background: rgba(165, 243, 252, var(--tw-text-opacity)) !important;		/*bg-indigo-500*/
+    border: 1px solid transparent;		/*border border-transparent*/
+}
+
+/*Pagination Buttons - Hover */
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover		{
+    color: #fff !important;				/*text-white*/
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);	 /*shadow*/
+    font-weight: 700;					/*font-bold*/
+    border-radius: .25rem;				/*rounded*/
+    background: rgba(165, 243, 252, var(--tw-text-opacity)) !important;		/*bg-indigo-500*/
+    border: 1px solid transparent;		/*border border-transparent*/
+}
+
+/*Add padding to bottom border */
+table.dataTable.no-footer {
+    border-bottom: 1px solid #e2e8f0;	/*border-b-1 border-gray-300*/
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+}
+
+/*Change colour of responsive icon*/
+table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before, table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
+    background-color: rgba(165, 243, 252, var(--tw-text-opacity)) !important; /*bg-indigo-500*/
+}
+
+.dataTables_info{
+    margin: .5rem .5rem .5rem .5rem;
+}
+
+.dataTables_length{
+    margin-left: .5rem;   
+}
+
+.dataTables_length select {
+    padding-left: 15px !important;
+    padding-right: 30px !important;
+}
+
+table.dataTable thead th {
+    border-color: #d5d6d7 !important;
+}
+
+table.dataTable {
+    border-color: #d5d6d7 !important;
+}
+
+.dataTables_wrapper table { 
+    font-size: 14px;
+    border-collapse: separate; 
+    border-bottom-left-radius: 10px; -webkit-border-bottom-left-radius: 10px; -moz-border-bottom-left-radius: 10px; -ms-border-bottom-left-radius: 10px; -o-border-bottom-left-radius: 10px; 
+    border-bottom-right-radius: 10px; -webkit-border-bottom-right-radius: 10px; -moz-border-bottom-right-radius: 10px; -ms-border-bottom-right-radius: 10px; -o-border-bottom-right-radius: 10px; 
+}
+
+.dataTables_wrapper th:first-child { 
+    border-top-left-radius: 10px; -webkit-border-top-left-radius: 10px; -moz-border-top-left-radius: 10px; -ms-border-top-left-radius: 10px; -o-border-top-left-radius: 10px; 
+}
+
+.dataTables_wrapper th:last-child { 
+    border-top-right-radius: 10px; -webkit-border-top-right-radius: 10px; -moz-border-top-right-radius: 10px; -ms-border-top-right-radius: 10px; -o-border-top-right-radius: 10px; 
+}
+
+.dataTables_wrapper tr:last-child td:first-child { 
+    border-bottom-left-radius: 10px; -webkit-border-bottom-left-radius: 10px; -moz-border-bottom-left-radius: 10px; -ms-border-bottom-left-radius: 10px; -o-border-bottom-left-radius: 10px;
+}
+
+.dataTables_wrapper tr:last-child td:last-child { 
+    border-bottom-right-radius: 10px; -webkit-border-bottom-right-radius: 10px; -moz-border-bottom-right-radius: 10px; -ms-border-bottom-right-radius: 10px; -o-border-bottom-right-radius: 10px;
+}

@@ -8,6 +8,7 @@ module.exports = {
         './src/css/tailwind.generated.css',
         './src/css/manage.css',
         './src/css/reception.css',
+        './src/css/table.css',
         'datatables.net-dt/css/jquery.dataTables.css',
         'bootstrap-icons/font/bootstrap-icons.css',
     ],

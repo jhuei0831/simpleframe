@@ -1,90 +1,30 @@
 <?php
-$root = '../../';
+    $root = '../../';
 
-include($root . '_config/settings.php');
+    include($root . '_config/settings.php');
 
-use Kerwin\Core\Support\Facades\Database;
-use Kerwin\Core\Support\Toolbox;
-use Kerwin\Core\Support\Facades\Message;
-use Kerwin\Core\Support\Facades\Security;
-use Kerwin\Core\Support\Facades\Permission;
+    use _models\Auth\User;
+    use Kerwin\Core\Support\Toolbox;
+    use Kerwin\Core\Support\Facades\Database;
+    use Kerwin\Core\Support\Facades\Message;
+    use Kerwin\Core\Support\Facades\Security;
+    use Kerwin\Core\Support\Facades\Permission;
 
 
-if (!Permission::can('users-edit')) {
-    Message::flash('Permission Denied!', 'error');
-    Message::redirect(APP_ADDRESS . 'manage/users');
-}
-
-$id = Security::defendFilter($_GET['id']);
-$user = Database::table('users')->find($id);
-$roles = Database::table('roles')->get();
-
-if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-    $data = Security::defendFilter($_POST);
-    if ($data['type'] == 'profile') {
-        $profile_error = false;
-        unset($data['type']);
-        $gump = new GUMP();
-
-        // 輸入驗證
-        $gump->validation_rules([
-            'name'    => 'required|max_len,30',
-            'email'   => 'required|valid_email',
-            'role'    => 'required'
-        ]);
-
-        // 輸入格式化
-        $gump->filter_rules([
-            'name'    => 'trim|sanitize_string',
-            'email'   => 'trim|sanitize_email',
-        ]);
-
-        $valid_data = $gump->run($data);
-
-        if (!$gump->errors()) {
-            $update = Database::table('users')->where("id = '{$id}'")->update($valid_data);
-            Message::flash('修改成功，謝謝。', 'success');
-            Message::redirect(APP_ADDRESS . 'manage/users');
-        } else {
-            $profile_error = true;
-            Message::flash('修改失敗，請檢查輸入。', 'error');
-            // Message::redirect(APP_ADDRESS.'manage/users/edit.php?id='.$id);
-        }
-    } else {
-        $password_error = false;
-        unset($data['type']);
-        $gump = new GUMP();
-
-        // 輸入驗證
-        $gump->validation_rules([
-            'password'    => 'required|max_len,30|min_len,8',
-            'password_confirm'    => 'required|max_len,30|min_len,8',
-        ]);
-
-        // 輸入格式化
-        $gump->filter_rules([
-            'password'    => 'trim',
-            'password_confirm'   => 'trim',
-        ]);
-        $valid_data = $gump->run($data);
-
-        if ($data['password'] != $data['password_confirm']) {
-            $password_error = true;
-            Message::flash('密碼要和確認密碼相同!。', 'error');
-        } elseif ($gump->errors()) {
-            $password_error = true;
-            Message::flash('修改失敗，請檢查輸入。', 'error');
-            // Message::redirect(APP_ADDRESS.'manage/users/edit.php?id='.$id); 
-        } else {
-            unset($valid_data['password_confirm']);
-            $valid_data['password'] = md5($valid_data['password']);
-            $update = Database::table('users')->where("id = '{$id}'")->update($valid_data);
-            Message::flash('修改成功，謝謝。', 'success');
-            Message::redirect(APP_ADDRESS . 'manage/users');
-        }
+    if (!Permission::can('users-edit')) {
+        Message::flash('Permission Denied!', 'error');
+        Message::redirect(APP_ADDRESS . 'manage/users');
     }
-}
-include($root . '_layouts/manage/top.php');
+
+    $id = Security::defendFilter($_GET['id']);
+    $user = Database::table('users')->find($id);
+    $roles = Database::table('roles')->get();
+
+    if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
+        $user = new User();
+        $user->edit($_POST, $id);
+    }
+    include($root . '_layouts/manage/top.php');
 ?>
 <!-- breadcrumb -->
 <?php echo Toolbox::breadcrumb(APP_ADDRESS.'manage', ['使用者管理'=> APP_ADDRESS.'manage/users', '編輯使用者' => '#'])?>

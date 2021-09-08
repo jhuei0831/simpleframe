@@ -4,6 +4,7 @@
     
     include($root.'_config/settings.php');
     
+    use _models\Auth\Role;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
@@ -15,49 +16,15 @@
         Message::redirect(APP_ADDRESS.'manage/roles');
     }
 
-    $id = Security::defendFilter($_GET['id']);
     $role = Database::table('roles')->find(Security::defendFilter($_GET['id']));
-    $role_has_permissions = array_column(Database::table('role_has_permissions')->where('role_id = '.$role->id)->get(), 'permission_id');
+    $roleHasPermissions = array_column(Database::table('role_has_permissions')->where('role_id = '.$role->id)->get(), 'permission_id');
     $permissions = Database::table('permissions')->get();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $data = Security::defendFilter($_POST);
-        $gump = new GUMP();
-
-        // 輸入驗證
-        $gump->validation_rules([
-            'name'    => 'required|max_len,30',
-        ]);
-
-        // 輸入格式化
-        $gump->filter_rules([
-            'name'    => 'trim|sanitize_string',
-        ]);
-
-        $valid_data = $gump->run($data);
-
-        $check_role = Database::table('roles')->where('name ="'.$valid_data['name'].'"')->count();
-
-        if ($check_role > 0 && $role->name != $valid_data['name']) {
-            $error = true;
-            Message::flash('名稱已存在。', 'error');
-        }
-        elseif ($gump->errors()) {
-            $error = true;
-            Message::flash('修改失敗，請檢查輸入。', 'error');
-            // Message::redirect(APP_ADDRESS.'manage/roles/edit.php?id='.$id);
-        }
-        else {
-            Database::table('roles')->where('id = '.$id)->update(Toolbox::only($valid_data, ['token', 'name']));
-            Database::table('role_has_permissions')->where('role_id ='.$role->id)->delete();
-            foreach ($valid_data['permission'] as $key => $value) {
-                $newPermissions[] = ['permission_id' => $value, 'role_id' => $role->id];
-            }  
-            Database::table('role_has_permissions')->CreateOrUpdate($newPermissions, false);
-            Message::flash('修改成功，謝謝。', 'success');
-            Message::redirect(APP_ADDRESS.'manage/roles');
-        }
+        $roleController = new Role();
+        $roleController->edit($_POST, $role);
     }
+
     include($root.'_layouts/manage/top.php');
 ?>
 <!-- breadcrumb -->
@@ -97,7 +64,7 @@
                 <?php foreach($permissions as $permission): ?>
                     <label class="mt-4 mr-2 items-center dark:text-gray-400">
                         <input
-                            type="checkbox" name="permission[]" value="<?php echo $permission->id?>" <?php echo  in_array($permission->id, $role_has_permissions) ? 'checked' : '';?>
+                            type="checkbox" name="permission[]" value="<?php echo $permission->id?>" <?php echo in_array($permission->id, $roleHasPermissions) ? 'checked' : '';?>
                             class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         />
                         <span class="ml-2"><?php echo $permission->name?></span>

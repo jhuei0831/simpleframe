@@ -12,7 +12,94 @@
     use Kerwin\Core\Support\Facades\Message;
 
     class User 
-    {                
+    {                  
+        /**
+         * 使用者修改
+         *
+         * @param  array $request
+         * @param  string $id
+         * @return void
+         */
+        public function edit(array $request, string $id): void
+        {
+            $data = Security::defendFilter($request);
+            if ($data['type'] == 'profile') {
+                $profile_error = false;
+                unset($data['type']);
+                $gump = new GUMP();
+
+                // 輸入驗證
+                $gump->validation_rules([
+                    'name'    => 'required|max_len,30',
+                    'email'   => 'required|valid_email',
+                    'role'    => 'required'
+                ]);
+
+                // 輸入格式化
+                $gump->filter_rules([
+                    'name'    => 'trim|sanitize_string',
+                    'email'   => 'trim|sanitize_email',
+                ]);
+
+                $valid_data = $gump->run($data);
+
+                if (!$gump->errors()) {
+                    $update = Database::table('users')->where("id = '{$id}'")->update($valid_data);
+                    Message::flash('修改成功，謝謝。', 'success');
+                    Message::redirect(APP_ADDRESS . 'manage/users');
+                } else {
+                    $profile_error = true;
+                    Message::flash('修改失敗，請檢查輸入。', 'error');
+                    // Message::redirect(APP_ADDRESS.'manage/users/edit.php?id='.$id);
+                }
+            } else {
+                $password_error = false;
+                unset($data['type']);
+                $gump = new GUMP();
+
+                // 輸入驗證
+                $gump->validation_rules([
+                    'password'    => 'required|max_len,30|min_len,8',
+                    'password_confirm'    => 'required|max_len,30|min_len,8',
+                ]);
+
+                // 輸入格式化
+                $gump->filter_rules([
+                    'password'    => 'trim',
+                    'password_confirm'   => 'trim',
+                ]);
+                $valid_data = $gump->run($data);
+
+                if ($data['password'] != $data['password_confirm']) {
+                    $password_error = true;
+                    Message::flash('密碼要和確認密碼相同!。', 'error');
+                } elseif ($gump->errors()) {
+                    $password_error = true;
+                    Message::flash('修改失敗，請檢查輸入。', 'error');
+                    // Message::redirect(APP_ADDRESS.'manage/users/edit.php?id='.$id); 
+                } else {
+                    unset($valid_data['password_confirm']);
+                    $valid_data['password'] = md5($valid_data['password']);
+                    $update = Database::table('users')->where("id = '{$id}'")->update($valid_data);
+                    Message::flash('修改成功，謝謝。', 'success');
+                    Message::redirect(APP_ADDRESS . 'manage/users');
+                }
+            }
+        }      
+        
+        /**
+         * 使用者刪除
+         *
+         * @param  string $id
+         * @return void
+         */
+        public function delete(string $id): void
+        {
+            Database::table('users')->where('id='.$id)->delete();
+            Message::flash('刪除成功，謝謝。', 'success');
+            Message::redirect(APP_ADDRESS.'manage/users');
+        }
+
         /**
          * login
          *
