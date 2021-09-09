@@ -8,8 +8,7 @@
     use Kerwin\Core\Support\Facades\Permission;
     
     if (!Permission::can('roles-delete')) {
-        Message::flash('Permission Denied!', 'error');
-        Message::redirect(APP_ADDRESS.'manage/roles');
+        Message::flash('權限不足!', 'error')->redirect(APP_ADDRESS.'manage/roles');
     }
 
     $id = Security::defendFilter($_GET['id']);

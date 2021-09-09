@@ -27,12 +27,10 @@
                 exit;
             }
             elseif (strtotime('now') > strtotime($user->updated_at.' +30 minutes')) {
-                Message::flash('驗證信已逾期，請重新獲取，謝謝。', 'warning');
-                Message::redirect(APP_ADDRESS.'auth/email/verified.php');
+                Message::flash('驗證信已逾期，請重新獲取，謝謝。', 'warning')->redirect(APP_ADDRESS.'auth/email/verified.php');
             }
             elseif (Auth::id() != $_GET['id'] || $user->auth_code != $_GET['auth']) {
-                Message::flash('連結有問題，請確認或重新申請認證信，謝謝。', 'warning');
-                Message::redirect(APP_ADDRESS.'auth/email/verified.php');
+                Message::flash('連結有問題，請確認或重新申請認證信，謝謝。', 'warning')->redirect(APP_ADDRESS.'auth/email/verified.php');
             }
             else{
                 $_SESSION['USER_ID'] = $user->id;
@@ -43,8 +41,7 @@
                         'email_varified_at' => date('Y-m-d H:i:s'), 
                         'updated_at' => date('Y-m-d H:i:s')
                     ]);
-                Message::flash('信箱驗證成功，謝謝。', 'success');
-                Message::redirect(APP_ADDRESS);
+                Message::flash('信箱驗證成功，謝謝。', 'success')->redirect(APP_ADDRESS);
             }
         }
 
@@ -66,12 +63,10 @@
             $mail = Mail::send($subject, $message, $user->email, $user->name);
             if ($mail) {
                 Database::table('users')->where("id = '{$_SESSION['USER_ID']}'")->update(['token' => $data['token'], 'auth_code' => $authCode, 'updated_at' => date('Y-m-d H:i:s')]);
-                Message::flash('請前往註冊信箱收取認證信，謝謝。', 'success');
-                Message::redirect(APP_ADDRESS.'auth/email/verified.php');
+                Message::flash('請前往註冊信箱收取認證信，謝謝。', 'success')->redirect(APP_ADDRESS.'auth/email/verified.php');
             }
             else {
-                Message::flash('獲取信箱驗證信失敗!', 'error');
-                Message::redirect(APP_ADDRESS.'auth/email/verified.php');
+                Message::flash('獲取信箱驗證信失敗!', 'error')->redirect(APP_ADDRESS.'auth/email/verified.php');
             }
         }
     }

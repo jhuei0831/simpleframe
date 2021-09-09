@@ -9,8 +9,7 @@
     $id = Security::defendFilter($_GET['id']);
 
     if ($id == $_SESSION['USER_ID']) {
-        Message::flash('不能刪除自己', 'warning');
-        Message::redirect(APP_ADDRESS.'manage/users');
+        Message::flash('不能刪除自己', 'warning')->redirect(APP_ADDRESS.'manage/users');
     }
 
     $user = new User();

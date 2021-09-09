@@ -1,6 +1,6 @@
 <?php
     $root = '../../';
-    $page_title = '忘記密碼';
+    $pageTitle = '忘記密碼';
     include_once($root.'_config/settings.php');
 
     use _models\Auth\User;

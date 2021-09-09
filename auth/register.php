@@ -1,6 +1,6 @@
 <?php
     $root = '../';
-    $page_title = 'Register';
+    $pageTitle = '會員註冊';
     include_once($root.'_config/settings.php');
 
     use _models\Auth\User;

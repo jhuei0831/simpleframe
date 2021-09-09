@@ -81,7 +81,7 @@
                             個人資料
                         </a>
                         <a 
-                            href="#" 
+                            href="<?php echo APP_ADDRESS?>manage/config.php" 
                             class="flex items-center px-4 py-2 text-sm text-gray-700" 
                             :class="{ 'bg-gray-100': activeIndex === 1 }" 
                             role="menuitem" 

@@ -12,8 +12,7 @@
 
 
     if (!Permission::can('users-edit')) {
-        Message::flash('Permission Denied!', 'error');
-        Message::redirect(APP_ADDRESS . 'manage/users');
+        Message::flash('權限不足!', 'error')->redirect(APP_ADDRESS . 'manage/users');
     }
 
     $id = Security::defendFilter($_GET['id']);
@@ -24,6 +23,7 @@
         $user = new User();
         $user->edit($_POST, $id);
     }
+    
     include($root . '_layouts/manage/top.php');
 ?>
 <!-- breadcrumb -->
@@ -34,13 +34,13 @@
     <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">個人資料</h4>
     <form method="post" id="form_profile">
         <input type="hidden" name="type" value="profile">
-        <input type="hidden" name="token" value="<?php echo  TOKEN ?>">
+        <input type="hidden" name="token" value="<?php echo TOKEN ?>">
         <?php if (isset($profile_error) && $profile_error) : ?>
             <?php Message::showFlash(); ?>
             <div class="mb-4">
                 <?php foreach ($gump->get_readable_errors() as $error_message) : ?>
                     <li>
-                        <font color="red"><?php echo  $error_message ?></font>
+                        <font color="red"><?php echo $error_message ?></font>
                     </li>
                 <?php endforeach; ?>
             </div>
@@ -49,7 +49,7 @@
             <label class="block text-sm">
                 <span class="text-gray-700 dark:text-gray-400">名稱</span>
                 <div class="relative text-black focus-within:text-blue-600 dark:focus-within:text-blue-400">
-                    <input name="name" value="<?php echo  isset($_POST['name']) ? $_POST['name'] : $user->name ?>" type="text" class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300" placeholder="Jane Doe" required />
+                    <input name="name" value="<?php echo isset($_POST['name']) ? $_POST['name'] : $user->name ?>" type="text" class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300" placeholder="Jane Doe" required />
                     <div class="mt-2 absolute inset-y-0 right-0 flex items-center mr-3 pointer-events-none">
                         <i class="bi bi-person"></i>
                     </div>
@@ -59,7 +59,7 @@
             <label class="block mt-4 text-sm">
                 <span class="text-gray-700 dark:text-gray-400">電子郵件</span>
                 <div class="relative text-black focus-within:text-blue-600 dark:focus-within:text-blue-400">
-                    <input name="email" value="<?php echo  isset($_POST['email']) ? $_POST['email'] : $user->email ?>" type="text" class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300" placeholder="example@example.com" required />
+                    <input name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : $user->email ?>" type="text" class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300" placeholder="example@example.com" required />
                     <div class="mt-2 absolute inset-y-0 right-0 flex items-center mr-3 pointer-events-none">
                         <i class="bi bi-envelope"></i>
                     </div>
@@ -70,7 +70,7 @@
                 <span class="text-gray-700 dark:text-gray-400">角色</span>
                 <select name="role" class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300">
                     <?php foreach ($roles as $role) : ?>
-                        <option value="<?php echo  $role->id ?>" <?php echo  $user->role == $role->id ? 'selected' : '' ?>><?php echo  $role->name ?></option>
+                        <option value="<?php echo $role->id ?>" <?php echo $user->role == $role->id ? 'selected' : '' ?>><?php echo $role->name ?></option>
                     <?php endforeach; ?>
                 </select>
             </label>
@@ -85,13 +85,13 @@
     <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">密碼重設</h4>
     <form id="form_password" method="post">
         <input type="hidden" name="type" value="password">
-        <input type="hidden" name="token" value="<?php echo  TOKEN ?>">
+        <input type="hidden" name="token" value="<?php echo TOKEN ?>">
         <?php if (isset($password_error) && $password_error) : ?>
             <?php Message::showFlash(); ?>
             <div class="mb-4">
                 <?php foreach ($gump->get_readable_errors() as $error_message) : ?>
                     <li>
-                        <font color="red"><?php echo  $error_message ?></font>
+                        <font color="red"><?php echo $error_message ?></font>
                     </li>
                 <?php endforeach; ?>
             </div>

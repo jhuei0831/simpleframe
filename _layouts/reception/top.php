@@ -8,13 +8,13 @@
 <!DOCTYPE html>
 <html :class="{ 'theme-dark': dark }" lang="zh-TW">
 <head>
-    <?php include_once($root.'_partials/reception/meta.php'); ?>
-    <?php include_once($root.'_partials/reception/css.php'); ?>
-    <title><?php echo isset($page_title) ? $page_title : APP_NAME?></title>
-    <!-- debug bar -->
-    <?php echo (IS_DEBUG === 'TRUE' && in_array($_SERVER["REMOTE_ADDR"], $except_ip_list)) ? $debugbarRenderer->renderHead() : '' ?>
     <!-- webpack -->
     <script src="<?php echo APP_SRC?>dist/bundle.js"></script>
+    <?php include_once($root.'_partials/reception/meta.php'); ?>
+    <?php include_once($root.'_partials/reception/css.php'); ?>
+    <title><?php echo isset($pageTitle) ? $pageTitle.'-'.APP_NAME : APP_NAME?></title>
+    <!-- debug bar -->
+    <?php echo (IS_DEBUG === 'TRUE' && in_array($_SERVER["REMOTE_ADDR"], $except_ip_list)) ? $debugbarRenderer->renderHead() : '' ?>
     <!-- font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

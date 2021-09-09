@@ -24,6 +24,7 @@
 	define("APP_FOLDER", 		$_ENV['APP_FOLDER']);
 	define("APP_NAME", 			$_ENV['APP_NAME']);
 	define("APP_ADDRESS",		APP_PROTOCOL."://".APP_DOMAIN."/".APP_FOLDER."/");
+	define("APP_STATUS", 		strtoupper($_ENV['APP_STATUS']));
 	define("IS_DEBUG", 			strtoupper($_ENV['APP_DEBUG']));
 	define("PASSWORD_SECURE", 	strtoupper($_ENV['AUTH_PASSWORD_SECURITY']));
 	define("EMAIL_VERIFY", 		strtoupper($_ENV['AUTH_EMAIL_VERIFY']));
@@ -31,7 +32,7 @@
 
 	// 例外清單，可以看到錯誤訊息
 	$except_ip_list = array(
-		"127.0.0.1"
+		"127.0.0.1",
 	);
 
 	// 不在清單內的關閉錯誤訊息
@@ -48,6 +49,13 @@
 	define("APP_JS",		APP_SRC."js/");
 	define("APP_FILE",		APP_SRC."file/");
 	define("APP_NODE",		APP_URL."node_modules/");
+
+	// 是否開放網站
+	// if(!in_array($_SERVER["REMOTE_ADDR"], $except_ip_list) && APP_STATUS == 'OFF')
+	// {
+	// 	include_once(APP_URL.'_error/fix.php');
+	// 	exit;
+	// }
 
 	// 載入類別
 	require_once(APP_URL.'_models/autoloader.php');

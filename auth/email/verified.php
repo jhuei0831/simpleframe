@@ -1,6 +1,6 @@
 <?php
     $root = '../../';
-    $page_title = 'Email varified';
+    $pageTitle = 'Email varified';
     include_once($root.'_config/settings.php');
 
     use _models\Auth\Email;

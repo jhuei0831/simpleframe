@@ -12,6 +12,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>404 Not Found</title>
+        <link rel="icon" href="<?php echo APP_IMG?>favicon.ico">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     </head>
     <body>
@@ -27,14 +28,14 @@
                     <img src="https://themichailov.com/img/not-found.svg" alt="Not Found" />
                 </div>
                 <div class="w-full md:w-7/12 text-center md:text-left p-4">
-                    <div class="text-6xl font-medium">404</div>
+                    <div class="text-6xl font-medium">404</div><br>
                     <div class="text-xl md:text-3xl font-medium mb-4">
-                        Oops. This page has gone missing.
+                        頁面不存在
                     </div>
                     <div class="text-lg mb-8">
-                        You may have mistyped the address or the page may have moved.
+                        您可能輸入錯誤的網址或頁面可能已經移動
                     </div>
-                    <a href="<?php echo APP_ADDRESS?>" class="border border-white rounded p-4">Go Home</a>
+                    <a href="<?php echo APP_ADDRESS?>" class="border border-white rounded p-4">返回首頁</a>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 <?php
     $root = '../../';
-    $page_title = '密碼重新設定';
+    $pageTitle = '密碼重新設定';
     include_once($root . '_config/settings.php');
 
     use _models\Auth\Password;

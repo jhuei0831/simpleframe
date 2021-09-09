@@ -43,15 +43,13 @@
             elseif ($gump->errors()) {
                 $error = true;
                 Message::flash('新增失敗，請檢查輸入。', 'error');
-                // Message::redirect(APP_ADDRESS.'manage/roles/edit.php?id='.$id);
             }
             else {
                 $insert = Database::table('roles')->insert(Toolbox::only($valid_data, ['token', 'name']), TRUE);
                 foreach ($valid_data['permission'] as $value) {
                     Database::table('role_has_permissions')->CreateOrUpdate(['permission_id' => $value, 'role_id' => $insert], false);
                 }  
-                Message::flash('新增成功。', 'success');
-                Message::redirect(APP_ADDRESS.'manage/roles');
+                Message::flash('新增成功。', 'success')->redirect(APP_ADDRESS.'manage/roles');
             }
         }
         
@@ -65,12 +63,10 @@
         {
             $check = Database::table('users')->where('role ='.$id)->count();
             if ($check > 0) {
-                Message::flash('此角色尚有使用者使用', 'warning');
-                Message::redirect(APP_ADDRESS.'manage/roles');
+                Message::flash('此角色尚有使用者使用', 'warning')->redirect(APP_ADDRESS.'manage/roles');
             }
             Database::table('roles')->where('id='.$id)->delete();
-            Message::flash('刪除成功，謝謝。', 'success');
-            Message::redirect(APP_ADDRESS.'manage/roles');
+            Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/roles');
         }
         
         /**
@@ -106,7 +102,6 @@
             elseif ($gump->errors()) {
                 $error = true;
                 Message::flash('修改失敗，請檢查輸入。', 'error');
-                // Message::redirect(APP_ADDRESS.'manage/roles/edit.php?id='.$id);
             }
             else {
                 Database::table('roles')->where('id = '.$id)->update(Toolbox::only($valid_data, ['token', 'name']));
@@ -115,8 +110,7 @@
                     $newPermissions[] = ['permission_id' => $value, 'role_id' => $role->id];
                 }  
                 Database::table('role_has_permissions')->CreateOrUpdate($newPermissions, false);
-                Message::flash('修改成功，謝謝。', 'success');
-                Message::redirect(APP_ADDRESS.'manage/roles');
+                Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/roles');
             }
         }
     }

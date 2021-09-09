@@ -1,4 +1,10 @@
 <?php
+    // 是否開放網站
+	if(!in_array($_SERVER["REMOTE_ADDR"], $except_ip_list) && APP_STATUS == 'OFF')
+	{
+		include_once(APP_URL.'_error/fix.php');
+		exit;
+	}
     use DebugBar\StandardDebugBar;
     if (IS_DEBUG === 'TRUE' && in_array($_SERVER["REMOTE_ADDR"], $except_ip_list)) {
         $debugbar = new StandardDebugBar();
@@ -7,13 +13,13 @@
 ?>
 <html lang="zh-TW">
     <head>
+        <!-- webpack -->
+        <script src="<?php echo APP_SRC?>dist/bundle.js"></script>
         <?php include_once($root.'_partials/reception/meta.php'); ?>
         <?php include_once($root.'_partials/reception/css.php'); ?>
-        <title><?php echo isset($page_title) ? $page_title : APP_NAME?></title>
+        <title><?php echo isset($pageTitle) ? $pageTitle.'-'.APP_NAME : APP_NAME?></title>
         <!-- debug bar -->
         <?php echo IS_DEBUG === 'TRUE' ? $debugbarRenderer->renderHead() : '' ?>
-        <!-- webpack -->
-        <script src="<?php echo APP_SRC?>dist/bundle.js" defer></script>
         <!-- font -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

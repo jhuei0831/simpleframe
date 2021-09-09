@@ -45,12 +45,10 @@
 
                 if (!$gump->errors()) {
                     $update = Database::table('users')->where("id = '{$id}'")->update($valid_data);
-                    Message::flash('修改成功，謝謝。', 'success');
-                    Message::redirect(APP_ADDRESS . 'manage/users');
+                    Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users');
                 } else {
                     $profile_error = true;
                     Message::flash('修改失敗，請檢查輸入。', 'error');
-                    // Message::redirect(APP_ADDRESS.'manage/users/edit.php?id='.$id);
                 }
             } else {
                 $password_error = false;
@@ -76,13 +74,11 @@
                 } elseif ($gump->errors()) {
                     $password_error = true;
                     Message::flash('修改失敗，請檢查輸入。', 'error');
-                    // Message::redirect(APP_ADDRESS.'manage/users/edit.php?id='.$id); 
                 } else {
                     unset($valid_data['password_confirm']);
                     $valid_data['password'] = md5($valid_data['password']);
                     $update = Database::table('users')->where("id = '{$id}'")->update($valid_data);
-                    Message::flash('修改成功，謝謝。', 'success');
-                    Message::redirect(APP_ADDRESS . 'manage/users');
+                    Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users');
                 }
             }
         }      
@@ -96,8 +92,7 @@
         public function delete(string $id): void
         {
             Database::table('users')->where('id='.$id)->delete();
-            Message::flash('刪除成功，謝謝。', 'success');
-            Message::redirect(APP_ADDRESS.'manage/users');
+            Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/users');
         }
 
         /**
@@ -111,18 +106,15 @@
             $data = Security::defendFilter($request);
             $user = Database::table('users')->where('email ="' . $data['email'] . '" and password ="' . md5($data['password']) . '"')->first();
             if ($data['checkword'] != $_SESSION['check_word']) {
-                Message::flash('驗證碼錯誤', 'error');
-                Message::redirect(APP_ADDRESS . 'auth/login.php');
+                Message::flash('驗證碼錯誤', 'error')->redirect(APP_ADDRESS . 'auth/login.php');
             } 
             elseif ($user && empty($user->email_varified_at) && EMAIL_VERIFY === 'TRUE') {
                 $_SESSION['USER_ID'] = $user->id;
-                Message::flash('登入成功，尚未完成信箱驗證', 'warning');
-                Message::redirect(APP_ADDRESS . 'auth/email/verified.php');
+                Message::flash('登入成功，尚未完成信箱驗證', 'warning')->redirect(APP_ADDRESS . 'auth/email/verified.php');
             } 
             elseif ($user) {
                 $_SESSION['USER_ID'] = $user->id;
-                Message::flash('登入成功', 'success');
-                Message::redirect(APP_ADDRESS);
+                Message::flash('登入成功', 'success')->redirect(APP_ADDRESS);
             } 
             else {
                 Message::flash('登入失敗', 'error');
@@ -138,8 +130,7 @@
         {
             unset($_SESSION['USER_ID']);
 
-            Message::flash('登出成功', 'success');
-            Message::redirect(APP_ADDRESS.'auth/login.php');
+            Message::flash('登出成功', 'success')->redirect(APP_ADDRESS.'auth/login.php');
         }
         
         /**
@@ -173,12 +164,10 @@
                     'token_updated_at' => date('Y-m-d H:i:s'), 
                     'password_updated_at' => isset($passwordResets->password_updated_at) ? $passwordResets->password_updated_at : $user->created_at, 
                 ]);
-                Message::flash('請前往註冊信箱收取密碼重設信，謝謝。', 'success');
-                Message::redirect(APP_ADDRESS.'auth/password/password_forgot.php');
+                Message::flash('請前往註冊信箱收取密碼重設信，謝謝。', 'success')->redirect(APP_ADDRESS.'auth/password/password_forgot.php');
             }
             else{
-                Message::flash('獲取信件失敗', 'error');
-                Message::redirect(APP_ADDRESS.'auth/password/password_forgot.php');
+                Message::flash('獲取信件失敗', 'error')->redirect(APP_ADDRESS.'auth/password/password_forgot.php');
             }
         }
 
@@ -246,12 +235,10 @@
                     $name = $valid_data['name'];
                     include_once('./email/content.php');
                     Mail::send($subject, $message, $valid_data['email'], $valid_data['name']);
-                    Message::flash('註冊成功，請前往註冊信箱收取認證信。', 'success');
-                    Message::redirect(APP_ADDRESS.'auth/email/verified.php');
+                    Message::flash('註冊成功，請前往註冊信箱收取認證信。', 'success')->redirect(APP_ADDRESS.'auth/email/verified.php');
                 }
                 else {
-                    Message::flash('註冊成功。', 'success');
-                    Message::redirect(APP_ADDRESS);
+                    Message::flash('註冊成功。', 'success')->redirect(APP_ADDRESS);
                 }
             }
         }

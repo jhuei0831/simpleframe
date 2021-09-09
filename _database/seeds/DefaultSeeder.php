@@ -2,7 +2,6 @@
 
 use Phinx\Seed\AbstractSeed;
 use Ramsey\Uuid\Uuid;
-
 class DefaultSeeder extends AbstractSeed
 {
     /**
@@ -53,5 +52,13 @@ class DefaultSeeder extends AbstractSeed
         ];
         
         $this->table('users')->insert($admin)->saveData();
+
+        // 建立設定
+        $config = [
+            'id' => 'simpleframe',
+            'isOpen' => 1
+        ];
+        
+        $this->table('configs')->insert($config)->saveData();
     }
 }

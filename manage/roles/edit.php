@@ -12,8 +12,7 @@
     use Kerwin\Core\Support\Facades\Permission;
 
     if (!Permission::can('roles-edit')) {
-        Message::flash('Permission Denied!', 'error');
-        Message::redirect(APP_ADDRESS.'manage/roles');
+        Message::flash('權限不足!', 'error')->redirect(APP_ADDRESS.'manage/roles');
     }
 
     $role = Database::table('roles')->find(Security::defendFilter($_GET['id']));
