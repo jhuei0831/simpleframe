@@ -2,10 +2,6 @@
     font-size: 20px;
 }
 
-.swal2-container {
-    top: 10% !important;
-}
-
 .toggle-path {
     background-color: pink;
     transition: background 0.3s ease-in-out;

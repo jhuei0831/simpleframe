@@ -20,8 +20,8 @@
     $roles = Database::table('roles')->get();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $user = new User();
-        $user->edit($_POST, $id);
+        $userController = new User();
+        $userController->edit($_POST, $id);
     }
     
     include($root . '_layouts/manage/top.php');
@@ -115,6 +115,7 @@
                     送出
                 </button>
             </div>
+        </div>
     </form>
 </div>
 

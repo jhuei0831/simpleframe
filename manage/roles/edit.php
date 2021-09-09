@@ -58,15 +58,14 @@
 
             <label class="block mt-4 text-sm">
                 <span class="text-gray-700 dark:text-gray-400">權限</span>
-                <div class="flex flex-wrap">
-                
+                <div class="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
                 <?php foreach($permissions as $permission): ?>
                     <label class="mt-4 mr-2 items-center dark:text-gray-400">
                         <input
                             type="checkbox" name="permission[]" value="<?php echo $permission->id?>" <?php echo in_array($permission->id, $roleHasPermissions) ? 'checked' : '';?>
                             class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         />
-                        <span class="ml-2"><?php echo $permission->name?></span>
+                        <span class="ml-2"><?php echo _models\Variable::$permission[$permission->name]?></span>
                     </label>
                 <?php endforeach; ?>
                 </div>
