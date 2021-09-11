@@ -21,7 +21,7 @@
                         <a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900">¯\_(ツ)_/¯</a>
                     </nav>
                     <div class="hidden md:block items-center justify-end">
-                    <?php if(is_null($_SESSION['USER_ID'])): ?>
+                    <?php if(is_null(Kerwin\Core\Support\Facades\Session::get('USER_ID'))): ?>
                         <a href="<?php echo APP_ADDRESS?>auth/login.php" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">登入</a>
                         <a href="<?php echo APP_ADDRESS?>auth/register.php" class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">註冊</a>
                     <?php else: ?>
@@ -110,7 +110,7 @@
                     </div>
                     <div class="py-6 px-5 space-y-6">
                         <div>
-                            <?php if(is_null($_SESSION['USER_ID'])): ?>
+                            <?php if(is_null(Kerwin\Core\Support\Facades\Session::get('USER_ID'))): ?>
                             <a href="<?php echo APP_ADDRESS?>auth/register.php" class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
                                 註冊
                             </a>

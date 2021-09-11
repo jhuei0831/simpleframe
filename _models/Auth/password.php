@@ -7,6 +7,7 @@
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Security;
+    use Kerwin\Core\Support\Facades\Session;
 
     class Password
     {        
@@ -98,7 +99,7 @@
         public function resetVerify($root='../../'): void
         {
             // 禁止已登入或連結錯誤訪問
-            if (!is_null($_SESSION['USER_ID']) && empty($_GET['auth']) && empty($_GET['id'])) {
+            if (!is_null(Session::get('USER_ID')) && empty($_GET['auth']) && empty($_GET['id'])) {
                 include_once($root.'_error/404.php');
                 exit;
             }

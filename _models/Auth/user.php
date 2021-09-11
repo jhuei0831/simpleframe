@@ -10,6 +10,7 @@
     use Kerwin\Core\Support\Facades\Security;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
+    use Kerwin\Core\Support\Facades\Session;
 
     class User 
     {                          
@@ -168,15 +169,15 @@
         {
             $data = Security::defendFilter($request);
             $user = Database::table('users')->where('email ="' . $data['email'] . '" and password ="' . md5($data['password']) . '"')->first();
-            if ($data['checkword'] != $_SESSION['check_word']) {
+            if ($data['checkword'] != Session::get('check_word')) {
                 Message::flash('驗證碼錯誤', 'error')->redirect(APP_ADDRESS . 'auth/login.php');
             } 
             elseif ($user && empty($user->email_varified_at) && EMAIL_VERIFY === 'TRUE') {
-                $_SESSION['USER_ID'] = $user->id;
+                Session::set('USER_ID', $user->id);
                 Message::flash('登入成功，尚未完成信箱驗證', 'warning')->redirect(APP_ADDRESS . 'auth/email/verified.php');
             } 
             elseif ($user) {
-                $_SESSION['USER_ID'] = $user->id;
+                Session::set('USER_ID', $user->id);
                 Message::flash('登入成功', 'success')->redirect(APP_ADDRESS);
             } 
             else {
@@ -191,8 +192,7 @@
          */
         public function logout(): void
         {
-            unset($_SESSION['USER_ID']);
-
+            Session::remove('USER_ID');
             Message::flash('登出成功', 'success')->redirect(APP_ADDRESS.'auth/login.php');
         }
         
@@ -291,7 +291,7 @@
                     // 取得剛剛註冊的帳號ID
                     $insertId = Database::table('users')->where("email = '{$valid_data['email']}'")->first();
                     $id = $insertId->id;
-                    $_SESSION['USER_ID'] = $id;
+                    Session::set('USER_ID', $id);
                     if (EMAIL_VERIFY==='TRUE') {
                         $name = $valid_data['name'];
                         include_once('./email/content.php');

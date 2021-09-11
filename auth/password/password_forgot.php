@@ -5,9 +5,10 @@
 
     use _models\Auth\User;
     use Kerwin\Core\Support\Facades\Message;
+    use Kerwin\Core\Support\Facades\Session;
 
     // 已登入不能訪問此頁面
-    if (!is_null($_SESSION['USER_ID'])) {
+    if (!is_null(Session::get('USER_ID'))) {
         include_once($root.'_error/404.php');
         exit;
     }

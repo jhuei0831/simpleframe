@@ -5,8 +5,9 @@
 
     use _models\Auth\User;
     use Kerwin\Core\Support\Facades\Message;
+    use Kerwin\Core\Support\Facades\Session;
 
-    if (!is_null($_SESSION['USER_ID'])) {
+    if (!is_null(Session::get('USER_ID'))) {
         Message::redirect(APP_ADDRESS);
     }
     

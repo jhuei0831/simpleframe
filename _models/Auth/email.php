@@ -7,6 +7,7 @@
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Security;
+    use Kerwin\Core\Support\Facades\Session;
 
     class Email
     {                
@@ -33,9 +34,9 @@
                 Message::flash('連結有問題，請確認或重新申請認證信，謝謝。', 'warning')->redirect(APP_ADDRESS.'auth/email/verified.php');
             }
             else{
-                $_SESSION['USER_ID'] = $user->id;
+                Session::set('USER_ID', $user->id);
                 Database::table('users')
-                    ->where("id = '{$_SESSION['USER_ID']}'")
+                    ->where("id = '{$user->id}'")
                     ->update([
                         'token' => TOKEN, 
                         'email_varified_at' => date('Y-m-d H:i:s'), 
@@ -55,14 +56,14 @@
         {
             $data = Security::defendFilter($request);
             $authCode = Security::defendFilter(uniqid(mt_rand()));
-            $user = Database::table('users')->where("id = '{$_SESSION['USER_ID']}'")->first();
+            $id = Session::get('USER_ID');
+            $user = Database::table('users')->where("id = '{$id}'")->first();
             $name = $user->name;
-            $id = $_SESSION['USER_ID'];
             /* 信件範本 */
             include_once('./content.php');
             $mail = Mail::send($subject, $message, $user->email, $user->name);
             if ($mail) {
-                Database::table('users')->where("id = '{$_SESSION['USER_ID']}'")->update(['token' => $data['token'], 'auth_code' => $authCode, 'updated_at' => date('Y-m-d H:i:s')]);
+                Database::table('users')->where("id = '{$id}'")->update(['token' => $data['token'], 'auth_code' => $authCode, 'updated_at' => date('Y-m-d H:i:s')]);
                 Message::flash('請前往註冊信箱收取認證信，謝謝。', 'success')->redirect(APP_ADDRESS.'auth/email/verified.php');
             }
             else {

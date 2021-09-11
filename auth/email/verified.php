@@ -6,8 +6,9 @@
     use _models\Auth\Email;
     use Kerwin\Core\Support\Facades\Auth;
     use Kerwin\Core\Support\Facades\Message;
+    use Kerwin\Core\Support\Facades\Session;
 
-    if (is_null($_SESSION['USER_ID']) || !empty(Auth::user()->email_varified_at) || EMAIL_VERIFY==='FALSE') {
+    if (is_null(Session::get('USER_ID')) || !empty(Auth::user()->email_varified_at) || EMAIL_VERIFY==='FALSE') {
         include_once($root.'_error/404.php');
         exit;
     }

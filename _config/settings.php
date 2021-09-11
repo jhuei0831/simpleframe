@@ -3,19 +3,20 @@
 	session_start();
 	// 自動載入 Composer 的套件
 	require_once('autoload.php');
-	
+	use Kerwin\Core\Support\Facades\Session;
+
 	//設定時區
 	date_default_timezone_set($_ENV['APP_TIMEZONE']);
 
 	// 產生驗證CRSF的Token
-	if(!isset($_SESSION['token']))
+	if(!Session::has('token'))
 	{
-		$_SESSION['token'] = hash('sha256', uniqid());
+		Session::set('token', hash('sha256', uniqid()));
 	}
 
 	// 使用者資訊
-	if (empty($_SESSION['USER_ID'])) {
-		$_SESSION['USER_ID'] = NULL;
+	if (!Session::has('USER_ID')) {
+		Session::set('USER_ID', NULL);
 	}
 
 	// 定義常數
