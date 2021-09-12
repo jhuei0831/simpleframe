@@ -4,8 +4,6 @@
 
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Auth;
-    use Kerwin\Core\Support\Facades\Session;
-    var_dump(Session::has('USER_ID'));
 
     include($root.'_layouts/reception/top.php');
     Message::showFlash();

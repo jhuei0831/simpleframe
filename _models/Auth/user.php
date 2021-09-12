@@ -155,7 +155,7 @@
          */
         public function delete(string $id): void
         {
-            Database::table('users')->where('id='.$id)->delete();
+            Database::table('users')->where("id='{$id}'")->delete();
             Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/users');
         }
 
@@ -169,8 +169,8 @@
         {
             $data = Security::defendFilter($request);
             $user = Database::table('users')->where('email ="' . $data['email'] . '" and password ="' . md5($data['password']) . '"')->first();
-            if ($data['checkword'] != Session::get('check_word')) {
-                Message::flash('驗證碼錯誤', 'error')->redirect(APP_ADDRESS . 'auth/login.php');
+            if ($data['captcha'] != Session::get('captcha')) {
+                Message::flash('驗證碼錯誤'.Session::get('captcha'), 'error')->redirect(APP_ADDRESS . 'auth/login.php');
             } 
             elseif ($user && empty($user->email_varified_at) && EMAIL_VERIFY === 'TRUE') {
                 Session::set('USER_ID', $user->id);

@@ -21,7 +21,7 @@
 ?>
 <script>
     function refresh_code() {
-        document.getElementById("imgcode").src = "<?php echo APP_SRC ?>captcha/captcha.php?" + Date.now();
+        document.getElementById("imgcode").src = "<?php echo APP_URL ?>_partials/captcha.php?" + Date.now();
     }
 </script>
 <div class="flex h-full items-center justify-center bg-gray-50 pb-32 px-4 sm:px-6 lg:px-8" x-data={loading:false}>
@@ -50,9 +50,9 @@
             <div>
                 <div class="mt-1 flex rounded-md shadow-sm">
                     <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
-                        <img id="imgcode" src="<?php echo APP_SRC ?>captcha/captcha.php" onclick="refresh_code()" />
+                        <img id="imgcode" src="<?php echo APP_URL ?>_partials/captcha.php" onclick="refresh_code()" />
                     </span>
-                    <input type="text" name="checkword" id="checkword" class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300" autocomplete="off" required placeholder="請輸入左方圖片驗證碼">
+                    <input type="text" name="captcha" id="captcha" class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300" autocomplete="off" required placeholder="請輸入左方圖片驗證碼">
                 </div>
                 <p class="mt-2 text-sm text-gray-500" id="email-description">可以點擊圖片更換驗證碼</p>
             </div>

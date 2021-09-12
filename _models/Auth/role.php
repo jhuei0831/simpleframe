@@ -65,7 +65,7 @@
             if ($check > 0) {
                 Message::flash('此角色尚有使用者使用', 'warning')->redirect(APP_ADDRESS.'manage/roles');
             }
-            Database::table('roles')->where('id='.$id)->delete();
+            Database::table('roles')->where("id='{$id}'")->delete();
             Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/roles');
         }
         
