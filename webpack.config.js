@@ -5,6 +5,7 @@ module.exports = {
     // 輸入:要加進webpack的檔案
     entry: [
         './src/js/index',
+        './src/css/alert.css',
         './src/css/tailwind.generated.css',
         './src/css/manage.css',
         './src/css/reception.css',

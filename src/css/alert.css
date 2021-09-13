@@ -1,0 +1,27 @@
+.success {
+    border:#CDEBD5 2px solid !important;
+    background-color: #EBF7EE !important;
+    box-shadow: none !important;
+}
+
+.error {
+    border:#F6CDC4 2px solid !important;
+    background-color: #FCEDEA !important;
+    box-shadow: none !important;
+}
+
+.warning {
+    border:#FAE0B7 2px solid !important;
+    background-color: #FEF7EA !important;
+    box-shadow: none !important;
+}
+
+.info {
+    border:#B6D4F3 2px solid !important;
+    background-color: #E5EFFA !important;
+    box-shadow: none !important;
+}
+
+#swal2-title {
+    text-align: center !important;
+}
