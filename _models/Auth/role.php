@@ -18,13 +18,14 @@
          */
         public function create(array $request): void
         {
+            global $errors;
+
             $data = Security::defendFilter($request);
             $gump = new GUMP();
 
             // 輸入驗證
             $gump->validation_rules([
                 'name'    => 'required|max_len,30',
-                'permission' => 'required'
             ]);
 
             // 輸入格式化
@@ -32,24 +33,28 @@
                 'name'    => 'trim|sanitize_string',
             ]);
 
+            // 錯誤訊息
+            $gump->set_fields_error_messages([
+                'name'    => ['required' => '名稱必填', 'max_len' => '名稱必須小於或等於30個字元'],
+            ]);
+
             $valid_data = $gump->run($data);
 
-            $checkRole = Database::table('roles')->where("name = '".$valid_data['name']."'")->count();
+            if (!$gump->errors()) {
+                $checkRole = Database::table('roles')->where("name = '".$valid_data['name']."'")->count();
 
-            if ($checkRole > 0) {
-                $error = true;
-                Message::flash('名稱已存在。', 'error');
-            }
-            elseif ($gump->errors()) {
-                $error = true;
-                Message::flash('新增失敗，請檢查輸入。', 'error');
-            }
-            else {
+                if ($checkRole > 0) {
+                    Message::flash('名稱已存在。', 'error')->redirect(APP_ADDRESS.'manage/roles/create.php');
+                }
                 $insert = Database::table('roles')->insert(Toolbox::only($valid_data, ['token', 'name']), TRUE);
                 foreach ($valid_data['permission'] as $value) {
-                    Database::table('role_has_permissions')->CreateOrUpdate(['permission_id' => $value, 'role_id' => $insert], false);
+                    Database::table('role_has_permissions')->createOrUpdate(['permission_id' => $value, 'role_id' => $insert], false);
                 }  
                 Message::flash('新增成功。', 'success')->redirect(APP_ADDRESS.'manage/roles');
+            }
+            else {
+                $errors = $gump->get_readable_errors();
+                Message::flash('新增失敗，請檢查輸入。', 'error');
             }
         }
         
@@ -77,6 +82,8 @@
          */
         public function edit(array $request, object $role): void
         {
+            global $errors;
+
             $id = Security::defendFilter($_GET['id']);
             $data = Security::defendFilter($request);
             $gump = new GUMP();
@@ -91,26 +98,34 @@
                 'name'    => 'trim|sanitize_string',
             ]);
 
+            // 錯誤訊息
+            $gump->set_fields_error_messages([
+                'name'    => ['required' => '名稱必填', 'max_len' => '名稱必須小於或等於30個字元'],
+            ]);
+
             $valid_data = $gump->run($data);
 
-            $checkRole = Database::table('roles')->where('name ="'.$valid_data['name'].'"')->count();
+            if (!$gump->errors()) {
+                $checkRole = Database::table('roles')->where('name ="'.$valid_data['name'].'"')->count();
 
-            if ($checkRole > 0 && $role->name != $valid_data['name']) {
-                $error = true;
-                Message::flash('名稱已存在。', 'error');
-            }
-            elseif ($gump->errors()) {
-                $error = true;
-                Message::flash('修改失敗，請檢查輸入。', 'error');
-            }
-            else {
+                if ($checkRole > 0 && $role->name != $valid_data['name']) {
+                    Message::flash('名稱已存在。', 'error')->redirect(APP_ADDRESS.'manage/roles/edit.php?id='.$id);
+                }
+
                 Database::table('roles')->where('id = '.$id)->update(Toolbox::only($valid_data, ['token', 'name']));
                 Database::table('role_has_permissions')->where('role_id ='.$role->id)->delete();
-                foreach ($valid_data['permission'] as $value) {
-                    $newPermissions[] = ['permission_id' => $value, 'role_id' => $role->id];
-                }  
-                Database::table('role_has_permissions')->CreateOrUpdate($newPermissions, false);
+                if (isset($valid_data['permission'])) {
+                    foreach ($valid_data['permission'] as $value) {
+                        $newPermissions[] = ['permission_id' => $value, 'role_id' => $role->id];
+                    }  
+                    Database::table('role_has_permissions')->createOrUpdate($newPermissions, false);
+                }
                 Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/roles');
+            }
+            
+            else {
+                $errors = $gump->get_readable_errors();
+                Message::flash('修改失敗，請檢查輸入。', 'error');
             }
         }
     }

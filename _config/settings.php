@@ -1,9 +1,9 @@
 <?php 
 	ini_set('session.cookie_lifetime', 0);
-	session_start();
 	// 自動載入 Composer 的套件
 	require_once('autoload.php');
 	use Kerwin\Core\Support\Facades\Session;
+	session_start();
 
 	//設定時區
 	date_default_timezone_set($_ENV['APP_TIMEZONE']);

@@ -32,6 +32,7 @@
                     >
                         <th class="px-4 py-3">名稱</th>
                         <th class="px-4 py-3">電子信箱</th>
+                        <th class="px-4 py-3">角色</th>
                         <th class="px-4 py-3">建立時間</th>
                         <th class="px-4 py-3">功能</th>
                     </tr>
@@ -48,6 +49,9 @@
         },
         {
             "data": "email"
+        },
+        {
+            "data": "role"
         },
         {
             "data": "created_at"

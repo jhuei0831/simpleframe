@@ -24,6 +24,7 @@
         $userController->edit($_POST, $id);
     }
     
+    Message::showFlash();
     include($root . '_layouts/manage/top.php');
 ?>
 <!-- breadcrumb -->
@@ -31,20 +32,13 @@
 
 <div class="container px-6 mx-auto grid">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">編輯使用者</h2>
+    <div class="mb-4">
+        <?php include_once($root.'_partials/error_message.php'); ?>
+    </div>
     <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">個人資料</h4>
     <form method="post" id="form_profile">
         <input type="hidden" name="type" value="profile">
         <input type="hidden" name="token" value="<?php echo TOKEN ?>">
-        <?php if (isset($profile_error) && $profile_error) : ?>
-            <?php Message::showFlash(); ?>
-            <div class="mb-4">
-                <?php foreach ($gump->get_readable_errors() as $error_message) : ?>
-                    <li>
-                        <font color="red"><?php echo $error_message ?></font>
-                    </li>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
         <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <label class="block text-sm">
                 <span class="text-gray-700 dark:text-gray-400">名稱</span>
@@ -86,16 +80,6 @@
     <form id="form_password" method="post">
         <input type="hidden" name="type" value="password">
         <input type="hidden" name="token" value="<?php echo TOKEN ?>">
-        <?php if (isset($password_error) && $password_error) : ?>
-            <?php Message::showFlash(); ?>
-            <div class="mb-4">
-                <?php foreach ($gump->get_readable_errors() as $error_message) : ?>
-                    <li>
-                        <font color="red"><?php echo $error_message ?></font>
-                    </li>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
         <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <label class="block text-sm">
                 <span class="text-gray-700 dark:text-gray-400">密碼</span>

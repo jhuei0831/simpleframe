@@ -20,6 +20,7 @@
         $role->create($_POST);
     }
 
+    Message::showFlash();
     include($root.'_layouts/manage/top.php');
 ?>
 <!-- breadcrumb -->
@@ -29,14 +30,9 @@
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">新增角色</h2>
     <form method="post" id="form_role">
         <input type="hidden" name="token" value="<?php echo TOKEN?>">
-        <?php if (isset($error) && $error): ?>
-            <?php Message::showFlash();?>
-            <div class="mb-4">
-                <?php foreach($gump->get_readable_errors() as $error_message): ?>
-                    <li><font color="red"><?php echo $error_message?></font></li>
-                <?php endforeach; ?>
-            </div>    
-        <?php endif; ?>
+        <div class="mb-4">
+            <?php include_once($root.'_partials/error_message.php'); ?>
+        </div>    
         <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <label class="block text-sm">
                 <span class="text-gray-700 dark:text-gray-400">名稱</span>
@@ -54,17 +50,14 @@
 
             <label class="block mt-4 text-sm">
                 <span class="text-gray-700 dark:text-gray-400">權限</span>
-                <div class="flex flex-wrap">
-                
-                <?php foreach($permissions as $permission): ?>
+                <div class="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+                    <?php foreach($permissions as $permission): ?>
                     <label class="mt-4 mr-2 items-center dark:text-gray-400">
-                        <input
-                            type="checkbox" name="permission[]" value="<?php echo $permission->id?>"
-                            class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                        />
-                        <span class="ml-2"><?php echo $permission->name?></span>
+                        <input type="checkbox" name="permission[]" value="<?php echo $permission->id?>"
+                            class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" />
+                        <span class="ml-2"><?php echo _models\Variable::$permission[$permission->name]?></span>
                     </label>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
                 </div>
             </label>
             <div class="flex justify-end">

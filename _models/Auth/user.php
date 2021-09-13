@@ -22,7 +22,7 @@
          */
         public function create(array $request): void
         {
-            global $errors, $gump;
+            global $errors;
 
             $data = Security::defendFilter($request);
             $gump = new GUMP();
@@ -44,8 +44,16 @@
                 'password_confirm'  => 'trim',
             ]);
 
+            // 錯誤訊息
+            $gump->set_fields_error_messages([
+                'name'              => ['required' => '名稱必填', 'max_len' => '名稱必須小於或等於30個字元'],
+                'email'             => ['required' => '電子郵件必填', 'valid_email' => '必須符合電子郵件格式'],
+                'role'              => ['required' => '角色必填'],
+                'password'          => ['required' => '密碼必填', 'max_len' => '密碼必須小於等於30個字元', 'min_len' => '密碼必須大於等於8個字元'],
+                'password_confirm'  => ['required' => '確認密碼必填', 'max_len' => '確認密碼必須小於等於30個字元', 'min_len' => '確認密碼必須大於等於8個字元'],
+            ]);
+
             $valid_data = $gump->run($data);
-            $errors = [];
 
             if (!$gump->errors()) {
                 $check_user = Database::table('users')->where('email ="'.$valid_data['email'].'"')->first();
@@ -72,7 +80,7 @@
                     Message::flash('新增成功。', 'success')->redirect(APP_ADDRESS.'manage/users');
                 }
             } else {
-                $errors[] = $gump->get_readable_errors();
+                $errors = $gump->get_readable_errors();
                 Message::flash('新增失敗，請檢查輸入', 'error');
             }
         }
@@ -86,9 +94,10 @@
          */
         public function edit(array $request, string $id): void
         {
+            global $errors;
+
             $data = Security::defendFilter($request);
             if ($data['type'] == 'profile') {
-                $profile_error = false;
                 unset($data['type']);
                 $gump = new GUMP();
 
@@ -105,17 +114,23 @@
                     'email'   => 'trim|sanitize_email',
                 ]);
 
+                // 錯誤訊息
+                $gump->set_fields_error_messages([
+                    'name'              => ['required' => '名稱必填', 'max_len' => '名稱必須小於或等於30個字元'],
+                    'email'             => ['required' => '電子郵件必填', 'valid_email' => '必須符合電子郵件格式'],
+                    'role'              => ['required' => '角色必填'],
+                ]);
+
                 $valid_data = $gump->run($data);
 
                 if (!$gump->errors()) {
-                    $update = Database::table('users')->where("id = '{$id}'")->update($valid_data);
+                    Database::table('users')->where("id = '{$id}'")->update($valid_data);
                     Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users');
                 } else {
-                    $profile_error = true;
+                    $errors = $gump->get_readable_errors();
                     Message::flash('修改失敗，請檢查輸入。', 'error');
                 }
             } else {
-                $password_error = false;
                 unset($data['type']);
                 $gump = new GUMP();
 
@@ -123,6 +138,12 @@
                 $gump->validation_rules([
                     'password'    => 'required|max_len,30|min_len,8',
                     'password_confirm'    => 'required|max_len,30|min_len,8',
+                ]);
+
+                // 錯誤訊息
+                $gump->set_fields_error_messages([
+                    'password'          => ['required' => '密碼必填', 'max_len' => '密碼必須小於等於30個字元', 'min_len' => '密碼必須大於等於8個字元'],
+                    'password_confirm'  => ['required' => '確認密碼必填', 'max_len' => '確認密碼必須小於等於30個字元', 'min_len' => '確認密碼必須大於等於8個字元'],
                 ]);
 
                 // 輸入格式化
@@ -133,15 +154,14 @@
                 $valid_data = $gump->run($data);
 
                 if ($data['password'] != $data['password_confirm']) {
-                    $password_error = true;
                     Message::flash('密碼要和確認密碼相同!。', 'error');
                 } elseif ($gump->errors()) {
-                    $password_error = true;
+                    $errors = $gump->get_readable_errors();
                     Message::flash('修改失敗，請檢查輸入。', 'error');
                 } else {
                     unset($valid_data['password_confirm']);
                     $valid_data['password'] = md5($valid_data['password']);
-                    $update = Database::table('users')->where("id = '{$id}'")->update($valid_data);
+                    Database::table('users')->where("id = '{$id}'")->update($valid_data);
                     Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users');
                 }
             }
@@ -219,7 +239,7 @@
             include_once('./content.php');
             $mail = Mail::send($subject, $message, $user->email, $user->name);
             if ($mail) {
-                Database::table('password_resets')->CreateOrUpdate([
+                Database::table('password_resets')->createOrUpdate([
                     'token' => $data['token'], 
                     'id' => $id, 
                     'password' => isset($passwordResets->password) ? $passwordResets->password : json_encode([$user->password]),
@@ -242,7 +262,7 @@
          */
         public function register(array $request): void
         {
-            global $errors, $gump;
+            global $errors;
             $data = Security::defendFilter($request);
             $gump = new GUMP();
 
@@ -262,8 +282,16 @@
                 'password_confirm'   => 'trim',
             ]);
 
+            // 錯誤訊息
+            $gump->set_fields_error_messages([
+                'name'              => ['required' => '名稱必填', 'max_len' => '名稱必須小於或等於30個字元'],
+                'email'             => ['required' => '電子郵件必填', 'valid_email' => '必須符合電子郵件格式'],
+                'role'              => ['required' => '角色必填'],
+                'password'          => ['required' => '密碼必填', 'max_len' => '密碼必須小於等於30個字元', 'min_len' => '密碼必須大於等於8個字元'],
+                'password_confirm'  => ['required' => '確認密碼必填', 'max_len' => '確認密碼必須小於等於30個字元', 'min_len' => '確認密碼必須大於等於8個字元'],
+            ]);
+
             $valid_data = $gump->run($data);
-            $errors = [];
 
             if (!$gump->errors()) {
                 $check_user = Database::table('users')->where('email ="'.$valid_data['email'].'"')->first();
@@ -287,11 +315,8 @@
                     $valid_data['id'] = Toolbox::UUIDv4();
                     $valid_data['role'] = 2;
                     $valid_data['auth_code'] = $authCode;
-                    $insert = Database::table('users')->insert($valid_data, TRUE);
-                    // 取得剛剛註冊的帳號ID
-                    $insertId = Database::table('users')->where("email = '{$valid_data['email']}'")->first();
-                    $id = $insertId->id;
-                    Session::set('USER_ID', $id);
+                    Database::table('users')->insert($valid_data);
+                    Session::set('USER_ID', $valid_data['id']);
                     if (EMAIL_VERIFY==='TRUE') {
                         $name = $valid_data['name'];
                         include_once('./email/content.php');
@@ -303,7 +328,7 @@
                     }
                 }
             } else {
-                $errors[] = $gump->get_readable_errors();
+                $errors = $gump->get_readable_errors();
                 Message::flash('註冊失敗，請檢查輸入', 'error');
             }
         }

@@ -24,6 +24,7 @@
         $roleController->edit($_POST, $role);
     }
 
+    Message::showFlash();
     include($root.'_layouts/manage/top.php');
 ?>
 <!-- breadcrumb -->
@@ -33,14 +34,9 @@
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">編輯角色</h2>
     <form method="post" id="form_role">
         <input type="hidden" name="token" value="<?php echo TOKEN?>">
-        <?php if (isset($error) && $error): ?>
-            <?php Message::showFlash();?>
-            <div class="mb-4">
-                <?php foreach($gump->get_readable_errors() as $error_message): ?>
-                    <li><font color="red"><?php echo $error_message?></font></li>
-                <?php endforeach; ?>
-            </div>    
-        <?php endif; ?>
+        <div class="mb-4">
+            <?php include_once($root.'_partials/error_message.php'); ?>
+        </div>    
         <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <label class="block text-sm">
                 <span class="text-gray-700 dark:text-gray-400">名稱</span>
