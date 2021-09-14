@@ -27,7 +27,6 @@
             <table id="table" class="whitespace-no-wrap row-border hover">
                 <thead>
                     <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
-                        <th class="px-4 py-3">ID</th>
                         <th class="px-4 py-3">名稱</th>
                         <th class="px-4 py-3">建立時間</th>
                         <th class="px-4 py-3">功能</th>
@@ -40,9 +39,6 @@
 <script type="text/javascript">
     let url = "ajax_roles.php";
     let columns = [ 
-        {
-            "data": "id"
-        },
         {
             "data": "name"
         },

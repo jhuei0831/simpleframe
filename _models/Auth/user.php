@@ -86,6 +86,18 @@
         }
 
         /**
+         * 使用者刪除
+         *
+         * @param  string $id
+         * @return void
+         */
+        public function delete(string $id): void
+        {
+            Database::table('users')->where("id='{$id}'")->delete();
+            Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/users');
+        }
+
+        /**
          * 使用者修改
          *
          * @param  array $request
@@ -165,19 +177,7 @@
                     Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users');
                 }
             }
-        }      
-        
-        /**
-         * 使用者刪除
-         *
-         * @param  string $id
-         * @return void
-         */
-        public function delete(string $id): void
-        {
-            Database::table('users')->where("id='{$id}'")->delete();
-            Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/users');
-        }
+        }     
 
         /**
          * login

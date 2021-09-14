@@ -10,7 +10,7 @@
         "phpmailer/phpmailer": "^6.4",
         "ramsey/uuid": "^4.1",
         "maximebf/debugbar": "^1.16",
-        "kerwin/core": "^1.1",
+        "kerwin/core": "dev-main",
         "symfony/http-foundation": "^5.3",
         "kerwin/captcha": "^1.0"
     },
