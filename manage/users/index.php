@@ -25,7 +25,7 @@
     </div>
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
         <div class="w-full lg:overflow-x-hidden overflow-x-scroll shadow">
-            <table id="table" class="whitespace-no-wrap row-border hover">
+            <table id="table" class="whitespace-nowrap row-border hover table-auto">
                 <thead>
                     <tr
                         class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
@@ -51,7 +51,11 @@
             "data": "email"
         },
         {
-            "data": "role"
+            "data": {
+                "_": 'role',
+                "filter": 'role.filter',
+                "display": "role.display"
+            },
         },
         {
             "data": "created_at"

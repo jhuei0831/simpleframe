@@ -10,12 +10,14 @@
         1 => 'email',
         2 => 'role',
         3 => 'created_at',
+        4 => 'id'
     );
 
     $datatable = new Datatable('users', $columns, $_REQUEST);
     $totalRecords = $datatable->totalRecords();
     $users = $datatable->query();
-    $recordsFiltered = count($users);
+    // $recordsFiltered = count($users);
+    $recordsFiltered = $datatable->resultFilterLength();
 
     $roles = Database::table('roles')->select('id', 'name')->get();
     $rolesFormat = [];
@@ -25,13 +27,13 @@
     }
 
     foreach ($users as $user) {
-        $user->role = $rolesFormat[$user->role];
+        $user->role = ['display' => $rolesFormat[$user->role], 'filter' => $rolesFormat[$user->role]];
     }
 
     $data = array(
         "draw"            => intval($_REQUEST['draw']),   
         "recordsTotal"    => intval($totalRecords),  
-        "recordsFiltered" => intval($recordsFiltered),
+        "recordsFiltered" => intval($recordsFiltered[0]->count),
         "data"            => $users,
     );
 

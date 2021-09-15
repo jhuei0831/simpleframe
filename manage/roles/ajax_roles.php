@@ -7,6 +7,7 @@
     $columns = array( 
         0 => 'name',
         1 => 'created_at',
+        2 => 'id',
     );
 
     $datatable = new Datatable('roles', $columns, $_REQUEST);

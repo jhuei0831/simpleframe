@@ -25,9 +25,12 @@ $(document).ready(function () {
         "ajax":{
             url: url, 
             type: "post",
+            // success: function(res){
+            //     console.log(res)
+            // },
             error: function(res){
                 console.log(res)
-            }
+            },
         },
         "columns": columns
     });
@@ -35,16 +38,15 @@ $(document).ready(function () {
     $('#table thead th').each(function () {
         if ($(this).hasClass("sorting")) {
             var title = $(this).text();
-            $(this).html('<input type="text" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-3xl" placeholder="' + title + '" />');
+            $(this).html('<input type="text" class="max shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-3xl" placeholder="' + title + '" />');
         }
-        
     });
     
     table.columns().every(function () {
         var table = this;
         $('input', this.header()).on('keyup change', function () {
             if (table.search() !== this.value) {
-                   table.search(this.value).draw();
+                table.search(this.value).draw();
             }
         });
     });

@@ -24,7 +24,7 @@
     </div>
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
         <div class="w-full lg:overflow-x-hidden overflow-x-scroll shadow">
-            <table id="table" class="whitespace-no-wrap row-border hover">
+            <table id="table" class="whitespace-nowrap row-border hover">
                 <thead>
                     <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
                         <th class="px-4 py-3">名稱</th>

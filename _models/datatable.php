@@ -77,13 +77,24 @@
             $this->table = $table;
             $this->request = $request;
         }
+
+        public function resultFilterLength()
+        {
+            $where = $this->filter();
+            $this->data = Database::table($this->table)
+                ->select('COUNT(`id`) AS count')
+                ->where($where)
+                ->get();
+            
+            return $this->data;
+        }
         
         /**
          * 建立搜尋條件
          *
          * @return string
          */
-        private function filter(): string
+        public function filter(): string
         {
             if (isset($this->request['columns']) && $this->request['draw'] != 1) {
                 for ( $i=0; $i<count($this->request['columns']); $i++) {
@@ -128,11 +139,11 @@
             $data = $this->query();
             $draw = $this->request['draw'];
             $totalRecords = $this->totalRecords();
-            $recordsFiltered = count($data);
+            $recordsFiltered = $this->resultFilterLength();
             $this->render = [
                 "draw"            => intval($draw),   
                 "recordsTotal"    => intval($totalRecords),  
-                "recordsFiltered" => intval($recordsFiltered),
+                "recordsFiltered" => intval($recordsFiltered[0]->count),
                 "data"            => $data,
             ];
 
