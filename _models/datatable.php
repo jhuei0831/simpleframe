@@ -100,9 +100,9 @@
                 for ( $i=0; $i<count($this->request['columns']); $i++) {
                     $requestColumn = $this->request['columns'][$i];
                     $str = $requestColumn['search']['value'];
-        
-                    if ($requestColumn['searchable'] == 'true' && $str != '') {
-                        $this->columnSearch[] = $requestColumn['data']." LIKE '%".$str."%'";
+                    $data = is_array($requestColumn['data']) ? $requestColumn['data']['_'] : $requestColumn['data'];
+                    if ($requestColumn['searchable'] == 'true' && $str != '' && !is_array($requestColumn['data'])) {
+                        $this->columnSearch[] = $data." LIKE '%".$str."%'";
                     }
                 }
                 $this->where = implode(' AND ', $this->columnSearch);

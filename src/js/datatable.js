@@ -1,6 +1,14 @@
 import Swal from 'sweetalert2';
+
 $(document).ready(function () {
-    
+
+    let dropdown = [];
+    $('#table thead th').each(function (i) {
+        if ($(this).hasClass("dropdown-filter") && !$(this).hasClass("sorting")) {
+            dropdown.push(i);
+        }
+    });
+
     let table = $('#table').DataTable({
         "language": {
             "sProcessing":   "處理中...",
@@ -32,13 +40,28 @@ $(document).ready(function () {
                 console.log(res)
             },
         },
-        "columns": columns
+        "columns": columns,
+        initComplete: function () {
+            this.api().columns(dropdown).every(function () {
+                var column = this;
+                var select = $('<select class="form-control"><option value=""></option></select>')
+                    .appendTo($(column.header()).empty())
+                    .on('change', function () {
+                        var val = $(this).val();
+                        column.search(this.value).draw();
+                    });
+
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            });
+        }
     });
 
-    $('#table thead th').each(function () {
-        if ($(this).hasClass("sorting")) {
+    $('#table thead th').each(function (i) {
+        if (!$(this).hasClass("dropdown-filter") && $(this).hasClass("sorting")) {
             var title = $(this).text();
-            $(this).html('<input type="text" class="max shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-3xl" placeholder="' + title + '" />');
+            $(this).html('<input type="text" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-3xl" placeholder="' + title + '" />');
         }
     });
     

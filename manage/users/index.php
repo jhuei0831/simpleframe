@@ -32,7 +32,7 @@
                     >
                         <th class="px-4 py-3">名稱</th>
                         <th class="px-4 py-3">電子信箱</th>
-                        <th class="px-4 py-3">角色</th>
+                        <th class="px-4 py-3 dropdown-filter">角色</th>
                         <th class="px-4 py-3">建立時間</th>
                         <th class="px-4 py-3">功能</th>
                     </tr>
@@ -45,20 +45,20 @@
     let url = "ajax_users.php";
     let columns = [
         {
-            "data": "name"
+            "data": "users.name"
         },
         {
-            "data": "email"
+            "data": "users.email"
         },
         {
             "data": {
-                "_": 'role',
-                "filter": 'role.filter',
-                "display": "role.display"
+                "_": 'roles.name',
+                "filter": 'roles.name',
+                "display": "roles.name"
             },
         },
         {
-            "data": "created_at"
+            "data": "users.created_at"
         },
         {
             "data": null,
