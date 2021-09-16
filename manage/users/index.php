@@ -45,20 +45,16 @@
     let url = "ajax_users.php";
     let columns = [
         {
-            "data": "users.name"
+            "data": "name"
         },
         {
-            "data": "users.email"
+            "data": "email"
         },
         {
-            "data": {
-                "_": 'roles.name',
-                "filter": 'roles.name',
-                "display": "roles.name"
-            },
+            "data": "role"
         },
         {
-            "data": "users.created_at"
+            "data": "created_at"
         },
         {
             "data": null,
