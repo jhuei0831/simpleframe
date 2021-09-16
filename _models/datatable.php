@@ -125,7 +125,7 @@
          *
          * @return void
          */
-        public function queryComplex(): array
+        public function queryComplex()
         {
             $select = [];
             $originColumn = [];
@@ -138,8 +138,8 @@
                 elseif (empty($column['column']) || empty($column['as'])) {
                     throw new Exception("Column array must has 'column' and 'as' index", 1);
                 }
-                $originColumn[] = "'/".$column['as']."/'";
-                $replaceColumn[] = "'".$column['column']."'";
+                $originColumn[] = '/'.$column['as'].'/';
+                $replaceColumn[] = $column['column'];
                 $select[] = $column['column'].' as '.$column['as'];
             }
 
