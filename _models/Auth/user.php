@@ -5,8 +5,8 @@
     use GUMP;
     use _models\Auth\Password;
     use Kerwin\Core\Mail;
-    use Kerwin\Core\Support\Config;
     use Kerwin\Core\Support\Toolbox;
+    use Kerwin\Core\Support\Facades\Config;
     use Kerwin\Core\Support\Facades\Security;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;

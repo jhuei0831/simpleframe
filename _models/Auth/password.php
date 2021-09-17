@@ -3,7 +3,7 @@
     namespace _models\Auth;
 
     use GUMP;
-    use Kerwin\Core\Support\Config;
+    use Kerwin\Core\Support\Facades\Config;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Security;

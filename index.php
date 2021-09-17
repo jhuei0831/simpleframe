@@ -2,13 +2,14 @@
     $root = "./";
     include($root.'_config/settings.php');
 
-    use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Auth;
+    use Kerwin\Core\Support\Facades\Message;
+    use Kerwin\Core\Support\Facades\Session;
 
     include($root.'_layouts/reception/top.php');
     Message::showFlash();
 ?>
-<?php if (Auth::user()): ?>
+<?php if (!is_null(Session::get('USER_ID'))): ?>
     <div class="flex justify-center">
         <div class="flex-shrink w-3/4 bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200 mt-6">
             <div class="px-4 py-5 sm:px-6">
