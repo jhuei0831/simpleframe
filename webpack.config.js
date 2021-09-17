@@ -1,23 +1,8 @@
 const path = require('path')
 var webpack = require('webpack');
 
-module.exports = {
-    // 輸入:要加進webpack的檔案
-    entry: [
-        './src/js/index',
-        './src/css/alert.css',
-        './src/css/tailwind.generated.css',
-        './src/css/manage.css',
-        './src/css/reception.css',
-        './src/css/table.css',
-        'datatables.net-dt/css/jquery.dataTables.css',
-        'bootstrap-icons/font/bootstrap-icons.css',
-    ],
-    // 輸出:路徑及檔名
-    output: {
-        path: path.join(__dirname, './src/dist'),
-        filename: 'bundle.js'
-    },
+// 常用設定
+var config = {
     module: {
         // loader，除了js以外都要設定相關的loader
         rules: [
@@ -40,4 +25,43 @@ module.exports = {
             'window.jQuery': 'jquery',
         }),
     ]
-}
+};
+
+// 前台設定
+var receptionConfig = Object.assign({}, config, {
+    name: "reception",
+    entry: [
+        './src/js/reception/index',
+        './src/css/alert.css',
+        './src/css/tailwind.generated.css',
+        './src/css/reception.css',
+        'bootstrap-icons/font/bootstrap-icons.css',
+    ],
+    output: {
+        path: path.join(__dirname, './src/dist/reception'),
+        filename: 'bundle.js'
+    },
+});
+
+// 後台設定
+var manageConfig = Object.assign({}, config,{
+    name: "manage",
+    entry: [
+        './src/js/manage/index',
+        './src/css/alert.css',
+        './src/css/tailwind.generated.css',
+        './src/css/manage.css',
+        './src/css/table.css',
+        'datatables.net-dt/css/jquery.dataTables.css',
+        'bootstrap-icons/font/bootstrap-icons.css',
+    ],
+    output: {
+        path: path.join(__dirname, './src/dist/manage'),
+        filename: 'bundle.js'
+    },
+});
+
+// 總配置
+module.exports = [
+    receptionConfig, manageConfig,       
+];

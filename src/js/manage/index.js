@@ -7,7 +7,9 @@ require('jquery-validation');
 require('jquery-validation/dist/additional-methods');
 
 // custom js
-require('./validation');
-require('./datatable');
-require('./init-alpine');
+require('../validation');
+require('../datatable');
+require('../init-alpine');
 
+import Swal from 'sweetalert2';
+window.Swal = Swal;

@@ -9,7 +9,7 @@
 <html :class="{ 'theme-dark': dark }" lang="zh-TW">
 <head>
     <!-- webpack -->
-    <script src="<?php echo APP_SRC?>dist/bundle.js"></script>
+    <script src="<?php echo APP_SRC?>dist/reception/bundle.js"></script>
     <?php include_once($root.'_partials/reception/meta.php'); ?>
     <?php include_once($root.'_partials/reception/css.php'); ?>
     <title><?php echo isset($pageTitle) ? $pageTitle.'-'.APP_NAME : APP_NAME?></title>

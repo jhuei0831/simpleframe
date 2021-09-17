@@ -22,6 +22,7 @@ $("#form_profile").validate({
         }        
     },
 });
+
 $("#form_password").validate({
     rules: {
         password: {
