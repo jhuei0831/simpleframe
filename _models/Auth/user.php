@@ -183,25 +183,25 @@
          * login
          *
          * @param array $request
-         * @return void
+         * @return array
          */
-        public function login(array $request): void
+        public function login(array $request): array
         {
             $data = Security::defendFilter($request);
             $user = Database::table('users')->where('email ="' . $data['email'] . '" and password ="' . md5($data['password']) . '"')->first();
             if ($data['captcha'] != Session::get('captcha')) {
-                Message::flash('驗證碼錯誤'.Session::get('captcha'), 'error')->redirect(APP_ADDRESS . 'auth/login.php');
+                return ['msg' => '驗證碼錯誤', 'type' => 'error', 'redirect' => Config::getAppAddress().'auth/login.php'];
             } 
             elseif ($user && empty($user->email_varified_at) && EMAIL_VERIFY === 'TRUE') {
                 Session::set('USER_ID', $user->id);
-                Message::flash('登入成功，尚未完成信箱驗證', 'warning')->redirect(APP_ADDRESS . 'auth/email/verified.php');
+                return ['msg' => '登入成功，尚未完成信箱驗證', 'type' => 'warning', 'redirect' => Config::getAppAddress().'auth/email/verified.php'];
             } 
             elseif ($user) {
                 Session::set('USER_ID', $user->id);
-                Message::flash('登入成功', 'success')->redirect(APP_ADDRESS);
+                return ['msg' => '登入成功', 'type' => 'success', 'redirect' => Config::getAppAddress()];
             } 
             else {
-                Message::flash('登入失敗', 'error');
+                return ['msg' => '登入失敗', 'type' => 'error', 'redirect' => Config::getAppAddress().'auth/login.php'];
             }
         }
         

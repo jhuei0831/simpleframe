@@ -1,10 +1,14 @@
+clover.xml
 .env
 vendor
 composer.lock
 /node_modules
 /package-lock.json
 /test
+/tests/report
 /src/dist
+/src/log
 *.mp3
 *.wav
 *.generated.css
+*.cache
