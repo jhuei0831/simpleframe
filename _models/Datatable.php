@@ -158,11 +158,15 @@
                 if (empty($join['column']) || empty($join['table']) || empty($join['on']) || empty($join['condition'])) {
                     throw new Exception("Column array must has 'column', 'table', 'on', 'condition' index", 1);
                 }
-                $condition = ($this->request['columns'][$join['column']]['search']['value'] == '') ? '' : "and ".$join['condition']." like '%".$this->request['columns'][$join['column']]['search']['value']."%'";
+                $condition = ($this->request['columns'][$join['column']]['search']['value'] == '') ? 
+                '' : 
+                "and ".$join['condition']." like '%".$this->request['columns'][$join['column']]['search']['value']."%'";
                 $this->data = $this->data->join($join['table'], $join['on'].' '.$condition);
             }
 
-            $this->data = $this->data->where($where)->orderby([[$this->columns['select'][$this->request['order'][0]['column']]['column'], $this->request['order'][0]['dir']]])
+            $this->data = $this->data
+                ->where($where)
+                ->orderby([[$this->columns['select'][$this->request['order'][0]['column']]['column'], $this->request['order'][0]['dir']]])
                 ->limit($this->request['start'], $this->request['length'])
                 ->get();
             

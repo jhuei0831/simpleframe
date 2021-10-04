@@ -14,4 +14,5 @@
     }
 
     $user = new User();
-    $user->delete($id);
+    $delete = $user->delete($id);
+    $user->result($delete);

@@ -41,7 +41,10 @@
             if (PASSWORD_SECURE === 'TRUE') {
                 $safeCheck = self::rule($_POST['password']);
             }
-            $passwordResets = Database::table('password_resets')->where("id='{$_GET['id']}' and email_token='{$_GET['auth']}'")->first(false);
+            $passwordResets = Database::table('password_resets')
+                ->where("id='{$_GET['id']}' and email_token='{$_GET['auth']}'")
+                ->first(false);
+
             $password = json_decode($passwordResets->password);
             if ($gump->errors()) {
                 $errors[] = $gump->get_readable_errors();
@@ -105,13 +108,17 @@
             }
 
             // 確認連結資料正確性
-            $passwordResets = Database::table('password_resets')->where("id='{$_GET['id']}' and email_token='{$_GET['auth']}'")->first();
+            $passwordResets = Database::table('password_resets')
+                ->where("id='{$_GET['id']}' and email_token='{$_GET['auth']}'")
+                ->first();
             
             if (empty($passwordResets)) {
-                Message::flash('連結有問題，請確認或重新申請密碼重設信件，謝謝', 'warning')->redirect(Config::getAppAddress().'auth/password/password_forgot.php');
+                Message::flash('連結有問題，請確認或重新申請密碼重設信件，謝謝', 'warning')
+                    ->redirect(Config::getAppAddress().'auth/password/password_forgot.php');
             }
             elseif (strtotime('now') > strtotime($passwordResets->token_updated_at.' +30 minutes')) {
-                Message::flash('密碼重設信已逾期，請重新獲取，謝謝。', 'warning')->redirect(Config::getAppAddress().'auth/password/password_forgot.php');
+                Message::flash('密碼重設信已逾期，請重新獲取，謝謝。', 'warning')
+                    ->redirect(Config::getAppAddress().'auth/password/password_forgot.php');
             }
             elseif (strtotime('now') < strtotime($passwordResets->password_updated_at.' +1 days')) {
                 Message::flash('密碼更新時間小於一天，'.date('Y-m-d H:i:s', strtotime($passwordResets->password_updated_at.' +1 days')).'後才可以再次更改。', 'warning');

@@ -1,7 +1,5 @@
 <?php declare(strict_types=1);
 
-require_once(__DIR__.'/../_models/autoloader.php');
-
 use _models\Auth\User;
 use Dotenv\Dotenv;
 use GuzzleHttp\Client;
@@ -33,7 +31,7 @@ final class LoginTest extends TestCase
         $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testLoginWithErrorCaptcha()
+    public function testLoginWithErrorCaptcha(): void
     {
         $request = [
             'captcha' => 12345,
@@ -44,7 +42,7 @@ final class LoginTest extends TestCase
         $this->assertStringContainsString('驗證碼錯誤', $login['msg']);
     }
 
-    public function testLoginWithLoginFailed()
+    public function testLoginWithLoginFailed(): void
     {
         $request = [
             'captcha' => $this->session->get('captcha'),
@@ -55,7 +53,7 @@ final class LoginTest extends TestCase
         $this->assertStringContainsString('登入失敗', $login['msg']);
     }
 
-    public function testLoginWithLoginSuccess()
+    public function testLoginWithLoginSuccess(): void
     {
         $request = [
             'captcha' => $this->session->get('captcha'),

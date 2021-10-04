@@ -27,10 +27,14 @@
                 $status = 'OFF';
             }
 
+            $pattern = ['/^APP_STATUS=ON/m', '/^APP_STATUS=OFF/m'];
+            $replacement = 'APP_STATUS='.$status;
+            $subject = file_get_contents(APP_URL.'.env');
+
             // 修改.env
             file_put_contents(
                 APP_URL.'.env', 
-                preg_replace(['/^APP_STATUS=ON/m', '/^APP_STATUS=OFF/m'], 'APP_STATUS='.$status, file_get_contents(APP_URL.'.env'))
+                preg_replace($pattern, $replacement, $subject)
             );
 
             Database::table('configs')->where("id = '{$id}'")->update($data);

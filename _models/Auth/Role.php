@@ -49,7 +49,11 @@
                 Database::table('roles')->insert(Toolbox::only($valid_data, ['token', 'name']), TRUE);
                 $role = Database::table('roles')->where("name = '".$valid_data['name']."'")->first();
                 foreach ($valid_data['permission'] as $value) {
-                    Database::table('role_has_permissions')->createOrUpdate(['permission_id' => $value, 'role_id' => $role->id], false);
+                    Database::table('role_has_permissions')
+                        ->createOrUpdate([
+                            'permission_id' => $value,
+                            'role_id' => $role->id
+                        ], false);
                 }  
                 Message::flash('新增成功。', 'success')->redirect(APP_ADDRESS.'manage/roles');
             }

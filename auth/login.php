@@ -14,7 +14,7 @@
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
         $user = new User();
         $login = $user->login($_POST);
-        Message::flash($login['msg'], $login['type'])->redirect($login['redirect']);
+        $user->result($login);
     }
 
     Message::showFlash();

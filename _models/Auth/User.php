@@ -10,10 +10,17 @@
     use Kerwin\Core\Support\Facades\Security;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
+    use Kerwin\Core\Support\Facades\Request;
     use Kerwin\Core\Support\Facades\Session;
 
     class User 
-    {                          
+    {  
+        public $request;
+
+        public function __construct() {
+			$this->request = Request::createFromGlobals();
+		}
+
         /**
          * 新增使用者
          *
@@ -89,12 +96,12 @@
          * 使用者刪除
          *
          * @param  string $id
-         * @return void
+         * @return array
          */
-        public function delete(string $id): void
+        public function delete(string $id): array
         {
             Database::table('users')->where("id='{$id}'")->delete();
-            Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/users');
+            return ['msg' => '刪除成功，謝謝。', 'type' => 'success', 'redirect' => Config::getAppAddress().'manage/users'];
         }
 
         /**
@@ -128,9 +135,9 @@
 
                 // 錯誤訊息
                 $gump->set_fields_error_messages([
-                    'name'              => ['required' => '名稱必填', 'max_len' => '名稱必須小於或等於30個字元'],
-                    'email'             => ['required' => '電子郵件必填', 'valid_email' => '必須符合電子郵件格式'],
-                    'role'              => ['required' => '角色必填'],
+                    'name'   => ['required' => '名稱必填', 'max_len' => '名稱必須小於或等於30個字元'],
+                    'email'  => ['required' => '電子郵件必填', 'valid_email' => '必須符合電子郵件格式'],
+                    'role'   => ['required' => '角色必填'],
                 ]);
 
                 $valid_data = $gump->run($data);
@@ -154,8 +161,16 @@
 
                 // 錯誤訊息
                 $gump->set_fields_error_messages([
-                    'password'          => ['required' => '密碼必填', 'max_len' => '密碼必須小於等於30個字元', 'min_len' => '密碼必須大於等於8個字元'],
-                    'password_confirm'  => ['required' => '確認密碼必填', 'max_len' => '確認密碼必須小於等於30個字元', 'min_len' => '確認密碼必須大於等於8個字元'],
+                    'password'          => [
+                        'required' => '密碼必填',
+                        'max_len'  => '密碼必須小於等於30個字元',
+                        'min_len'  => '密碼必須大於等於8個字元'
+                    ],
+                    'password_confirm'  => [
+                        'required' => '確認密碼必填',
+                        'max_len'  => '確認密碼必須小於等於30個字元',
+                        'min_len'  => '確認密碼必須大於等於8個字元'
+                    ],
                 ]);
 
                 // 輸入格式化
@@ -188,7 +203,7 @@
         public function login(array $request): array
         {
             $data = Security::defendFilter($request);
-            $user = Database::table('users')->where('email ="' . $data['email'] . '" and password ="' . md5($data['password']) . '"')->first();
+            $user = Database::table('users')->where('email ="'.$data['email'].'" and password ="'.md5($data['password']).'"')->first();
             if ($data['captcha'] != Session::get('captcha')) {
                 return ['msg' => '驗證碼錯誤', 'type' => 'error', 'redirect' => Config::getAppAddress().'auth/login.php'];
             } 
@@ -230,7 +245,8 @@
             $passwordResets = Database::table('password_resets')->where("id = '{$user->id}'")->first(false);
             // 確認密碼上次更新時間
             if (strtotime('now') < strtotime($passwordResets->password_updated_at.' +1 days')) {
-                Message::flash('密碼更新時間小於一天，'.date('Y-m-d H:i:s', strtotime($passwordResets->password_updated_at.' +1 days')).'後才可以再次更改。', 'warning');
+                $passwordResetsPeriod = date('Y-m-d H:i:s', strtotime($passwordResets->password_updated_at.' +1 days'));
+                Message::flash('密碼更新時間小於一天，'.$passwordResetsPeriod.'後才可以再次更改。', 'warning');
                 Message::redirect(Config::getAppAddress());
             }
             // 放到信中的變數
@@ -258,9 +274,9 @@
          * 會員註冊
          *
          * @param  array $request
-         * @return void
+         * @return array
          */
-        public function register(array $request): void
+        public function register(array $request): array
         {
             global $errors;
             $data = Security::defendFilter($request);
@@ -296,17 +312,17 @@
             if (!$gump->errors()) {
                 $check_user = Database::table('users')->where('email ="'.$valid_data['email'].'"')->first();
                 // 密碼規則驗證
-                if (PASSWORD_SECURE === 'TRUE') {
-                    $safeCheck = Password::rule($_POST['password']);
+                if ($this->request->server->get('AUTH_PASSWORD_SECURITY') === 'TRUE') {
+                    $safeCheck = Password::rule($valid_data['password']);
                 }
                 if ($check_user) {
-                    Message::flash('信箱已被註冊使用', 'error');
+                    return ['msg' => '信箱已被註冊使用', 'type' => 'error'];
                 }
-                elseif (PASSWORD_SECURE === 'TRUE' && (count($safeCheck) <= 3 || !preg_match('/.{8,}/',$valid_data['password']))) {
-                    Message::flash('密碼不符合規則，請參考密碼規則並再次確認', 'error');
+                elseif ($this->request->server->get('AUTH_PASSWORD_SECURITY') === 'TRUE' && (count($safeCheck) <= 3 || !preg_match('/.{8,}/',$valid_data['password']))) {
+                    return ['msg' => '密碼不符合規則，請參考密碼規則並再次確認', 'type' => 'error'];
                 }
                 elseif ($valid_data['password'] != $valid_data['password_confirm']) {
-                    Message::flash('密碼要和確認密碼相同', 'error');
+                    return ['msg' => '密碼要和確認密碼相同', 'type' => 'error'];
                 }
                 else {
                     unset($valid_data['password_confirm']);
@@ -317,19 +333,35 @@
                     $valid_data['auth_code'] = $authCode;
                     Database::table('users')->insert($valid_data);
                     Session::set('USER_ID', $valid_data['id']);
-                    if (EMAIL_VERIFY==='TRUE') {
+                    if ($this->request->server->get('AUTH_EMAIL_VERIFY') === 'TRUE') {
                         $name = $valid_data['name'];
                         include_once('./email/content.php');
                         Mail::send($subject, $message, $valid_data['email'], $valid_data['name']);
-                        Message::flash('註冊成功，請前往註冊信箱收取認證信。', 'success')->redirect(APP_ADDRESS.'auth/email/verified.php');
+                        return ['msg' => '註冊成功，請前往註冊信箱收取認證信。', 'type' => 'success', 'redirect' => Config::getAppAddress().'auth/email/verified.php'];
                     }
                     else {
-                        Message::flash('註冊成功。', 'success')->redirect(APP_ADDRESS);
+                        return ['msg' => '註冊成功。', 'type' => 'success', 'redirect' => Config::getAppAddress()];
                     }
                 }
             } else {
                 $errors = $gump->get_readable_errors();
-                Message::flash('註冊失敗，請檢查輸入', 'error');
+                return ['msg' => '註冊失敗，請檢查輸入', 'type' => 'error'];
+            }
+        }
+        
+        /**
+         * 根據function返回的結果做處理
+         *
+         * @param  array $request
+         * @return void
+         */
+        public function result(array $request): void
+        {
+            if (isset($request['redirect'])) {
+                Message::flash($request['msg'], $request['type'])->redirect($request['redirect']);
+            }
+            else {
+                Message::flash($request['msg'], $request['type']);
             }
         }
     }

@@ -13,7 +13,8 @@
     
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
         $user = new User();
-        $user->register($_POST);
+        $register = $user->register($_POST);
+        $user->result($register);
     }
     
     Message::showFlash();

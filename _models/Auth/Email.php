@@ -63,7 +63,13 @@
             include_once('./content.php');
             $mail = Mail::send($subject, $message, $user->email, $user->name);
             if ($mail) {
-                Database::table('users')->where("id = '{$id}'")->update(['token' => $data['token'], 'auth_code' => $authCode, 'updated_at' => date('Y-m-d H:i:s')]);
+                Database::table('users')
+                    ->where("id = '{$id}'")
+                    ->update([
+                        'token' => $data['token'],
+                        'auth_code' => $authCode,
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ]);
                 Message::flash('請前往註冊信箱收取認證信，謝謝。', 'success')->redirect(APP_ADDRESS.'auth/email/verified.php');
             }
             else {

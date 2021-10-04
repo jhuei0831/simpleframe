@@ -1,7 +1,7 @@
 <?php 
 	ini_set('session.cookie_lifetime', 0);
 	// 自動載入 Composer 的套件
-	require_once('autoload.php');
+	require_once(__DIR__.'/autoload.php');
 	use Kerwin\Core\Support\Facades\Session;
 	session_start();
 
@@ -59,5 +59,5 @@
 	// }
 
 	// 載入類別
-	require_once(APP_URL.'_models/autoloader.php');
+	require_once(__DIR__.'/../_models/autoloader.php');
 ?>
