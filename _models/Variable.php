@@ -5,6 +5,8 @@
     class Variable 
     {
         public static $permission = [
+            'manage-index' => '訪問後台',
+            'config-edit' => '修改設定',
             'users-list' => '使用者清單',
             'users-create' => '使用者新增',
             'users-edit' => '使用者修改',

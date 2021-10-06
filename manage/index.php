@@ -4,9 +4,9 @@
     include($root.'_config/settings.php');
 
     use Kerwin\Core\Support\Facades\Message;
-    use Kerwin\Core\Support\Facades\Role;
+    use Kerwin\Core\Support\Facades\Permission;
     
-    if (!Role::has('admin')) {
+    if (!Permission::can('manage-index')) {
         include_once($root.'_error/404.php');
         exit;
     }

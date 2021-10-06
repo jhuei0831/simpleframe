@@ -8,12 +8,12 @@
     use _models\Config;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Message;
-    use Kerwin\Core\Support\Facades\Role;
+    use Kerwin\Core\Support\Facades\Permission;
     
     $configController = new Config();
     $config = $configController->index();
     
-    if (!Role::has('admin')) {
+    if (!Permission::can('config-edit')) {
         include_once($root . '_error/404.php');
         exit;
     }

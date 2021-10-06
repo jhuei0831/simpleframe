@@ -10,7 +10,7 @@
     use Kerwin\Core\Support\Facades\Permission;
     
     if (!Permission::can('roles-create')) {
-        Message::flash('權限不足!', 'error')->redirect(APP_ADDRESS.'manage/roles');
+        Message::flash('權限不足!', 'error')->redirect(APP_ADDRESS.'manage/users');
     }
 
     $roles = Database::table('roles')->get();

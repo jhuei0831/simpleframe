@@ -83,6 +83,12 @@
                     $valid_data['password'] = md5($valid_data['password']);
                     $valid_data['id'] = Toolbox::UUIDv4();
                     $valid_data['auth_code'] = $authCode;
+                    /* 在忘記密碼加入資料 */
+                    Database::table('password_resets')->insert([
+                        'id' => $valid_data['id'], 
+                        'password' => json_encode([$valid_data['password']]),
+                        'password_updated_at' => date('Y-m-d H:i:s'), 
+                    ], false);
                     Database::table('users')->insert($valid_data, TRUE);
                     Message::flash('新增成功。', 'success')->redirect(APP_ADDRESS.'manage/users');
                 }
@@ -333,6 +339,12 @@
                     $valid_data['auth_code'] = $authCode;
                     Database::table('users')->insert($valid_data);
                     Session::set('USER_ID', $valid_data['id']);
+                    /* 在忘記密碼加入資料 */
+                    Database::table('password_resets')->insert([
+                        'id' => $valid_data['id'], 
+                        'password' => json_encode([$valid_data['password']]),
+                        'password_updated_at' => date('Y-m-d H:i:s'), 
+                    ], false);
                     if ($this->request->server->get('AUTH_EMAIL_VERIFY') === 'TRUE') {
                         $name = $valid_data['name'];
                         include_once('./email/content.php');

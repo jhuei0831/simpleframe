@@ -25,6 +25,8 @@ class DefaultSeeder extends AbstractSeed
 
         // 建立權限並將角色賦予權限
         $permissions = [
+            'manage-index',
+            'config-edit',
             'users-list',
             'users-create',
             'users-edit',
