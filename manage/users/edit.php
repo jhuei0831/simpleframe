@@ -20,8 +20,8 @@
     $roles = Database::table('roles')->get();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $userController = new User();
-        $userController->edit($_POST, $id);
+        $userService = new User();
+        $userService->edit($_POST, $id);
     }
     
     Message::showFlash();

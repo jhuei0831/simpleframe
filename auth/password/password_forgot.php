@@ -14,8 +14,9 @@
     }
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-         $user = new User();
-         $user->passwordForgot($_POST);
+        $user = new User();
+        $forgotPassword = $user->passwordForgot($_POST);
+        $user->result($forgotPassword);
     }
     
     Message::showFlash();

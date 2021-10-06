@@ -20,8 +20,8 @@
     $permissions = Database::table('permissions')->get();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $roleController = new Role();
-        $roleController->edit($_POST, $role);
+        $roleService = new Role();
+        $roleService->edit($_POST, $role);
     }
 
     Message::showFlash();

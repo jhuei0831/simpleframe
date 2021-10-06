@@ -25,9 +25,9 @@
          * 新增使用者
          *
          * @param array $request
-         * @return void
+         * @return array
          */
-        public function create(array $request): void
+        public function create(array $request): array
         {
             global $errors;
 
@@ -90,10 +90,12 @@
                         'password_updated_at' => date('Y-m-d H:i:s'), 
                     ], false);
                     Database::table('users')->insert($valid_data, TRUE);
+                    return ['msg' => '新增成功。', 'type' => 'success', 'redirect' => Config::getAppAddress().'manage/users'];
                     Message::flash('新增成功。', 'success')->redirect(APP_ADDRESS.'manage/users');
                 }
             } else {
                 $errors = $gump->get_readable_errors();
+                return ['msg' => '新增失敗，請檢查輸入', 'type' => 'error'];
                 Message::flash('新增失敗，請檢查輸入', 'error');
             }
         }
@@ -241,38 +243,70 @@
          * 忘記密碼
          *
          * @param array $request
-         * @return void
+         * @return array
          */
-        public function passwordForgot(array $request): void
+        public function passwordForgot(array $request): array
         {
             $data = Security::defendFilter($request);
             $authCode = Security::defendFilter(uniqid(mt_rand()));
             $user = Database::table('users')->where("email = '{$data['email']}'")->first();
-            $passwordResets = Database::table('password_resets')->where("id = '{$user->id}'")->first(false);
+            if (empty($user)) {
+                return [
+                    'msg' => '獲取信件失敗',
+                    'type' => 'error',
+                    'redirect' => Config::getAppAddress().'auth/password/password_forgot.php'
+                ];
+            }
+            else {
+                $passwordResets = Database::table('password_resets')->where("id = '{$user->id}'")->first(false);
+            }
+
+            if (empty($passwordResets)) {
+                Database::table('password_resets')->createOrUpdate([
+                    'token' => $data['token'], 
+                    'id' => $user->id,
+                    'password' => json_encode([$user->password]),
+                    'password_updated_at' => $user->created_at, 
+                ]);
+                $passwordResets = Database::table('password_resets')->where("id = '{$user->id}'")->first(false);
+            }
             // 確認密碼上次更新時間
             if (strtotime('now') < strtotime($passwordResets->password_updated_at.' +1 days')) {
                 $passwordResetsPeriod = date('Y-m-d H:i:s', strtotime($passwordResets->password_updated_at.' +1 days'));
-                Message::flash('密碼更新時間小於一天，'.$passwordResetsPeriod.'後才可以再次更改。', 'warning');
-                Message::redirect(Config::getAppAddress());
+                return [
+                    'msg' => '密碼更新時間小於一天，'.$passwordResetsPeriod.'後才可以再次更改。',
+                    'type' => 'warning',
+                    'redirect' => Config::getAppAddress()
+                ];
             }
-            // 放到信中的變數
-            $name = $user->name;
-            $id = $user->id;
-            include_once('./content.php');
-            $mail = Mail::send($subject, $message, $user->email, $user->name);
-            if ($mail) {
-                Database::table('password_resets')->createOrUpdate([
-                    'token' => $data['token'], 
-                    'id' => $id, 
-                    'password' => isset($passwordResets->password) ? $passwordResets->password : json_encode([$user->password]),
-                    'email_token' => $authCode, 
-                    'token_updated_at' => date('Y-m-d H:i:s'), 
-                    'password_updated_at' => isset($passwordResets->password_updated_at) ? $passwordResets->password_updated_at : $user->created_at, 
-                ]);
-                Message::flash('請前往註冊信箱收取密碼重設信，謝謝。', 'success')->redirect(APP_ADDRESS.'auth/password/password_forgot.php');
-            }
-            else{
-                Message::flash('獲取信件失敗', 'error')->redirect(APP_ADDRESS.'auth/password/password_forgot.php');
+            else {
+                // 放到信中的變數
+                $name = $user->name;
+                $id = $user->id;
+                include_once('./content.php');
+                $mail = Mail::send($subject, $message, $user->email, $user->name);
+                if ($mail) {
+                    Database::table('password_resets')->createOrUpdate([
+                        'token' => $data['token'], 
+                        'id' => $id, 
+                        'password' => isset($passwordResets->password) ? $passwordResets->password : json_encode([$user->password]),
+                        'email_token' => $authCode, 
+                        'token_updated_at' => date('Y-m-d H:i:s'), 
+                        'password_updated_at' => isset($passwordResets->password_updated_at) ? $passwordResets->password_updated_at : $user->created_at, 
+                    ]);
+                    return [
+                        'msg' => '請前往註冊信箱收取密碼重設信，謝謝。',
+                        'type' => 'success',
+                        'redirect' => Config::getAppAddress().'auth/password/password_forgot.php'
+                    ];
+                }
+                else{
+                    return [
+                        'msg' => '獲取信件失敗',
+                        'type' => 'error',
+                        'redirect' => Config::getAppAddress().'auth/password/password_forgot.php'
+                    ];
+                }
             }
         }
 
