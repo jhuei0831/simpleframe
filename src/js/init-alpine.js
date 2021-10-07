@@ -76,6 +76,10 @@ function filter() {
         resetFilter() {
             document.getElementById("filterForm").reset();
             table.draw();
+        },
+        preventSubmit() {
+            table.draw();
+            event.preventDefault();
         }
     }
 }

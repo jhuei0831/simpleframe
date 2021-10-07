@@ -1,19 +1,19 @@
-.success {
+.alert-success {
     border:#CDEBD5 2px solid !important;
     background-color: #EBF7EE !important;
 }
 
-.error {
+.alert-error {
     border:#F6CDC4 2px solid !important;
     background-color: #FCEDEA !important;
 }
 
-.warning {
+.alert-warning {
     border:#FAE0B7 2px solid !important;
     background-color: #FEF7EA !important;
 }
 
-.info {
+.alert-info {
     border:#B6D4F3 2px solid !important;
     background-color: #E5EFFA !important;
 }

@@ -21,6 +21,11 @@ input:checked~.toggle-path {
     background-color: #81E6D9;
 }
 
+.error {
+    color: red;
+    border-color: red;
+}
+
 [x-cloak] {
     display: none;
 }

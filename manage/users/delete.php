@@ -8,7 +8,7 @@
     use Kerwin\Core\Support\Facades\Security;
     use Kerwin\Core\Support\Facades\Session;
 
-    if (!Permission::can('roles-create')) {
+    if (!Permission::can('users-create')) {
         Message::flash('權限不足!', 'error')->redirect(APP_ADDRESS.'manage/users');
     }
     

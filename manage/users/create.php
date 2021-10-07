@@ -9,7 +9,7 @@
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Permission;
     
-    if (!Permission::can('roles-create')) {
+    if (!Permission::can('users-create')) {
         Message::flash('權限不足!', 'error')->redirect(APP_ADDRESS.'manage/users');
     }
 
@@ -28,7 +28,7 @@
 
 <div class="container px-6 mx-auto grid">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">新增使用者</h2>
-    <form id="form_register" method="post" id="form_role">
+    <form id="form_profile" method="post">
         <input type="hidden" name="token" value="<?php echo TOKEN?>">
         <div class="mb-4">
             <?php include_once($root.'_partials/error_message.php'); ?>

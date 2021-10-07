@@ -61,7 +61,7 @@
                             type="checkbox" name="permission[]" value="<?php echo $permission->id?>" <?php echo in_array($permission->id, $roleHasPermissions) ? 'checked' : '';?>
                             class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         />
-                        <span class="ml-2"><?php echo _models\Variable::$permission[$permission->name]?></span>
+                        <span class="ml-2"><?php echo $permission->description?></span>
                     </label>
                 <?php endforeach; ?>
                 </div>

@@ -28,7 +28,6 @@
                 >
                 </div>
 
-
                 <div 
                     x-show="sidebar" 
                     x-transition:enter="transition ease-in-out duration-300 transform" 
@@ -73,6 +72,19 @@
                                 </svg>
                                 後臺首頁
                             </a>
+                            <?php if(Permission::can('permissions-list')): ?>
+                            <a href="<?php echo APP_ADDRESS?>manage/permissions"
+                                <?php echo (strpos(strtolower($_SERVER['PHP_SELF']), 'permissions') !== false)?'class="bg-cyan-800 text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"':'class="text-cyan-100 hover:text-white hover:bg-cyan-600 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"'?>>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6 text-cyan-200"
+                                    viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                    <path fill-rule="evenodd"
+                                        d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                權限管理
+                            </a>
+                            <?php endif; ?>
                             <?php if(Permission::can('roles-list')): ?>
                             <a href="<?php echo APP_ADDRESS?>manage/roles" 
                                 <?php echo (strpos(strtolower($_SERVER['PHP_SELF']), 'roles') !== false)?'class="bg-cyan-800 text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"':'class="text-cyan-100 hover:text-white hover:bg-cyan-600 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"'?>>
@@ -80,16 +92,6 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 角色管理
-                            </a> 
-                            <?php endif; ?>
-                            <?php if(Permission::can('permissions-list')): ?>
-                            <a href="<?php echo APP_ADDRESS?>manage/permissions" 
-                                <?php echo (strpos(strtolower($_SERVER['PHP_SELF']), 'permissions') !== false)?'class="bg-cyan-800 text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"':'class="text-cyan-100 hover:text-white hover:bg-cyan-600 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"'?>>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6 text-cyan-200" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                                </svg>
-                                權限管理
                             </a> 
                             <?php endif; ?>
                             <?php if(Permission::can('users-list')): ?>
@@ -126,7 +128,6 @@
                                     </svg>
                                     隱私安全
                                 </a>
-
                             </div>
                         </div>
                     </nav>
@@ -156,6 +157,19 @@
                                     </svg>
                                     後臺首頁
                                 </a>
+                                <?php if(Permission::can('permissions-list')): ?>
+                                <a href="<?php echo APP_ADDRESS?>manage/permissions"
+                                    <?php echo (strpos(strtolower($_SERVER['PHP_SELF']), 'permissions') !== false)?'class="bg-cyan-800 text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"':'class="text-cyan-100 hover:text-white hover:bg-cyan-600 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"'?>>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6 text-cyan-200"
+                                        viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                        <path fill-rule="evenodd"
+                                            d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    權限管理
+                                </a>
+                                <?php endif; ?>
                                 <?php if(Permission::can('roles-list')): ?>
                                 <a href="<?php echo APP_ADDRESS?>manage/roles" 
                                     <?php echo (strpos(strtolower($_SERVER['PHP_SELF']), 'roles') !== false)?'class="bg-cyan-800 text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"':'class="text-cyan-100 hover:text-white hover:bg-cyan-600 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"'?>>
@@ -163,16 +177,6 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                     角色管理
-                                </a>
-                                <?php endif; ?>
-                                <?php if(Permission::can('permissions-list')): ?>
-                                <a href="<?php echo APP_ADDRESS?>manage/permissions" 
-                                    <?php echo (strpos(strtolower($_SERVER['PHP_SELF']), 'permissions') !== false)?'class="bg-cyan-800 text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"':'class="text-cyan-100 hover:text-white hover:bg-cyan-600 group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"'?>>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6 text-cyan-200" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                                    </svg>
-                                    權限管理
                                 </a>
                                 <?php endif; ?>
                                 <?php if(Permission::can('users-list')): ?>

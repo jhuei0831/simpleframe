@@ -24,7 +24,7 @@
         <a href="#" @click="toggleFilter()" class="px-3 py-1 ml-2 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-md active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green"><i class="bi bi-filter "></i> 篩選</a>
     </div>
     <div id="filter" x-show="open">
-        <form name="filterForm" id="filterForm" method="post">
+        <form name="filterForm" id="filterForm" method="post" @submit="preventSubmit()">
             <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                 <div class="sm:col-span-2">
                     <label for="name" class="block text-sm font-medium text-gray-700">名稱</label>

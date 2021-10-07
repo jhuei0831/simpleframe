@@ -55,7 +55,7 @@
                     <label class="mt-4 mr-2 items-center dark:text-gray-400">
                         <input type="checkbox" name="permission[]" value="<?php echo $permission->id?>"
                             class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" />
-                        <span class="ml-2"><?php echo _models\Variable::$permission[$permission->name]?></span>
+                        <span class="ml-2"><?php echo $permission->description?></span>
                     </label>
                     <?php endforeach; ?>
                 </div>
