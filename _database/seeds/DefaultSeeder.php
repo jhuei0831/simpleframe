@@ -25,19 +25,23 @@ class DefaultSeeder extends AbstractSeed
 
         // 建立權限並將角色賦予權限
         $permissions = [
-            'manage-index',
-            'config-edit',
-            'users-list',
-            'users-create',
-            'users-edit',
-            'users-delete',
-            'roles-list',
-            'roles-create',
-            'roles-edit',
-            'roles-delete'
+            ['name' => 'manage-index', 'description' => '訪問後台'],
+            ['name' => 'config-edit', 'description' => '設定修改'],
+            ['name' => 'users-list', 'description' => '使用者清單'],
+            ['name' => 'users-create', 'description' => '使用者新增'],
+            ['name' => 'users-edit', 'description' => '使用者修改'],
+            ['name' => 'users-delete', 'description' => '使用者刪除'],
+            ['name' => 'roles-list', 'description' => '角色清單'],
+            ['name' => 'roles-create', 'description' => '角色新增'],
+            ['name' => 'roles-edit', 'description' => '角色修改'],
+            ['name' => 'roles-delete', 'description' => '角色刪除'],
+            ['name' => 'permissions-list', 'description' => '權限清單'],
+            ['name' => 'permissions-create', 'description' => '權限新增'],
+            ['name' => 'permissions-edit', 'description' => '權限修改'],
+            ['name' => 'permissions-delete', 'description' => '權限刪除'],
         ];
         foreach ($permissions as $permission) {
-            $this->table('permissions')->insert(['name' => $permission])->saveData();
+            $this->table('permissions')->insert(['name' => $permission['name'], 'description' => $permission['description']])->saveData();
         }
 
         for ($i=1; $i <= count($permissions); $i++) { 

@@ -13,3 +13,4 @@ require('../init-alpine');
 
 import Swal from 'sweetalert2';
 window.Swal = Swal;
+window.$ = jQuery;

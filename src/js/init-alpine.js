@@ -67,4 +67,18 @@ function password() {
     }
 }
 
+function filter() {
+    return {
+        open: false,
+        toggleFilter() {
+            return this.open = !this.open;
+        },
+        resetFilter() {
+            document.getElementById("filterForm").reset();
+            table.draw();
+        }
+    }
+}
+
+window.filter = filter;
 window.password = password;
