@@ -66,7 +66,7 @@
                 $check_user = Database::table('users')->where('email ="'.$valid_data['email'].'"')->first();
                 // 密碼規則驗證
                 if (PASSWORD_SECURE === 'TRUE') {
-                    $safeCheck = Password::rule($_POST['password']);
+                    $safeCheck = Password::rule($valid_data['password']);
                 }
                 if ($check_user) {
                     Message::flash('信箱已被註冊使用', 'error');

@@ -21,22 +21,8 @@
             global $errors;
 
             $data = Security::defendFilter($request);
-            $gump = new GUMP();
-
-            // 輸入驗證
-            $gump->validation_rules([
-                'name'    => 'required|max_len,30',
-            ]);
-
-            // 輸入格式化
-            $gump->filter_rules([
-                'name'    => 'trim|sanitize_string',
-            ]);
-
-            // 錯誤訊息
-            $gump->set_fields_error_messages([
-                'name'    => ['required' => '名稱必填', 'max_len' => '名稱必須小於或等於30個字元'],
-            ]);
+            
+            $gump = $this->validation();
 
             $valid_data = $gump->run($data);
 
@@ -91,22 +77,8 @@
 
             $id = Security::defendFilter($_GET['id']);
             $data = Security::defendFilter($request);
-            $gump = new GUMP();
-
-            // 輸入驗證
-            $gump->validation_rules([
-                'name'    => 'required|max_len,30',
-            ]);
-
-            // 輸入格式化
-            $gump->filter_rules([
-                'name'    => 'trim|sanitize_string',
-            ]);
-
-            // 錯誤訊息
-            $gump->set_fields_error_messages([
-                'name'    => ['required' => '名稱必填', 'max_len' => '名稱必須小於或等於30個字元'],
-            ]);
+            
+            $gump = $this->validation();
 
             $valid_data = $gump->run($data);
 
@@ -132,5 +104,27 @@
                 $errors = $gump->get_readable_errors();
                 Message::flash('修改失敗，請檢查輸入。', 'error');
             }
+        }
+
+        private function validation(): GUMP
+        {
+            $gump = new GUMP();
+
+            // 輸入驗證
+            $gump->validation_rules([
+                'name'    => 'required|max_len,30',
+            ]);
+
+            // 輸入格式化
+            $gump->filter_rules([
+                'name'    => 'trim|sanitize_string',
+            ]);
+
+            // 錯誤訊息
+            $gump->set_fields_error_messages([
+                'name'    => ['required' => '名稱必填', 'max_len' => '名稱必須小於或等於30個字元'],
+            ]);
+
+            return $gump;
         }
     }

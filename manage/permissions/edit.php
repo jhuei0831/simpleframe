@@ -35,7 +35,7 @@
     <div class="mb-4">
         <?php include_once($root.'_partials/error_message.php'); ?>
     </div>
-    <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">個人資料</h4>
+    <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">權限資料</h4>
     <form method="post" id="form_permission">
         <input type="hidden" name="token" value="<?php echo TOKEN ?>">
         <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
