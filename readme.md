@@ -22,7 +22,7 @@
 ### 1. 安裝框架
 
 ```
-composer create-project kerwin/simpleframe testcomposer --repository="{\"type\": \"vcs\",\"url\": \"https://github.com/jhuei0831/simpleframe.git\"}"
+composer create-project kerwin/simpleframe simpleframe --repository="{\"type\": \"vcs\",\"url\": \"https://github.com/jhuei0831/simpleframe.git\"}"
 ```
 
 * 編輯設定檔 `.env`

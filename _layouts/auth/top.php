@@ -19,7 +19,7 @@
         <?php include_once($root.'_partials/reception/css.php'); ?>
         <title><?php echo isset($pageTitle) ? $pageTitle.'-'.APP_NAME : APP_NAME?></title>
         <!-- debug bar -->
-        <?php echo IS_DEBUG === 'TRUE' ? $debugbarRenderer->renderHead() : '' ?>
+        <?php echo IS_DEBUG === 'TRUE' && in_array($_SERVER["REMOTE_ADDR"], $except_ip_list) ? $debugbarRenderer->renderHead() : '' ?>
         <!-- font -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

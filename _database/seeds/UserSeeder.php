@@ -6,7 +6,7 @@ class UserSeeder extends AbstractSeed
 {
     public function run()
     {
-        $faker = Faker\Factory::create();
+        /* $faker = Faker\Factory::create();
         $data = [];
         for ($i = 0; $i < 1000; $i++) {
             $data[] = [
@@ -18,6 +18,6 @@ class UserSeeder extends AbstractSeed
             ];
         }
 
-        $this->table('users')->insert($data)->saveData();
+        $this->table('users')->insert($data)->saveData(); */
     }
 }

@@ -16,27 +16,24 @@
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     </head>
     <body>
-        <style>
-            .gradient {
-                background-image: linear-gradient(135deg, #684ca0 35%, #1c4ca0 100%);
-            }
-        </style>
-
-        <div class="gradient text-white min-h-screen flex items-center">
-            <div class="container mx-auto p-4 flex flex-wrap items-center">
-                <div class="w-full md:w-5/12 text-center p-4">
-                    <img src="https://themichailov.com/img/not-found.svg" alt="Not Found" />
-                </div>
-                <div class="w-full md:w-7/12 text-center md:text-left p-4">
-                    <div class="text-6xl font-medium">404</div><br>
-                    <div class="text-xl md:text-3xl font-medium mb-4">
-                        頁面不存在
+        <div class="bg-white min-h-screen px-4 py-16 sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8">
+            <div class="max-w-max mx-auto">
+                <main class="sm:flex">
+                    <p class="text-4xl font-extrabold text-indigo-600 sm:text-5xl">404</p>
+                    <div class="sm:ml-6">
+                        <div class="sm:border-l sm:border-gray-200 sm:pl-6">
+                            <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">頁面不存在
+                            </h1>
+                            <p class="mt-1 text-base text-gray-500">您可能輸入錯誤的網址或頁面可能已經移動</p>
+                        </div>
+                        <div class="mt-10 flex space-x-3 sm:border-l sm:border-transparent sm:pl-6">
+                            <a href="<?php echo APP_ADDRESS?>"
+                                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                返回首頁
+                            </a>
+                        </div>
                     </div>
-                    <div class="text-lg mb-8">
-                        您可能輸入錯誤的網址或頁面可能已經移動
-                    </div>
-                    <a href="<?php echo APP_ADDRESS?>" class="border border-white rounded p-4">返回首頁</a>
-                </div>
+                </main>
             </div>
         </div>
     </body>

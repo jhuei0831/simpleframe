@@ -52,11 +52,11 @@
 	define("APP_NODE",		APP_URL."node_modules/");
 
 	// 是否開放網站
-	// if(!in_array($_SERVER["REMOTE_ADDR"], $except_ip_list) && APP_STATUS == 'OFF')
-	// {
-	// 	include_once(APP_URL.'_error/fix.php');
-	// 	exit;
-	// }
+	/* if(!in_array($_SERVER["REMOTE_ADDR"], $except_ip_list) && APP_STATUS == 'OFF')
+	{
+		include_once(APP_URL.'_error/fix.php');
+		exit;
+	} */
 
 	// 載入類別
 	require_once(__DIR__.'/../_models/autoloader.php');
