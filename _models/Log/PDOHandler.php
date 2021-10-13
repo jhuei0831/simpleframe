@@ -35,7 +35,7 @@
 				'browser' 	=> $this->agent->browser(),
 				'level' 	=> $record['level'],
 				'message' 	=> $record['message'],
-				'context' 	=> json_encode($record['context']),
+				'context' 	=> json_encode($record['context'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
 			));
 		}
 

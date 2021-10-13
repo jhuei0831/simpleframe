@@ -7,7 +7,7 @@
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Permission;
 
-    if (!Permission::can('permissions-list')) {
+    if (!Permission::can('logs-list')) {
         include_once($root.'_error/404.php');
         exit;
     }
@@ -21,16 +21,21 @@
 <div class="container px-6 mx-auto grid" x-data="filter()">
     <h2 class="my-6 text-2xl font-semibold text-gray-700">權限管理</h2>
     <div class="flex justify-start mb-2">
-        <a href="./create.php" class="px-3 py-1 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-cyan-600 border border-transparent rounded-md active:bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:shadow-outline-cyan"><i class="bi bi-person-plus "></i> 新增</a>
         <a href="#" @click="toggleFilter()" class="px-3 py-1 ml-2 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-md active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green"><i class="bi bi-filter "></i> 篩選</a>
     </div>
     <div id="filter" x-show="open">
         <form name="filterForm" id="filterForm" method="post" @submit="preventSubmit()">
             <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                 <div class="sm:col-span-2">
-                    <label for="name" class="block text-sm font-medium text-gray-700">名稱</label>
+                    <label for="name" class="block text-sm font-medium text-gray-700">IP</label>
                     <div class="mt-1">
-                        <input type="text" name="name" id="name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <input type="text" name="ip" id="ip" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                </div>
+                <div class="sm:col-span-2">
+                    <label for="name" class="block text-sm font-medium text-gray-700">等級</label>
+                    <div class="mt-1">
+                        <input type="text" name="level" id="level" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                     </div>
                 </div>
             </div>
@@ -51,11 +56,12 @@
             <table id="table" class="whitespace-nowrap row-border hover">
                 <thead>
                     <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
-                        <th class="px-4 py-3">使用者</th>
+                        <th class="px-4 py-3">ID</th>
                         <th class="px-4 py-3">IP</th>
                         <th class="px-4 py-3">等級</th>
                         <th class="px-4 py-3">訊息</th>
                         <th class="px-4 py-3">建立時間</th>
+                        <th class="px-4 py-3">功能</th>
                     </tr>
                 </thead>
             </table>
@@ -64,9 +70,9 @@
 </div>
 <script type="text/javascript">
     let url = "ajax_logs.php";
-    let columns = [ 
+    let columns = [
         {
-            "data": "user"
+            "data": "id"
         },
         {
             "data": "ip"
@@ -79,6 +85,14 @@
         },
         {
             "data": "created_at"
+        },
+        {
+            "data": null,
+            "orderable": false,
+            "defaultContent": 
+            '<div class="flex items-center space-x-4 text-sm">'+ 
+                '<i class="bi bi-zoom-in detail flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gra" style="cursor:pointer"></i>'+
+            '</div>'
         }
     ];
     let table = $('#table').DataTable({
@@ -105,9 +119,10 @@
         "ajax":{
             url: url,
             type: "post",
-            // data: function(d) {
-            //     d.columns[0]['search']['value'] = $("#name").val();
-            // },
+            data: function(d) {
+                d.columns[1]['search']['value'] = $("#ip").val();
+                d.columns[2]['search']['value'] = $("#level").val();
+            },
             error: function(res){
                 console.log(res)
             },
