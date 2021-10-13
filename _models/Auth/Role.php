@@ -3,6 +3,7 @@
     namespace _models\Auth;
 
     use GUMP;
+    use _models\Log\Log;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
@@ -10,6 +11,12 @@
 
     class Role 
     {        
+        public $log;
+
+        public function __construct() {
+            $this->log = new Log('Role');
+        }
+
         /**
          * 角色新增
          *
@@ -41,6 +48,7 @@
                             'role_id' => $role->id
                         ], false);
                 }  
+                $this->log->info('新增角色', Toolbox::except($valid_data, 'token'));
                 Message::flash('新增成功。', 'success')->redirect(APP_ADDRESS.'manage/roles');
             }
             else {
@@ -57,11 +65,17 @@
          */
         public function delete(string $id): void
         {
+            $id = Security::defendFilter($id);
             $check = Database::table('users')->where('role ='.$id)->count();
             if ($check > 0) {
                 Message::flash('此角色尚有使用者使用', 'warning')->redirect(APP_ADDRESS.'manage/roles');
             }
+            else {
+                $role = Database::table('roles')->find($id);
+            }
+            
             Database::table('roles')->where("id='{$id}'")->delete();
+            $this->log->info('刪除角色', ['name' => $role->name]);
             Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/roles');
         }
         
@@ -97,6 +111,7 @@
                     }  
                     Database::table('role_has_permissions')->createOrUpdate($newPermissions, false);
                 }
+                $this->log->info('修改角色', Toolbox::except($valid_data, 'token'));
                 Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/roles');
             }
             

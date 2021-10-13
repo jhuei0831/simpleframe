@@ -3,6 +3,7 @@
     namespace _models\Auth;
 
     use GUMP;
+    use _models\Log\Log;
     use Kerwin\Core\Support\Facades\Config;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
@@ -11,6 +12,12 @@
 
     class Password
     {        
+        public $log;
+
+        public function __construct() {
+            $this->log = new Log('Password');
+        }
+
         /**
          * 密碼重設資料驗證、更新
          *
@@ -88,7 +95,8 @@
                         'password_updated_at' => date('Y-m-d H:i:s'),
                     ], false);
                 if ($updateUsers && $updatePasswordResets) {
-                    Message::flash('密碼修改成功，請使用新密碼登入。', 'success')->redirect(APP_ADDRESS.'auth/login.php');
+                    $this->log->info('密碼密碼成功');
+                    Message::flash('密碼密碼成功，請使用新密碼登入。', 'success')->redirect(APP_ADDRESS.'auth/login.php');
                 }   
             }
         }

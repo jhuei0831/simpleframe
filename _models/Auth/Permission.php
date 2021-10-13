@@ -3,12 +3,20 @@
     namespace _models\Auth;
 
     use GUMP;
+    use _models\Log\Log;
+    use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Security;
 
     class Permission
-    {                        
+    {             
+        public $log;
+
+        public function __construct() {
+            $this->log = new Log('Permission');
+        }  
+
         /**
          * 權限新增
          *
@@ -33,6 +41,7 @@
                 }
                 else {
                     Database::table('permissions')->insert($valid_data);
+                    $this->log->info('新增權限', Toolbox::except($valid_data, 'token'));
                     Message::flash('新增成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/permissions');
                 }
             } 
@@ -50,7 +59,15 @@
          */
         public function delete(int $id): void
         {
+            $check = Database::table('role_has_permissions')->where("permission_id ='{$id}'")->count();
+            if ($check > 0) {
+                Message::flash('尚有角色使用此權限', 'warning')->redirect(APP_ADDRESS . 'manage/permissions');
+            }
+            else {
+                $permission = Database::table('permissions')->find($id);
+            }
             Database::table('permissions')->where("id = '{$id}'")->delete();
+            $this->log->info('刪除權限', ['name' => $permission->name]);
             Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/permissions');
         }
 
@@ -79,6 +96,7 @@
                 }
                 else {
                     Database::table('permissions')->where("id = '{$id}'")->update($valid_data);
+                    $this->log->info('修改權限', Toolbox::except($valid_data, 'token'));
                     Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/permissions');
                 }
             } else {

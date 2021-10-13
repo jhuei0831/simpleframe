@@ -2,6 +2,7 @@
 
     namespace _models\Auth;
 
+    use _models\Log\Log;
     use Kerwin\Core\Mail;
     use Kerwin\Core\Support\Facades\Auth;
     use Kerwin\Core\Support\Facades\Database;
@@ -10,7 +11,13 @@
     use Kerwin\Core\Support\Facades\Session;
 
     class Email
-    {                
+    {              
+        public $log;
+
+        public function __construct() {
+            $this->log = new Log('Email');
+        }
+
         /**
          * 檢查信箱驗證信
          *
@@ -42,6 +49,7 @@
                         'email_varified_at' => date('Y-m-d H:i:s'), 
                         'updated_at' => date('Y-m-d H:i:s')
                     ]);
+                $this->log->info('信箱驗證成功', ['id' => Session::get('USER_ID')]);
                 Message::flash('信箱驗證成功，謝謝。', 'success')->redirect(APP_ADDRESS);
             }
         }

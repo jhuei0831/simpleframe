@@ -2,12 +2,20 @@
 
     namespace _models;
 
+    use _models\Log\Log;
+    use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Security;
 
     class Config 
     {        
+        public $log;
+
+        public function __construct() {
+            $this->log = new Log('Config');
+        }
+
         /**
          * 設定修改
          *
@@ -38,6 +46,7 @@
             );
 
             Database::table('configs')->where("id = '{$id}'")->update($data);
+            $this->log->info('修改設定', Toolbox::except($data, 'token'));
             Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/config.php');
         }
         

@@ -14,7 +14,8 @@
         "symfony/http-foundation": "^5.3",
         "kerwin/captcha": "^1.0",
         "monolog/monolog": "^2.3",
-        "guzzlehttp/guzzle": "^7.3"
+        "guzzlehttp/guzzle": "^7.3",
+        "jenssegers/agent": "^2.6"
     },
     "repositories": [
         { 

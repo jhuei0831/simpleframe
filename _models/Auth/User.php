@@ -4,6 +4,7 @@
 
     use GUMP;
     use _models\Auth\Password;
+    use _models\Log\Log;
     use Kerwin\Core\Mail;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Config;
@@ -15,9 +16,11 @@
 
     class User 
     {  
+        public $log;
         public $request;
 
         public function __construct() {
+            $this->log = new Log('User');
 			$this->request = Request::createFromGlobals();
 		}
 
@@ -90,7 +93,7 @@
                         'password_updated_at' => date('Y-m-d H:i:s'), 
                     ], false);
                     Database::table('users')->insert($valid_data, TRUE);
-                    return ['msg' => '新增成功。', 'type' => 'success', 'redirect' => Config::getAppAddress().'manage/users'];
+                    $this->log->info('新增使用者', ['id' => $valid_data['id']]);
                     Message::flash('新增成功。', 'success')->redirect(APP_ADDRESS.'manage/users');
                 }
             } else {
@@ -109,6 +112,7 @@
         public function delete(string $id): array
         {
             Database::table('users')->where("id='{$id}'")->delete();
+            $this->log->info('刪除使用者', ['id' => $id]);
             return ['msg' => '刪除成功，謝謝。', 'type' => 'success', 'redirect' => Config::getAppAddress().'manage/users'];
         }
 
@@ -152,6 +156,7 @@
 
                 if (!$gump->errors()) {
                     Database::table('users')->where("id = '{$id}'")->update($valid_data);
+                    $this->log->info('修改使用者資料', ['id' => $id, 'data' => Toolbox::except($valid_data, 'token')]);
                     Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users');
                 } else {
                     $errors = $gump->get_readable_errors();
@@ -197,6 +202,7 @@
                     unset($valid_data['password_confirm']);
                     $valid_data['password'] = md5($valid_data['password']);
                     Database::table('users')->where("id = '{$id}'")->update($valid_data);
+                    $this->log->info('修改使用者密碼', ['id' => $id]);
                     Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users');
                 }
             }
@@ -217,13 +223,16 @@
             } 
             elseif ($user && empty($user->email_varified_at) && EMAIL_VERIFY === 'TRUE') {
                 Session::set('USER_ID', $user->id);
+                $this->log->warning('登入成功，尚未完成信箱驗證');
                 return ['msg' => '登入成功，尚未完成信箱驗證', 'type' => 'warning', 'redirect' => Config::getAppAddress().'auth/email/verified.php'];
             } 
             elseif ($user) {
                 Session::set('USER_ID', $user->id);
+                $this->log->info('登入成功');
                 return ['msg' => '登入成功', 'type' => 'success', 'redirect' => Config::getAppAddress()];
             } 
             else {
+                $this->log->error('登入失敗', ['account' => $data['email']]);
                 return ['msg' => '登入失敗', 'type' => 'error', 'redirect' => Config::getAppAddress().'auth/login.php'];
             }
         }
@@ -235,6 +244,7 @@
          */
         public function logout(): void
         {
+            $this->log->info('登出成功');
             Session::remove('USER_ID');
             Message::flash('登出成功', 'success')->redirect(APP_ADDRESS.'auth/login.php');
         }
@@ -294,6 +304,7 @@
                         'token_updated_at' => date('Y-m-d H:i:s'), 
                         'password_updated_at' => isset($passwordResets->password_updated_at) ? $passwordResets->password_updated_at : $user->created_at, 
                     ]);
+                    $this->log->info('忘記密碼', ['id' => $id]);
                     return [
                         'msg' => '請前往註冊信箱收取密碼重設信，謝謝。',
                         'type' => 'success',
@@ -386,6 +397,7 @@
                         return ['msg' => '註冊成功，請前往註冊信箱收取認證信。', 'type' => 'success', 'redirect' => Config::getAppAddress().'auth/email/verified.php'];
                     }
                     else {
+                        $this->log->info('註冊成功');
                         return ['msg' => '註冊成功。', 'type' => 'success', 'redirect' => Config::getAppAddress()];
                     }
                 }
