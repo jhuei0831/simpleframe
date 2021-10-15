@@ -27,6 +27,7 @@ class DefaultSeeder extends AbstractSeed
         $permissions = [
             ['name' => 'manage-index', 'description' => '訪問後台'],
             ['name' => 'config-edit', 'description' => '設定修改'],
+            ['name' => 'logs-list', 'description' => 'Log清單'],
             ['name' => 'users-list', 'description' => '使用者清單'],
             ['name' => 'users-create', 'description' => '使用者新增'],
             ['name' => 'users-edit', 'description' => '使用者修改'],

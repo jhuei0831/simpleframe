@@ -3,6 +3,7 @@
 
     include($root.'_config/settings.php');
 
+    use _models\Variable;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Permission;
@@ -16,10 +17,10 @@
     include($root.'_layouts/manage/top.php');
 ?>    
 <!-- breadcrumb -->
-<?php echo Toolbox::breadcrumb(APP_ADDRESS.'manage', ['權限管理'=> '#'])?>
+<?php echo Toolbox::breadcrumb(APP_ADDRESS.'manage', ['LOG清單'=> '#'])?>
 
 <div class="container px-6 mx-auto grid" x-data="filter()">
-    <h2 class="my-6 text-2xl font-semibold text-gray-700">權限管理</h2>
+    <h2 class="my-6 text-2xl font-semibold text-gray-700">LOG清單</h2>
     <div class="flex justify-start mb-2">
         <a href="#" @click="toggleFilter()" class="px-3 py-1 ml-2 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-md active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green"><i class="bi bi-filter "></i> 篩選</a>
     </div>
@@ -36,6 +37,17 @@
                     <label for="name" class="block text-sm font-medium text-gray-700">等級</label>
                     <div class="mt-1">
                         <input type="text" name="level" id="level" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                </div>
+                <div class="sm:col-span-2">
+                    <label for="message" class="block text-sm font-medium text-gray-700">訊息</label>
+                    <div class="mt-1">
+                        <select id="message" name="message" autocomplete="message" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                            <option value="">請選擇</option>
+                            <?php foreach (Variable::$logMessages as $key => $message): ?>
+                                <option value="<?php echo $message?>"><?php echo $message?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -69,6 +81,8 @@
     </div>
 </div>
 <script type="text/javascript">
+    
+    // Datatable Variables
     let url = "ajax_logs.php";
     let columns = [
         {
@@ -95,6 +109,8 @@
             '</div>'
         }
     ];
+
+    // Datatable
     let table = $('#table').DataTable({
         "language": {
             "sProcessing":   "處理中...",
@@ -122,12 +138,112 @@
             data: function(d) {
                 d.columns[1]['search']['value'] = $("#ip").val();
                 d.columns[2]['search']['value'] = $("#level").val();
+                d.columns[3]['search']['value'] = $("#message").val();
             },
             error: function(res){
                 console.log(res)
             },
         },
         "columns": columns
+    });
+
+    // 詳細資料按鈕導向
+    $('#table tbody').on('click', '.detail', function () {
+        let row = $(this).closest('tr');
+        let data = table.row(row).data();
+        Swal.fire({
+            // title: 'LOG詳細資料',
+            html: `
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                <div class="px-4 py-5 sm:px-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                        LOG詳細資料
+                    </h3>
+                </div>
+                <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+                    <dl class="sm:divide-y sm:divide-gray-200">
+                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                頻道
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                `+data['channel']+`
+                            </dd>
+                        </div>
+                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                使用者
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                `+data['user']+`
+                            </dd>
+                        </div>
+                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                IP
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                `+data['ip']+`
+                            </dd>
+                        </div>
+                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                作業系統
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                `+data['platform']+`
+                            </dd>
+                        </div>
+                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                瀏覽器
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                `+data['browser']+`
+                            </dd>
+                        </div>
+                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                LOG等級
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                `+data['level']+`
+                            </dd>
+                        </div>
+                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                訊息
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                `+data['message']+`
+                            </dd>
+                        </div>
+                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                內文
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                `+data['context'].replace(/(\r\n|\n|\r|\\)/gm, "").replace(/&#34;/g, '"')+`
+                            </dd>
+                        </div>
+                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">
+                                建立時間
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                `+data['created_at']+`
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+            `,
+            width: 600,
+            showCancelButton: true,
+            showConfirmButton: false,
+            cancelButtonText: `關閉`,
+            background: "#f0efed",
+        })
     });
 </script>
 <?php include($root.'_layouts/manage/bottom.php') ?>

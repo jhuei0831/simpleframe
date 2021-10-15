@@ -1,7 +1,10 @@
 <?php
     use DebugBar\StandardDebugBar;
     use Kerwin\Core\Support\Facades\Message;
-    if (is_null(Kerwin\Core\Support\Facades\Session::get('USER_ID'))) {
+    use Kerwin\Core\Support\Facades\Permission;
+    use Kerwin\Core\Support\Facades\Session;
+    
+    if (is_null(Session::get('USER_ID')) || !Permission::can('manage-index')) {
         Message::flash('權限不足!', 'error')->redirect(APP_ADDRESS);
     }
     if (IS_DEBUG === 'TRUE' && in_array($_SERVER["REMOTE_ADDR"], $except_ip_list)) {

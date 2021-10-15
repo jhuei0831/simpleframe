@@ -53,6 +53,12 @@
                         </select>
                     </div>
                 </div>
+                <div class="sm:col-span-2">
+                    <label for="id" class="block text-sm font-medium text-gray-700">ID</label>
+                    <div class="mt-1">
+                        <input type="text" name="id" id="id" autocomplete="postal-code" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                </div>
             </div>
         </form>
         <div class="pt-5">
@@ -80,6 +86,7 @@
                         <th class="px-4 py-3">角色</th>
                         <th class="px-4 py-3">建立時間</th>
                         <th class="px-4 py-3">功能</th>
+                        <th class="px-4 py-3 hidden">id</th>
                     </tr>
                 </thead>
             </table>
@@ -119,6 +126,10 @@
                 '<i class="bi bi-trash-fill delete flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gra" style="cursor:pointer"></i>'+
             '</div>'
         },
+        {
+            "data": "id",
+            "visible": false,
+        },
     ];
 
     let table = $('#table').DataTable({
@@ -149,6 +160,7 @@
                 d.columns[0]['search']['value'] = $("#name").val();
                 d.columns[1]['search']['value'] = $("#email").val();
                 d.columns[2]['search']['value'] = $('#role option:selected').val();
+                d.columns[5]['search']['value'] = $('#id').val();
             },
             error: function(res){
                 console.log(res)

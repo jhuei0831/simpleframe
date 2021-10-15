@@ -44,6 +44,5 @@
             </div>
         </div>
     </div>
-    
 <?php endif;?>
 <?php include($root.'_layouts/reception/bottom.php') ?>
