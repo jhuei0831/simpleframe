@@ -42,7 +42,7 @@
                 <span class="text-gray-700 dark:text-gray-400">名稱</span>
                 <div class="relative text-gray-500 focus-within:text-purple-600">
                     <input
-                        name="name" value="<?php echo isset($_POST['name'])?$_POST['name']:$role->name?>" type="text"
+                        name="name" value="<?php echo isset($_POST['name']) ? Security::defendFilter($_POST['name']) : $role->name?>" type="text"
                         class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300"
                         placeholder="Jane Doe" required
                     />

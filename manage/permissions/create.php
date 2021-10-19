@@ -7,6 +7,7 @@
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Permission;
+    use Kerwin\Core\Support\Facades\Security;
     
     if (!Permission::can('permissions-create')) {
         Message::flash('權限不足!', 'error')->redirect(APP_ADDRESS.'manage/permissions');
@@ -34,7 +35,7 @@
             <label class="block text-sm">
                 <span class="text-gray-700 dark:text-gray-400">名稱</span>
                 <div class="relative text-black focus-within:text-blue-600 dark:focus-within:text-blue-400">
-                    <input name="name" value="<?php echo isset($_POST['name']) ? $_POST['name'] : '' ?>" type="text"
+                    <input name="name" value="<?php echo isset($_POST['name']) ? Security::defendFilter($_POST['name']) : '' ?>" type="text"
                         class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300"
                         required/>
                     <div class="mt-2 absolute inset-y-0 right-0 flex items-center mr-3 pointer-events-none">
@@ -46,7 +47,7 @@
             <label class="block mt-4 text-sm">
                 <span class="text-gray-700 dark:text-gray-400">敘述</span>
                 <div class="relative text-black focus-within:text-blue-600 dark:focus-within:text-blue-400">
-                    <input name="description" value="<?php echo isset($_POST['description']) ? $_POST['description'] : '' ?>" type="text"
+                    <input name="description" value="<?php echo isset($_POST['description']) ? Security::defendFilter($_POST['description']) : '' ?>" type="text"
                         class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300"
                         required/>
                     <div class="mt-2 absolute inset-y-0 right-0 flex items-center mr-3 pointer-events-none">

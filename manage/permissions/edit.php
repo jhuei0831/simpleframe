@@ -43,7 +43,7 @@
                 <span class="text-gray-700 dark:text-gray-400">名稱</span>
                 <div class="relative text-black focus-within:text-blue-600 dark:focus-within:text-blue-400">
                     <input name="name" type="text"
-                        value="<?php echo isset($_POST['name']) ? Security::defendFilter($_POST['name']) : $permission->name ?>" 
+                        value="<?php echo isset($_POST['name']) ? Security::defendFilter($_POST['name']) : Security::defendFilter($permission->name) ?>" 
                         class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300" 
                         required />
                     <div class="mt-2 absolute inset-y-0 right-0 flex items-center mr-3 pointer-events-none">
@@ -56,7 +56,7 @@
                 <span class="text-gray-700 dark:text-gray-400">敘述</span>
                 <div class="relative text-black focus-within:text-blue-600 dark:focus-within:text-blue-400">
                     <input name="description" type="text"
-                        value="<?php echo isset($_POST['description']) ? $_POST['description'] : $permission->description ?>" 
+                        value="<?php echo isset($_POST['description']) ? Security::defendFilter($_POST['description']) : Security::defendFilter($permission->description) ?>" 
                         class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300" 
                         required />
                     <div class="mt-2 absolute inset-y-0 right-0 flex items-center mr-3 pointer-events-none">

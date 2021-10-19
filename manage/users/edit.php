@@ -43,7 +43,7 @@
             <label class="block text-sm">
                 <span class="text-gray-700 dark:text-gray-400">名稱</span>
                 <div class="relative text-black focus-within:text-blue-600 dark:focus-within:text-blue-400">
-                    <input name="name" value="<?php echo isset($_POST['name']) ? $_POST['name'] : $user->name ?>" type="text" class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300" placeholder="Jane Doe" required />
+                    <input name="name" value="<?php echo isset($_POST['name']) ? Security::defendFilter($_POST['name']) : $user->name ?>" type="text" class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300" placeholder="Jane Doe" required />
                     <div class="mt-2 absolute inset-y-0 right-0 flex items-center mr-3 pointer-events-none">
                         <i class="bi bi-person"></i>
                     </div>
@@ -53,7 +53,7 @@
             <label class="block mt-4 text-sm">
                 <span class="text-gray-700 dark:text-gray-400">電子郵件</span>
                 <div class="relative text-black focus-within:text-blue-600 dark:focus-within:text-blue-400">
-                    <input name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : $user->email ?>" type="text" class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300" placeholder="example@example.com" required />
+                    <input name="email" value="<?php echo isset($_POST['email']) ? Security::defendFilter($_POST['email']) : $user->email ?>" type="text" class="mt-2 w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-md rounded-r-md sm:text-sm border-gray-300" placeholder="example@example.com" required />
                     <div class="mt-2 absolute inset-y-0 right-0 flex items-center mr-3 pointer-events-none">
                         <i class="bi bi-envelope"></i>
                     </div>
