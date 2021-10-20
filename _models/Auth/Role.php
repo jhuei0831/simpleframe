@@ -31,24 +31,24 @@
             
             $gump = $this->validation();
 
-            $valid_data = $gump->run($data);
+            $validData = $gump->run($data);
 
             if (!$gump->errors()) {
-                $checkRole = Database::table('roles')->where("name = '".$valid_data['name']."'")->count();
+                $checkRole = Database::table('roles')->where("name = '".$validData['name']."'")->count();
 
                 if ($checkRole > 0) {
                     Message::flash('名稱已存在。', 'error')->redirect(APP_ADDRESS.'manage/roles/create.php');
                 }
-                Database::table('roles')->insert(Toolbox::only($valid_data, ['token', 'name']), TRUE);
-                $role = Database::table('roles')->where("name = '".$valid_data['name']."'")->first();
-                foreach ($valid_data['permission'] as $value) {
+                Database::table('roles')->insert(Toolbox::only($validData, ['token', 'name']), TRUE);
+                $role = Database::table('roles')->where("name = '".$validData['name']."'")->first();
+                foreach ($validData['permission'] as $value) {
                     Database::table('role_has_permissions')
                         ->createOrUpdate([
                             'permission_id' => $value,
                             'role_id' => $role->id
                         ], false);
                 }  
-                $this->log->info('新增角色', Toolbox::except($valid_data, 'token'));
+                $this->log->info('新增角色', Toolbox::except($validData, 'token'));
                 Message::flash('新增成功。', 'success')->redirect(APP_ADDRESS.'manage/roles');
             }
             else {
@@ -94,24 +94,24 @@
             
             $gump = $this->validation();
 
-            $valid_data = $gump->run($data);
+            $validData = $gump->run($data);
 
             if (!$gump->errors()) {
-                $checkRole = Database::table('roles')->where('name ="'.$valid_data['name'].'"')->count();
+                $checkRole = Database::table('roles')->where('name ="'.$validData['name'].'"')->count();
 
-                if ($checkRole > 0 && $role->name != $valid_data['name']) {
+                if ($checkRole > 0 && $role->name != $validData['name']) {
                     Message::flash('名稱已存在。', 'error')->redirect(APP_ADDRESS.'manage/roles/edit.php?id='.$id);
                 }
 
-                Database::table('roles')->where('id = '.$id)->update(Toolbox::only($valid_data, ['token', 'name']));
+                Database::table('roles')->where('id = '.$id)->update(Toolbox::only($validData, ['token', 'name']));
                 Database::table('role_has_permissions')->where('role_id ='.$role->id)->delete();
-                if (isset($valid_data['permission'])) {
-                    foreach ($valid_data['permission'] as $value) {
+                if (isset($validData['permission'])) {
+                    foreach ($validData['permission'] as $value) {
                         $newPermissions[] = ['permission_id' => $value, 'role_id' => $role->id];
                     }  
                     Database::table('role_has_permissions')->createOrUpdate($newPermissions, false);
                 }
-                $this->log->info('修改角色', Toolbox::except($valid_data, 'token'));
+                $this->log->info('修改角色', Toolbox::except($validData, 'token'));
                 Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/roles');
             }
             

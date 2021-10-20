@@ -3,19 +3,93 @@
     namespace _models\Auth;
 
     use GUMP;
+    use _models\Model;
     use _models\Log\Log;
+    use Kerwin\Core\Mail;
     use Kerwin\Core\Support\Facades\Config;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Security;
     use Kerwin\Core\Support\Facades\Session;
 
-    class Password
+    class Password extends Model
     {        
         public $log;
 
         public function __construct() {
             $this->log = new Log('Password');
+        }
+
+        /**
+         * 忘記密碼
+         *
+         * @param array $request
+         * @return array
+         */
+        public function forgot(array $request): array
+        {
+            $data = Security::defendFilter($request);
+            $authCode = Security::defendFilter(uniqid(mt_rand()));
+            $user = Database::table('users')->where("email = '{$data['email']}'")->first();
+            if (empty($user)) {
+                return [
+                    'msg' => '獲取信件失敗',
+                    'type' => 'error',
+                    'redirect' => Config::getAppAddress().'auth/password/password_forgot.php'
+                ];
+            }
+            else {
+                $passwordResets = Database::table('password_resets')->where("id = '{$user->id}'")->first(false);
+            }
+
+            if (empty($passwordResets)) {
+                Database::table('password_resets')->createOrUpdate([
+                    'token' => $data['token'], 
+                    'id' => $user->id,
+                    'password' => json_encode([$user->password]),
+                    'password_updated_at' => $user->created_at, 
+                ]);
+                $passwordResets = Database::table('password_resets')->where("id = '{$user->id}'")->first(false);
+            }
+            // 確認密碼上次更新時間
+            if (strtotime('now') < strtotime($passwordResets->password_updated_at.' +1 days')) {
+                $passwordResetsPeriod = date('Y-m-d H:i:s', strtotime($passwordResets->password_updated_at.' +1 days'));
+                return [
+                    'msg' => '密碼更新時間小於一天，'.$passwordResetsPeriod.'後才可以再次更改。',
+                    'type' => 'warning',
+                    'redirect' => Config::getAppAddress()
+                ];
+            }
+            else {
+                // 放到信中的變數
+                $name = $user->name;
+                $id = $user->id;
+                include_once('./content.php');
+                $mail = Mail::send($subject, $message, $user->email, $user->name);
+                if ($mail) {
+                    Database::table('password_resets')->createOrUpdate([
+                        'token' => $data['token'], 
+                        'id' => $id, 
+                        'password' => isset($passwordResets->password) ? $passwordResets->password : json_encode([$user->password]),
+                        'email_token' => $authCode, 
+                        'token_updated_at' => date('Y-m-d H:i:s'), 
+                        'password_updated_at' => isset($passwordResets->password_updated_at) ? $passwordResets->password_updated_at : $user->created_at, 
+                    ]);
+                    $this->log->info('忘記密碼', ['id' => $id]);
+                    return [
+                        'msg' => '請前往註冊信箱收取密碼重設信，謝謝。',
+                        'type' => 'success',
+                        'redirect' => Config::getAppAddress().'auth/password/password_forgot.php'
+                    ];
+                }
+                else{
+                    return [
+                        'msg' => '獲取信件失敗',
+                        'type' => 'error',
+                        'redirect' => Config::getAppAddress().'auth/password/password_forgot.php'
+                    ];
+                }
+            }
         }
 
         /**

@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use _models\Auth\User;
+use _models\Auth\Password;
 use Dotenv\Dotenv;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
@@ -13,10 +14,12 @@ final class PasswordResetTest extends TestCase
 {
     public $client;
     public $session;
+    public $password;
     public $user;
 
     protected function setUp(): void
     {
+        $this->password = new Password(); 
         $this->user = new User(); 
         $dotenv = Dotenv::createImmutable(__DIR__.'/..');
         $dotenv->load();
@@ -38,7 +41,7 @@ final class PasswordResetTest extends TestCase
         ];
 
         $this->user->create($insert);
-        $forgot = $this->user->passwordForgot(['email' => $insert['email']]);
+        $forgot = $this->password->forgot(['email' => $insert['email']]);
         $user = Database::table('users')->where("email = '{$insert['email']}'")->first();
         $this->user->delete($user->id);
         $date = date('Y-m-d H:i:s', strtotime($insert['created_at'].'+1 days'));

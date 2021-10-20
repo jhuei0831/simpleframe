@@ -76,3 +76,15 @@ npm run serve
 vendor\bin\phinx migrate
 vendor\bin\phinx seed:run
 ```
+
+### 8. 降php版本
+
+* 在composer.json中加入，以降至7.2版本為例
+```
+"config": {
+    "platform": {
+        "php": "7.2.0"
+    }
+}
+```
+* 刪除`composer.lock`及`/vender`後執行`composer update`

@@ -9,28 +9,32 @@ $(document).ready(function () {
     });
 
     // 編輯按鈕導向
-    $('#table tbody').on('click', '.edit', function () {
-        let row = $(this).closest('tr');
-        let data = table.row(row).data()['id'];
-        window.location.href = './edit.php?id=' + data;
+    $('#table tbody').on('click keypress', '.edit', function (e) {
+        if (e.type === "click" || (e.type === "keypress" && e.keyCode === 13)) {
+            let row = $(this).closest('tr');
+            let data = table.row(row).data()['id'];
+            window.location.href = './edit.php?id=' + data;
+        }
     });
 
     // 刪除按鈕導向
-    $('#table tbody').on('click', '.delete', function () {
-        let row = $(this).closest('tr');
-        let data = table.row(row).data();
-        Swal.fire({
-            title: '確定要刪除 ' + data['name'] + ' ?',
-            showCancelButton: true,
-            confirmButtonText: `是`,
-            cancelButtonText: `否`,
-            confirmButtonColor: 'LightSeaGreen',
-            cancelButtonColor: '#ffbdc5',
-            background: "#fffbf2",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = './delete.php?id=' + data['id'];
-            }
-        })
+    $('#table tbody').on('click keypress', '.delete', function (e) {
+        if (e.type === "click" || (e.type === "keypress" && e.keyCode === 13)) {
+            let row = $(this).closest('tr');
+            let data = table.row(row).data();
+            Swal.fire({
+                title: '確定要刪除 ' + data['name'] + ' ?',
+                showCancelButton: true,
+                confirmButtonText: `是`,
+                cancelButtonText: `否`,
+                confirmButtonColor: 'LightSeaGreen',
+                cancelButtonColor: '#ffbdc5',
+                background: "#fffbf2",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = './delete.php?id=' + data['id'];
+                }
+            })
+        }
     });
 });

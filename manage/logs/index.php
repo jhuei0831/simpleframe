@@ -22,7 +22,7 @@
 <div class="container px-6 mx-auto grid" x-data="filter()">
     <h2 class="my-6 text-2xl font-semibold text-gray-700">LOG清單</h2>
     <div class="flex justify-start mb-2">
-        <a href="#" @click="toggleFilter()" class="px-3 py-1 ml-2 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-md active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green"><i class="bi bi-filter "></i> 篩選</a>
+        <a href="#" @click="toggleFilter()" class="px-3 py-1 ml-2 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-md active:bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"><i class="bi bi-filter "></i> 篩選</a>
     </div>
     <div id="filter" x-show="open">
         <form name="filterForm" id="filterForm" method="post" @submit="preventSubmit()">
@@ -92,7 +92,31 @@
             "data": "ip"
         },
         {
-            "data": "level"
+            "data": "level",
+            "render": function(data) {
+                console.log(data);
+                switch (data) {
+                    case '100':
+                        return 'Debug';
+                        break;
+                    case '200':
+                        return 'Info';
+                        break;
+                    case '250':
+                        return 'Notice';
+                        break;
+                    case '300':
+                        return 'Warning';
+                        break;
+                    case '400':
+                        return 'Error';
+                        break;
+                    default:
+                        return data;
+                        break;
+                }
+                return data;
+            }
         },
         {
             "data": "message"
@@ -105,7 +129,7 @@
             "orderable": false,
             "defaultContent": 
             '<div class="flex items-center space-x-4 text-sm">'+ 
-                '<i class="bi bi-zoom-in detail flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gra" style="cursor:pointer"></i>'+
+                '<i tabindex="0" role="link" class="bi bi-zoom-in detail flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-300" style="cursor:pointer"></i>'+
             '</div>'
         }
     ];
@@ -148,102 +172,104 @@
     });
 
     // 詳細資料按鈕導向
-    $('#table tbody').on('click', '.detail', function () {
-        let row = $(this).closest('tr');
-        let data = table.row(row).data();
-        Swal.fire({
-            // title: 'LOG詳細資料',
-            html: `
-            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-                <div class="px-4 py-5 sm:px-6">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">
-                        LOG詳細資料
-                    </h3>
+    $('#table tbody').on('click keypress', '.detail', function (e) {
+        if (e.type === "click" || (e.type === "keypress" && e.keyCode === 13)) {
+            let row = $(this).closest('tr');
+            let data = table.row(row).data();
+            Swal.fire({
+                // title: 'LOG詳細資料',
+                html: `
+                <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                    <div class="px-4 py-5 sm:px-6">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                            LOG詳細資料
+                        </h3>
+                    </div>
+                    <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+                        <dl class="sm:divide-y sm:divide-gray-200">
+                            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    頻道
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    `+data['channel']+`
+                                </dd>
+                            </div>
+                            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    使用者
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    `+data['user']+`
+                                </dd>
+                            </div>
+                            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    IP
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    `+data['ip']+`
+                                </dd>
+                            </div>
+                            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    作業系統
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    `+data['platform']+`
+                                </dd>
+                            </div>
+                            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    瀏覽器
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    `+data['browser']+`
+                                </dd>
+                            </div>
+                            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    LOG等級
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    `+data['level']+`
+                                </dd>
+                            </div>
+                            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    訊息
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    `+data['message']+`
+                                </dd>
+                            </div>
+                            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    內文
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    `+data['context'].replace(/(\r\n|\n|\r|\\)/gm, "").replace(/&#34;/g, '"')+`
+                                </dd>
+                            </div>
+                            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    建立時間
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    `+data['created_at']+`
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
                 </div>
-                <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
-                    <dl class="sm:divide-y sm:divide-gray-200">
-                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-sm font-medium text-gray-500">
-                                頻道
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                `+data['channel']+`
-                            </dd>
-                        </div>
-                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-sm font-medium text-gray-500">
-                                使用者
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                `+data['user']+`
-                            </dd>
-                        </div>
-                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-sm font-medium text-gray-500">
-                                IP
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                `+data['ip']+`
-                            </dd>
-                        </div>
-                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-sm font-medium text-gray-500">
-                                作業系統
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                `+data['platform']+`
-                            </dd>
-                        </div>
-                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-sm font-medium text-gray-500">
-                                瀏覽器
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                `+data['browser']+`
-                            </dd>
-                        </div>
-                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-sm font-medium text-gray-500">
-                                LOG等級
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                `+data['level']+`
-                            </dd>
-                        </div>
-                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-sm font-medium text-gray-500">
-                                訊息
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                `+data['message']+`
-                            </dd>
-                        </div>
-                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-sm font-medium text-gray-500">
-                                內文
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                `+data['context'].replace(/(\r\n|\n|\r|\\)/gm, "").replace(/&#34;/g, '"')+`
-                            </dd>
-                        </div>
-                        <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-sm font-medium text-gray-500">
-                                建立時間
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                `+data['created_at']+`
-                            </dd>
-                        </div>
-                    </dl>
-                </div>
-            </div>
-            `,
-            width: 600,
-            showCancelButton: true,
-            showConfirmButton: false,
-            cancelButtonText: `關閉`,
-            background: "#f0efed",
-        })
+                `,
+                width: 600,
+                showCancelButton: true,
+                showConfirmButton: false,
+                cancelButtonText: `關閉`,
+                background: "#f0efed",
+            })
+        }
     });
 </script>
 <?php include($root.'_layouts/manage/bottom.php') ?>

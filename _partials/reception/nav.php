@@ -6,7 +6,7 @@
                     <div class="flex justify-start">
                         <a href="<?php echo APP_ADDRESS?>">
                             <span class="sr-only">icon</span>
-                            <img class="h-8 w-auto sm:h-10" src="<?php echo APP_IMG?>grapes.png" alt="icon">
+                            <img class="h-8 w-auto sm:h-10" src="<?php echo APP_IMG?>grapes.png" alt="<?php echo APP_NAME ?>">
                         </a>
                     </div>
                     <div class="-mr-2 -my-2 md:hidden">
@@ -27,10 +27,30 @@
                     <?php else: ?>
                         <div class="relative inline-block text-left">
                             <!-- 選單按鈕 -->
-                            <div class="cursor-pointer">
-                                <img @click="open = true" @keydown.escape="open = false" class="h-8 w-8 rounded-full" src="<?php echo APP_IMG?>no-avatar.png" alt="avatar">
+                            <div>
+                                <button 
+                                    x-cloak
+                                    type="button" 
+                                    class="max-w-xs bg-white rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 lg:p-2 lg:rounded-md lg:hover:bg-gray-50" 
+                                    id="user-menu-button" 
+                                    x-ref="button" 
+                                    @click="open = !open" 
+                                    @keydown.escape="open = false"
+                                    aria-expanded="false" 
+                                    aria-haspopup="true" 
+                                >
+                                    <img class="h-8 w-8 rounded-full" src="https://uybor.uz/borless/avtobor/img/user-images/no-avatar.png" alt="<?php echo APP_NAME ?>">
+                                    <span class="hidden ml-3 text-gray-700 text-sm font-medium lg:block">
+                                        <span class="sr-only">打開頭像下拉式選單</span>
+                                        <?php echo Kerwin\Core\Support\Facades\Auth::user()->name?>
+                                    </span>
+                                    <svg 
+                                        :class="{ 'transform rotate-180' : open == true }"
+                                        class="hidden flex-shrink-0 ml-1 h-5 w-5 text-gray-400 lg:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </button>
                             </div>
-
                             <!-- 下拉選單動畫 -->
                             <div
                                 x-show="open"
@@ -82,7 +102,7 @@
                     <div class="pt-5 pb-6 px-5">
                         <div class="flex items-center justify-between">
                             <div>
-                                <img class="h-8 w-auto" src="<?php echo APP_IMG?>grapes.png" alt="icon">
+                                <img class="h-8 w-auto" src="<?php echo APP_IMG?>grapes.png" alt="<?php echo APP_NAME ?>">
                             </div>
                             <div class="-mr-2">
                                 <button @click="menu = false" type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">

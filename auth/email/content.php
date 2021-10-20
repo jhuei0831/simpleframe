@@ -27,7 +27,7 @@
                         <tr>
                             <td style="text-align:center;">
                                 <a href="'.APP_ADDRESS.'" title="logo" target="_blank">
-                                    <img width="48" src="'.APP_ADDRESS.'src/img/grapes.png" title="logo" alt="logo">
+                                    <img width="48" src="'.APP_ADDRESS.'src/img/grapes.png" title="logo" alt="'.APP_NAME.'">
                                 </a>
                             </td>
                         </tr>

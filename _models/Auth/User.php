@@ -3,6 +3,7 @@
     namespace _models\Auth;
 
     use GUMP;
+    use _models\Model;
     use _models\Auth\Password;
     use _models\Log\Log;
     use Kerwin\Core\Mail;
@@ -14,7 +15,7 @@
     use Kerwin\Core\Support\Facades\Request;
     use Kerwin\Core\Support\Facades\Session;
 
-    class User 
+    class User extends Model
     {  
         public $log;
         public $request;
@@ -63,43 +64,42 @@
                 'password_confirm'  => ['required' => '確認密碼必填', 'max_len' => '確認密碼必須小於等於30個字元', 'min_len' => '確認密碼必須大於等於8個字元'],
             ]);
 
-            $valid_data = $gump->run($data);
+            $validData = $gump->run($data);
 
             if (!$gump->errors()) {
-                $check_user = Database::table('users')->where('email ="'.$valid_data['email'].'"')->first();
+                $checkUser = Database::table('users')->where('email ="'.$validData['email'].'"')->first();
                 // 密碼規則驗證
                 if (PASSWORD_SECURE === 'TRUE') {
-                    $safeCheck = Password::rule($valid_data['password']);
+                    $safeCheck = Password::rule($validData['password']);
                 }
-                if ($check_user) {
-                    Message::flash('信箱已被註冊使用', 'error');
+                if ($checkUser) {
+                    return ['msg' => '信箱已被註冊使用', 'type' => 'error'];
                 }
-                elseif (PASSWORD_SECURE === 'TRUE' && (count($safeCheck) <= 3 || !preg_match('/.{8,}/',$valid_data['password']))) {
-                    Message::flash('密碼不符合規則，請參考密碼規則並再次確認', 'error');
+                elseif (PASSWORD_SECURE === 'TRUE' && (count($safeCheck) <= 3 || !preg_match('/.{8,}/',$validData['password']))) {
+                    return ['msg' => '密碼不符合規則，請參考密碼規則並再次確認', 'type' => 'error'];
                 }
-                elseif ($valid_data['password'] != $valid_data['password_confirm']) {
-                    Message::flash('密碼要和確認密碼相同', 'error');
+                elseif ($validData['password'] != $validData['password_confirm']) {
+                    return ['msg' => '密碼要和確認密碼相同', 'type' => 'error'];
                 }
                 else {
-                    unset($valid_data['password_confirm']);
+                    unset($validData['password_confirm']);
                     $authCode = uniqid(mt_rand());
-                    $valid_data['password'] = md5($valid_data['password']);
-                    $valid_data['id'] = Toolbox::UUIDv4();
-                    $valid_data['auth_code'] = $authCode;
+                    $validData['password'] = md5($validData['password']);
+                    $validData['id'] = Toolbox::UUIDv4();
+                    $validData['auth_code'] = $authCode;
                     /* 在忘記密碼加入資料 */
                     Database::table('password_resets')->insert([
-                        'id' => $valid_data['id'], 
-                        'password' => json_encode([$valid_data['password']]),
+                        'id' => $validData['id'], 
+                        'password' => json_encode([$validData['password']]),
                         'password_updated_at' => date('Y-m-d H:i:s'), 
                     ], false);
-                    Database::table('users')->insert($valid_data, TRUE);
-                    $this->log->info('新增使用者', ['id' => $valid_data['id']]);
-                    Message::flash('新增成功。', 'success')->redirect(APP_ADDRESS.'manage/users');
+                    Database::table('users')->insert($validData, TRUE);
+                    $this->log->info('新增使用者', ['id' => $validData['id']]);
+                    return ['msg' => '新增成功。', 'type' => 'success', 'redirect' => Config::getAppAddress().'manage/users'];
                 }
             } else {
                 $errors = $gump->get_readable_errors();
                 return ['msg' => '新增失敗，請檢查輸入', 'type' => 'error'];
-                Message::flash('新增失敗，請檢查輸入', 'error');
             }
         }
 
@@ -152,11 +152,11 @@
                     'role'   => ['required' => '角色必填'],
                 ]);
 
-                $valid_data = $gump->run($data);
+                $validData = $gump->run($data);
 
                 if (!$gump->errors()) {
-                    Database::table('users')->where("id = '{$id}'")->update($valid_data);
-                    $this->log->info('修改使用者資料', ['id' => $id, 'data' => Toolbox::except($valid_data, 'token')]);
+                    Database::table('users')->where("id = '{$id}'")->update($validData);
+                    $this->log->info('修改使用者資料', ['id' => $id, 'data' => Toolbox::except($validData, 'token')]);
                     Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users');
                 } else {
                     $errors = $gump->get_readable_errors();
@@ -191,7 +191,7 @@
                     'password'    => 'trim',
                     'password_confirm'   => 'trim',
                 ]);
-                $valid_data = $gump->run($data);
+                $validData = $gump->run($data);
 
                 if ($data['password'] != $data['password_confirm']) {
                     Message::flash('密碼要和確認密碼相同!。', 'error');
@@ -199,9 +199,9 @@
                     $errors = $gump->get_readable_errors();
                     Message::flash('修改失敗，請檢查輸入。', 'error');
                 } else {
-                    unset($valid_data['password_confirm']);
-                    $valid_data['password'] = md5($valid_data['password']);
-                    Database::table('users')->where("id = '{$id}'")->update($valid_data);
+                    unset($validData['password_confirm']);
+                    $validData['password'] = md5($validData['password']);
+                    Database::table('users')->where("id = '{$id}'")->update($validData);
                     $this->log->info('修改使用者密碼', ['id' => $id]);
                     Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users');
                 }
@@ -248,78 +248,6 @@
             Session::remove('USER_ID');
             Message::flash('登出成功', 'success')->redirect(APP_ADDRESS.'auth/login.php');
         }
-        
-        /**
-         * 忘記密碼
-         *
-         * @param array $request
-         * @return array
-         */
-        public function passwordForgot(array $request): array
-        {
-            $data = Security::defendFilter($request);
-            $authCode = Security::defendFilter(uniqid(mt_rand()));
-            $user = Database::table('users')->where("email = '{$data['email']}'")->first();
-            if (empty($user)) {
-                return [
-                    'msg' => '獲取信件失敗',
-                    'type' => 'error',
-                    'redirect' => Config::getAppAddress().'auth/password/password_forgot.php'
-                ];
-            }
-            else {
-                $passwordResets = Database::table('password_resets')->where("id = '{$user->id}'")->first(false);
-            }
-
-            if (empty($passwordResets)) {
-                Database::table('password_resets')->createOrUpdate([
-                    'token' => $data['token'], 
-                    'id' => $user->id,
-                    'password' => json_encode([$user->password]),
-                    'password_updated_at' => $user->created_at, 
-                ]);
-                $passwordResets = Database::table('password_resets')->where("id = '{$user->id}'")->first(false);
-            }
-            // 確認密碼上次更新時間
-            if (strtotime('now') < strtotime($passwordResets->password_updated_at.' +1 days')) {
-                $passwordResetsPeriod = date('Y-m-d H:i:s', strtotime($passwordResets->password_updated_at.' +1 days'));
-                return [
-                    'msg' => '密碼更新時間小於一天，'.$passwordResetsPeriod.'後才可以再次更改。',
-                    'type' => 'warning',
-                    'redirect' => Config::getAppAddress()
-                ];
-            }
-            else {
-                // 放到信中的變數
-                $name = $user->name;
-                $id = $user->id;
-                include_once('./content.php');
-                $mail = Mail::send($subject, $message, $user->email, $user->name);
-                if ($mail) {
-                    Database::table('password_resets')->createOrUpdate([
-                        'token' => $data['token'], 
-                        'id' => $id, 
-                        'password' => isset($passwordResets->password) ? $passwordResets->password : json_encode([$user->password]),
-                        'email_token' => $authCode, 
-                        'token_updated_at' => date('Y-m-d H:i:s'), 
-                        'password_updated_at' => isset($passwordResets->password_updated_at) ? $passwordResets->password_updated_at : $user->created_at, 
-                    ]);
-                    $this->log->info('忘記密碼', ['id' => $id]);
-                    return [
-                        'msg' => '請前往註冊信箱收取密碼重設信，謝謝。',
-                        'type' => 'success',
-                        'redirect' => Config::getAppAddress().'auth/password/password_forgot.php'
-                    ];
-                }
-                else{
-                    return [
-                        'msg' => '獲取信件失敗',
-                        'type' => 'error',
-                        'redirect' => Config::getAppAddress().'auth/password/password_forgot.php'
-                    ];
-                }
-            }
-        }
 
         /**
          * 會員註冊
@@ -358,43 +286,48 @@
                 'password_confirm'  => ['required' => '確認密碼必填', 'max_len' => '確認密碼必須小於等於30個字元', 'min_len' => '確認密碼必須大於等於8個字元'],
             ]);
 
-            $valid_data = $gump->run($data);
+            $validData = $gump->run($data);
 
             if (!$gump->errors()) {
-                $check_user = Database::table('users')->where('email ="'.$valid_data['email'].'"')->first();
+                $checkUser = Database::table('users')->where('email ="'.$validData['email'].'"')->first();
                 // 密碼規則驗證
                 if ($this->request->server->get('AUTH_PASSWORD_SECURITY') === 'TRUE') {
-                    $safeCheck = Password::rule($valid_data['password']);
+                    $safeCheck = Password::rule($validData['password']);
                 }
-                if ($check_user) {
+                if ($checkUser) {
                     return ['msg' => '信箱已被註冊使用', 'type' => 'error'];
                 }
-                elseif ($this->request->server->get('AUTH_PASSWORD_SECURITY') === 'TRUE' && (count($safeCheck) <= 3 || !preg_match('/.{8,}/',$valid_data['password']))) {
+                elseif ($this->request->server->get('AUTH_PASSWORD_SECURITY') === 'TRUE' && (count($safeCheck) <= 3 || !preg_match('/.{8,}/',$validData['password']))) {
                     return ['msg' => '密碼不符合規則，請參考密碼規則並再次確認', 'type' => 'error'];
                 }
-                elseif ($valid_data['password'] != $valid_data['password_confirm']) {
+                elseif ($validData['password'] != $validData['password_confirm']) {
                     return ['msg' => '密碼要和確認密碼相同', 'type' => 'error'];
                 }
                 else {
-                    unset($valid_data['password_confirm']);
+                    unset($validData['password_confirm']);
                     $authCode = uniqid(mt_rand());
-                    $valid_data['password'] = md5($valid_data['password']);
-                    $valid_data['id'] = Toolbox::UUIDv4();
-                    $valid_data['role'] = 2;
-                    $valid_data['auth_code'] = $authCode;
-                    Database::table('users')->insert($valid_data);
-                    Session::set('USER_ID', $valid_data['id']);
+                    $validData['password'] = md5($validData['password']);
+                    $validData['id'] = Toolbox::UUIDv4();
+                    $validData['role'] = 2;
+                    $validData['auth_code'] = $authCode;
+                    Database::table('users')->insert($validData);
+                    Session::set('USER_ID', $validData['id']);
                     /* 在忘記密碼加入資料 */
                     Database::table('password_resets')->insert([
-                        'id' => $valid_data['id'], 
-                        'password' => json_encode([$valid_data['password']]),
+                        'id' => $validData['id'], 
+                        'password' => json_encode([$validData['password']]),
                         'password_updated_at' => date('Y-m-d H:i:s'), 
                     ], false);
                     if ($this->request->server->get('AUTH_EMAIL_VERIFY') === 'TRUE') {
-                        $name = $valid_data['name'];
+                        $name = $validData['name'];
+                        $id = $validData['id'];
                         include_once('./email/content.php');
-                        Mail::send($subject, $message, $valid_data['email'], $valid_data['name']);
-                        return ['msg' => '註冊成功，請前往註冊信箱收取認證信。', 'type' => 'success', 'redirect' => Config::getAppAddress().'auth/email/verified.php'];
+                        Mail::send($subject, $message, $validData['email'], $validData['name']);
+                        return [
+                            'msg' => '註冊成功，請前往註冊信箱收取認證信。',
+                            'type' => 'success',
+                            'redirect' => Config::getAppAddress().'auth/email/verified.php'
+                        ];
                     }
                     else {
                         $this->log->info('註冊成功');
@@ -404,22 +337,6 @@
             } else {
                 $errors = $gump->get_readable_errors();
                 return ['msg' => '註冊失敗，請檢查輸入', 'type' => 'error'];
-            }
-        }
-        
-        /**
-         * 根據function返回的結果做處理
-         *
-         * @param  array $request
-         * @return void
-         */
-        public function result(array $request): void
-        {
-            if (isset($request['redirect'])) {
-                Message::flash($request['msg'], $request['type'])->redirect($request['redirect']);
-            }
-            else {
-                Message::flash($request['msg'], $request['type']);
             }
         }
     }

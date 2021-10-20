@@ -31,17 +31,17 @@
             
             $gump = $this->validation();
 
-            $valid_data = $gump->run($data);
+            $validData = $gump->run($data);
 
             if (!$gump->errors()) {
-                $permission = Database::table('permissions')->where("name = '{$valid_data['name']}'")->first();
+                $permission = Database::table('permissions')->where("name = '{$validData['name']}'")->first();
                 if ($permission) {
-                    $errors[] = '名稱'.$valid_data['name'].'已存在';
+                    $errors[] = '名稱'.$validData['name'].'已存在';
                     Message::flash('新增失敗，請檢查輸入', 'error');
                 }
                 else {
-                    Database::table('permissions')->insert($valid_data);
-                    $this->log->info('新增權限', Toolbox::except($valid_data, 'token'));
+                    Database::table('permissions')->insert($validData);
+                    $this->log->info('新增權限', Toolbox::except($validData, 'token'));
                     Message::flash('新增成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/permissions');
                 }
             } 
@@ -86,17 +86,17 @@
 
             $gump = $this->validation();
 
-            $valid_data = $gump->run($data);
+            $validData = $gump->run($data);
 
             if (!$gump->errors()) {
-                $permission = Database::table('permissions')->where("name = '{$valid_data['name']}'")->first();
+                $permission = Database::table('permissions')->where("name = '{$validData['name']}'")->first();
                 if ($permission && $permission->id != $id) {
-                    $errors[] = '名稱'.$valid_data['name'].'已存在';
+                    $errors[] = '名稱'.$validData['name'].'已存在';
                     Message::flash('修改失敗，請檢查輸入。', 'error');
                 }
                 else {
-                    Database::table('permissions')->where("id = '{$id}'")->update($valid_data);
-                    $this->log->info('修改權限', Toolbox::except($valid_data, 'token'));
+                    Database::table('permissions')->where("id = '{$id}'")->update($validData);
+                    $this->log->info('修改權限', Toolbox::except($validData, 'token'));
                     Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/permissions');
                 }
             } else {

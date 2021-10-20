@@ -18,7 +18,8 @@
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
         $user = new User();
-        $user->create($_POST);
+        $create = $user->create($_POST);
+        $user->result($create);
     }
 
     Message::showFlash();

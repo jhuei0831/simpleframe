@@ -40,6 +40,9 @@
             elseif (Auth::id() != $_GET['id'] || $user->auth_code != $_GET['auth']) {
                 Message::flash('連結有問題，請確認或重新申請認證信，謝謝。', 'warning')->redirect(APP_ADDRESS.'auth/email/verified.php');
             }
+            elseif (!is_null($user->email_varified_at)) {
+                Message::flash('已經通過信箱驗證', 'warning')->redirect(APP_ADDRESS);
+            }
             else{
                 Session::set('USER_ID', $user->id);
                 Database::table('users')

@@ -32,19 +32,6 @@ final class RegisterTest extends TestCase
         $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testRegisterWithNoCsrf()
-    {
-        $request = [
-            'name'              => 'test',
-            'email'             => 'test@test.com',
-            'password'          => 'password',
-            'password_confirm'  => 'password',
-        ];
-        $this->expectException(Exception::class);
-        $this->user->register($request);
-        $this->expectExceptionMessage('請進行CSRF驗證');
-    }
-
     public function testRegisterWithErrorValidation(): void
     {
         $request = [

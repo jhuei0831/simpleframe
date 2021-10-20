@@ -29,7 +29,7 @@
     <div class="max-w-md w-full space-y-8 mt-12">
         <div>
             <a href="<?php echo APP_ADDRESS ?>">
-                <img :class="{ 'animate-spin': loading === true }" class="mx-auto h-12 w-auto" src="<?php echo APP_IMG ?>grapes.png" alt="Workflow">
+                <img :class="{ 'animate-spin': loading === true }" class="mx-auto h-12 w-auto" src="<?php echo APP_IMG ?>grapes.png" alt="<?php echo APP_NAME ?>">
             </a>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
                 會員登入
@@ -51,7 +51,7 @@
             <div>
                 <div class="mt-1 flex rounded-md shadow-sm">
                     <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
-                        <img id="imgcode" src="<?php echo APP_URL ?>_partials/captcha.php" onclick="refresh_code()" />
+                        <img id="imgcode" src="<?php echo APP_URL ?>_partials/captcha.php" onclick="refresh_code()" alt="kerwin/captcha" />
                     </span>
                     <input type="text" name="captcha" id="captcha" class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300" autocomplete="off" required placeholder="請輸入左方圖片驗證碼">
                 </div>

@@ -20,7 +20,7 @@
     <div class="max-w-md w-full space-y-8 mt-12">
         <div>
             <a href="<?php echo APP_ADDRESS ?>">
-                <img :class="{'animate-spin': loading === true}" class="mx-auto h-12 w-auto" src="<?php echo APP_IMG ?>grapes.png" alt="Workflow">
+                <img :class="{'animate-spin': loading === true}" class="mx-auto h-12 w-auto" src="<?php echo APP_IMG ?>grapes.png" alt="<?php echo APP_NAME ?>">
             </a>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
                 密碼重新設定
