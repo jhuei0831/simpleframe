@@ -20,6 +20,7 @@
         $user = new User();
         $create = $user->create($_POST);
         $user->result($create);
+        $errors = $user->errors;
     }
 
     Message::showFlash();

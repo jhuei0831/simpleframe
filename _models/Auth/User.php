@@ -17,7 +17,25 @@
 
     class User extends Model
     {  
+        /**
+         * GUMP驗證後的錯誤訊息
+         *
+         * @var array
+         */
+        public $errors = [];
+
+        /**
+         * Log instance
+         *
+         * @var _models\Log\Log
+         */
         public $log;
+                
+        /**
+         * Request instance
+         *
+         * @var Kerwin\Core\Support\Facades\Request
+         */
         public $request;
 
         public function __construct() {
@@ -33,8 +51,6 @@
          */
         public function create(array $request): array
         {
-            global $errors;
-
             $data = Security::defendFilter($request);
             $gump = new GUMP();
 
@@ -98,7 +114,7 @@
                     return ['msg' => '新增成功。', 'type' => 'success', 'redirect' => Config::getAppAddress().'manage/users'];
                 }
             } else {
-                $errors = $gump->get_readable_errors();
+                $this->errors = $gump->get_readable_errors();
                 return ['msg' => '新增失敗，請檢查輸入', 'type' => 'error'];
             }
         }
@@ -125,8 +141,6 @@
          */
         public function edit(array $request, string $id): void
         {
-            global $errors;
-
             $data = Security::defendFilter($request);
             if ($data['type'] == 'profile') {
                 unset($data['type']);
@@ -159,7 +173,7 @@
                     $this->log->info('修改使用者資料', ['id' => $id, 'data' => Toolbox::except($validData, 'token')]);
                     Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users');
                 } else {
-                    $errors = $gump->get_readable_errors();
+                    $this->errors = $gump->get_readable_errors();
                     Message::flash('修改失敗，請檢查輸入。', 'error');
                 }
             } else {
@@ -196,7 +210,7 @@
                 if ($data['password'] != $data['password_confirm']) {
                     Message::flash('密碼要和確認密碼相同!。', 'error');
                 } elseif ($gump->errors()) {
-                    $errors = $gump->get_readable_errors();
+                    $this->errors = $gump->get_readable_errors();
                     Message::flash('修改失敗，請檢查輸入。', 'error');
                 } else {
                     unset($validData['password_confirm']);
@@ -335,7 +349,7 @@
                     }
                 }
             } else {
-                $errors = $gump->get_readable_errors();
+                $this->errors = $gump->get_readable_errors();
                 return ['msg' => '註冊失敗，請檢查輸入', 'type' => 'error'];
             }
         }

@@ -10,9 +10,21 @@
     use Kerwin\Core\Support\Facades\Security;
 
     class Role 
-    {        
-        public $log;
+    {      
+        /**
+         * GUMP驗證後的錯誤訊息
+         *
+         * @var array
+         */
+        public $errors = [];
 
+        /**
+         * Log instance
+         *
+         * @var _models\Log\Log
+         */
+        public $log;
+        
         public function __construct() {
             $this->log = new Log('Role');
         }
@@ -25,8 +37,6 @@
          */
         public function create(array $request): void
         {
-            global $errors;
-
             $data = Security::defendFilter($request);
             
             $gump = $this->validation();
@@ -52,7 +62,7 @@
                 Message::flash('新增成功。', 'success')->redirect(APP_ADDRESS.'manage/roles');
             }
             else {
-                $errors = $gump->get_readable_errors();
+                $this->errors = $gump->get_readable_errors();
                 Message::flash('新增失敗，請檢查輸入。', 'error');
             }
         }
@@ -87,8 +97,6 @@
          */
         public function edit(array $request, object $role): void
         {
-            global $errors;
-
             $id = Security::defendFilter($_GET['id']);
             $data = Security::defendFilter($request);
             
@@ -116,7 +124,7 @@
             }
             
             else {
-                $errors = $gump->get_readable_errors();
+                $this->errors = $gump->get_readable_errors();
                 Message::flash('修改失敗，請檢查輸入。', 'error');
             }
         }

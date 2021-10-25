@@ -11,6 +11,7 @@
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
         $passwordService->reset($_POST);
+        $errors = $passwordService->errors;
     }
 
     Message::showFlash();

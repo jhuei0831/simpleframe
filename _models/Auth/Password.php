@@ -14,6 +14,18 @@
 
     class Password extends Model
     {        
+        /**
+         * GUMP驗證後的錯誤訊息
+         *
+         * @var array
+         */
+        public $errors = [];
+
+        /**
+         * Log instance
+         *
+         * @var _models\Log\Log
+         */
         public $log;
 
         public function __construct() {
@@ -117,7 +129,6 @@
 
             $validData = $gump->run($data);
 
-            $errors = [];
             // 密碼規則驗證
             if (PASSWORD_SECURE === 'TRUE') {
                 $safeCheck = self::rule($_POST['password']);
@@ -128,7 +139,7 @@
 
             $password = json_decode($passwordResets->password);
             if ($gump->errors()) {
-                $errors[] = $gump->get_readable_errors();
+                $this->errors = $gump->get_readable_errors();
                 Message::flash('重設密碼失敗，請檢查輸入', 'error');
             }
             elseif (PASSWORD_SECURE === 'TRUE' && (count($safeCheck) <= 3 || !preg_match('/.{8,}/',$validData['password']))) {

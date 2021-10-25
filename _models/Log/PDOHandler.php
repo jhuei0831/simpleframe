@@ -3,31 +3,36 @@
     namespace _models\Log;
     
 	use Jenssegers\Agent\Agent;
+	use Kerwin\Core\Support\Facades\Database;
 	use Kerwin\Core\Support\Facades\Session;
 	use Monolog\Logger;
     use Monolog\Handler\AbstractProcessingHandler;
 
-    class PDOHandler extends AbstractProcessingHandler
-	{
-		private $agent;
-		private $initialized = false;
-		private $pdo;
-		private $statement;
+class PDOHandler extends AbstractProcessingHandler
+	{		
+		/**
+		 * Agent instance
+		 *
+		 * @var Jenssegers\Agent\Agent
+		 */
+		private $agent;		
+					
+		/**
+		 * statement
+		 *
+		 * @var array
+		 */
+		private $statement = [];
 
-		public function __construct($pdo, $level = Logger::DEBUG, bool $bubble = true)
+		public function __construct($level = Logger::DEBUG, bool $bubble = true)
 		{
 			$this->agent = new Agent();
-			$this->pdo = $pdo;
 			parent::__construct($level, $bubble);
 		}
 
 		protected function write(array $record): void
 		{
-			if (!$this->initialized) {
-				$this->initialize();
-			}
-
-			$this->statement->execute(array(
+			$this->statement = array(
 				'channel' 	=> $record['channel'],
 				'user' 		=> is_null(Session::get('USER_ID')) ? 'client' : Session::get('USER_ID'),
 				'ip' 		=> $this->getIp(),
@@ -36,7 +41,9 @@
 				'level' 	=> $record['level'],
 				'message' 	=> $record['message'],
 				'context' 	=> json_encode($record['context'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-			));
+			);
+
+			Database::table('logs')->insert($this->statement, false);
 		}
 
 		private function getIp()
@@ -56,15 +63,5 @@
 
 			return $ip;
         }
-
-		private function initialize()
-		{
-
-			$this->statement = $this->pdo->prepare(
-				'INSERT INTO logs (channel, user, ip, platform, browser, level, message, context) VALUES (:channel, :user, :ip, :platform, :browser, :level, :message, :context)'
-			);
-
-			$this->initialized = true;
-		}
 	}
     

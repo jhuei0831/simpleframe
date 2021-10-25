@@ -10,7 +10,19 @@
     use Kerwin\Core\Support\Facades\Security;
 
     class Permission
-    {             
+    {       
+        /**
+         * GUMP驗證後的錯誤訊息
+         *
+         * @var array
+         */
+        public $errors = [];
+
+        /**
+         * Log instance
+         *
+         * @var _models\Log\Log
+         */
         public $log;
 
         public function __construct() {
@@ -25,8 +37,6 @@
          */
         public function create(array $request): void
         {
-            global $errors;
-
             $data = Security::defendFilter($request);
             
             $gump = $this->validation();
@@ -46,7 +56,7 @@
                 }
             } 
             else {
-                $errors = $gump->get_readable_errors();
+                $this->errors = $gump->get_readable_errors();
                 Message::flash('新增失敗，請檢查輸入。', 'error');
             }
         }
@@ -80,8 +90,6 @@
          */
         public function edit(array $request, int $id): void
         {
-            global $errors;
-
             $data = Security::defendFilter($request);
 
             $gump = $this->validation();
@@ -100,7 +108,7 @@
                     Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/permissions');
                 }
             } else {
-                $errors = $gump->get_readable_errors();
+                $this->errors = $gump->get_readable_errors();
                 Message::flash('修改失敗，請檢查輸入。', 'error');
             }
         }

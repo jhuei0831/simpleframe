@@ -12,6 +12,11 @@
 
     class Email
     {              
+        /**
+         * Log instance
+         *
+         * @var _models\Log\Log
+         */
         public $log;
 
         public function __construct() {

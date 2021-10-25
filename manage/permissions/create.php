@@ -16,6 +16,7 @@
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
         $permission = new PermissionService();
         $permission->create($_POST);
+        $errors = $permission->errors;
     }
 
     Message::showFlash();

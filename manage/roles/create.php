@@ -18,6 +18,7 @@
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
         $role = new Role();
         $role->create($_POST);
+        $errors = $role->errors;
     }
 
     Message::showFlash();

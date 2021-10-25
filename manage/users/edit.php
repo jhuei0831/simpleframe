@@ -22,6 +22,7 @@
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
         $userService = new User();
         $userService->edit($_POST, $id);
+        $errors = $userService->errors;
     }
     
     Message::showFlash();

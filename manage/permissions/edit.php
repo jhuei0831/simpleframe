@@ -22,6 +22,7 @@
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
         $permissionService = new PermissionService();
         $permissionService->edit($_POST, $id);
+        $errors = $permissionService->errors;
     }
     
     Message::showFlash();

@@ -9,7 +9,7 @@ final class CreatePasswordResetsTable extends AbstractMigration
     {
         $table = $this->table('password_resets', ['id' => false, 'primary_key' => ['id']]);
         $table->addColumn('id', 'string', ['comment' => '使用者id'])
-        ->addColumn('password', 'string', ['limit' => 50, 'comment' => '密碼'])
+        ->addColumn('password', 'string', ['comment' => '密碼'])
         ->addColumn('email_token', 'string', ['limit' => 50, 'null' => true, 'comment' => '忘記密碼驗證token'])
         ->addColumn('token_updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
         ->addColumn('password_updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])

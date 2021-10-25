@@ -1,4 +1,4 @@
-<?php if (isset($errors)): ?>
+<?php if (isset($errors) && count($errors) > 0): ?>
     <div class="rounded-lg bg-red-50 p-4 shadow-sm">
         <div class="flex">
             <div class="flex-shrink-0">

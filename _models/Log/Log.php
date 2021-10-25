@@ -17,7 +17,7 @@
         
         public function __construct(string $channel) {
             $this->logger = new Logger($channel);
-            $this->logger->pushHandler(new PDOHandler(Database::connection()));
+            $this->logger->pushHandler(new PDOHandler());
         }
         
         /**

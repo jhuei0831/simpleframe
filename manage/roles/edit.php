@@ -22,6 +22,7 @@
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
         $roleService = new Role();
         $roleService->edit($_POST, $role);
+        $errors = $roleService->errors;
     }
 
     Message::showFlash();
