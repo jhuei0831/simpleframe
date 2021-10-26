@@ -3,6 +3,7 @@
     namespace _models\Auth;
 
     use _models\Log\Log;
+    use _models\Traits\Singleton;
     use Kerwin\Core\Mail;
     use Kerwin\Core\Support\Facades\Auth;
     use Kerwin\Core\Support\Facades\Database;
@@ -11,7 +12,9 @@
     use Kerwin\Core\Support\Facades\Session;
 
     class Email
-    {              
+    {          
+        use Singleton;
+            
         /**
          * Log instance
          *

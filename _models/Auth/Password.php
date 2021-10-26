@@ -5,6 +5,7 @@
     use GUMP;
     use _models\Model;
     use _models\Log\Log;
+    use _models\Traits\Singleton;
     use Kerwin\Core\Mail;
     use Kerwin\Core\Support\Facades\Config;
     use Kerwin\Core\Support\Facades\Database;
@@ -14,6 +15,8 @@
 
     class Password extends Model
     {        
+        use Singleton;
+        
         /**
          * GUMP驗證後的錯誤訊息
          *
@@ -84,6 +87,7 @@
                         'id' => $id, 
                         'password' => isset($passwordResets->password) ? $passwordResets->password : json_encode([$user->password]),
                         'email_token' => $authCode, 
+                        'token_valid' => 'Y',
                         'token_updated_at' => date('Y-m-d H:i:s'), 
                         'password_updated_at' => isset($passwordResets->password_updated_at) ? $passwordResets->password_updated_at : $user->created_at, 
                     ]);
@@ -177,11 +181,12 @@
                     ->where("id='{$passwordResets->id}'")
                     ->update([
                         'password' => json_encode($password),
+                        'token_valid' => 'N',
                         'password_updated_at' => date('Y-m-d H:i:s'),
                     ], false);
                 if ($updateUsers && $updatePasswordResets) {
-                    $this->log->info('密碼密碼成功');
-                    Message::flash('密碼密碼成功，請使用新密碼登入。', 'success')->redirect(APP_ADDRESS.'auth/login.php');
+                    $this->log->info('密碼重設成功');
+                    Message::flash('密碼重設成功，請使用新密碼登入。', 'success')->redirect(APP_ADDRESS.'auth/login.php');
                 }   
             }
         }
@@ -209,13 +214,17 @@
                 Message::flash('連結有問題，請確認或重新申請密碼重設信件，謝謝', 'warning')
                     ->redirect(Config::getAppAddress().'auth/password/password_forgot.php');
             }
+            elseif ($passwordResets->token_valid == 'N') {
+                Message::flash('密碼重設信已失效，請重新獲取，謝謝。', 'warning')
+                    ->redirect(Config::getAppAddress().'auth/password/password_forgot.php');
+            }
             elseif (strtotime('now') > strtotime($passwordResets->token_updated_at.' +30 minutes')) {
                 Message::flash('密碼重設信已逾期，請重新獲取，謝謝。', 'warning')
                     ->redirect(Config::getAppAddress().'auth/password/password_forgot.php');
             }
             elseif (strtotime('now') < strtotime($passwordResets->password_updated_at.' +1 days')) {
-                Message::flash('密碼更新時間小於一天，'.date('Y-m-d H:i:s', strtotime($passwordResets->password_updated_at.' +1 days')).'後才可以再次更改。', 'warning');
-                Message::redirect(Config::getAppAddress());
+                Message::flash('密碼更新時間小於一天，'.date('Y-m-d H:i:s', strtotime($passwordResets->password_updated_at.' +1 days')).'後才可以再次更改。', 'warning')
+                    ->redirect(Config::getAppAddress());
             }
             else {
                 return;

@@ -4,8 +4,8 @@
 
     use Kerwin\Core\Support\Facades\Message;
 
-    abstract class Model {
-
+    abstract class Model 
+    {
         /**
          * 根據function返回的結果做處理
          *

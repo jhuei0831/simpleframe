@@ -19,7 +19,7 @@ final class PasswordResetTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->password = new Password(); 
+        $this->password = Password::getInstance(); 
         $this->user = new User(); 
         $dotenv = Dotenv::createImmutable(__DIR__.'/..');
         $dotenv->load();

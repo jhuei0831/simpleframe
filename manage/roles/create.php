@@ -16,7 +16,7 @@
     $permissions = Database::table('permissions')->get();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $role = new Role();
+        $role = Role::getInstance();
         $role->create($_POST);
         $errors = $role->errors;
     }

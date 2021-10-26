@@ -10,8 +10,8 @@
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Permission;
     
-    $configService = new Config();
-    $config = $configService->index();
+    $configInstance = new Config();
+    $config = $configInstance->index();
     
     if (!Permission::can('config-edit')) {
         include_once($root . '_error/404.php');
@@ -19,7 +19,7 @@
     }
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $configService->edit($_POST, $config->id);
+        $configInstance->edit($_POST, $config->id);
     }
     
     Message::showFlash();

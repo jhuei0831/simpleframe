@@ -17,7 +17,7 @@
     $roles = Database::table('roles')->get();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $user = new User();
+        $user = User::getInstance();
         $create = $user->create($_POST);
         $user->result($create);
         $errors = $user->errors;

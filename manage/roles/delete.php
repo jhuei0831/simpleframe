@@ -12,5 +12,5 @@
     }
 
     $id = Security::defendFilter($_GET['id']);
-    $role = new Role();
+    $role = Role::getInstance();
     $role->delete($id);

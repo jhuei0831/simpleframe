@@ -4,6 +4,7 @@
 
     use GUMP;
     use _models\Log\Log;
+    use _models\Traits\Singleton;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
@@ -11,6 +12,8 @@
 
     class Permission
     {       
+        use Singleton;
+
         /**
          * GUMP驗證後的錯誤訊息
          *
@@ -25,7 +28,7 @@
          */
         public $log;
 
-        public function __construct() {
+        private function __construct() {
             $this->log = new Log('Permission');
         }  
 
@@ -39,11 +42,11 @@
         {
             $data = Security::defendFilter($request);
             
-            $gump = $this->validation();
+            $validation = $this->validation();
 
-            $validData = $gump->run($data);
+            $validData = $validation->run($data);
 
-            if (!$gump->errors()) {
+            if (!$validation->errors()) {
                 $permission = Database::table('permissions')->where("name = '{$validData['name']}'")->first();
                 if ($permission) {
                     $errors[] = '名稱'.$validData['name'].'已存在';
@@ -56,7 +59,7 @@
                 }
             } 
             else {
-                $this->errors = $gump->get_readable_errors();
+                $this->errors = $validation->get_readable_errors();
                 Message::flash('新增失敗，請檢查輸入。', 'error');
             }
         }
@@ -92,11 +95,11 @@
         {
             $data = Security::defendFilter($request);
 
-            $gump = $this->validation();
+            $validation = $this->validation();
 
-            $validData = $gump->run($data);
+            $validData = $validation->run($data);
 
-            if (!$gump->errors()) {
+            if (!$validation->errors()) {
                 $permission = Database::table('permissions')->where("name = '{$validData['name']}'")->first();
                 if ($permission && $permission->id != $id) {
                     $errors[] = '名稱'.$validData['name'].'已存在';
@@ -108,11 +111,16 @@
                     Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/permissions');
                 }
             } else {
-                $this->errors = $gump->get_readable_errors();
+                $this->errors = $validation->get_readable_errors();
                 Message::flash('修改失敗，請檢查輸入。', 'error');
             }
         }
 
+        /**
+         * 表單驗證
+         *
+         * @return GUMP
+         */
         private function validation(): GUMP
         {
             $gump = new GUMP();

@@ -2,7 +2,7 @@
     $root = "../../";
     include($root.'_config/settings.php');
 
-    use _models\Auth\Permission as PermissionService;
+    use _models\Auth\Permission as PermissionInstance;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Permission;
     use Kerwin\Core\Support\Facades\Security;
@@ -13,5 +13,5 @@
     
     $id = Security::defendFilter($_GET['id']);
 
-    $permission = new PermissionService();
+    $permission = PermissionInstance::getInstance();
     $delete = $permission->delete($id);

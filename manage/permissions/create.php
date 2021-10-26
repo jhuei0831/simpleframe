@@ -3,7 +3,7 @@
     
     include($root.'_config/settings.php');
 
-    use _models\Auth\Permission as PermissionService;
+    use _models\Auth\Permission as PermissionInstance;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Permission;
@@ -14,7 +14,7 @@
     }
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $permission = new PermissionService();
+        $permission = PermissionInstance::getInstance();
         $permission->create($_POST);
         $errors = $permission->errors;
     }

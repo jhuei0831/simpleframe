@@ -5,7 +5,7 @@
     use _models\Auth\Email;
 
     if (isset($_GET['auth']) && isset($_GET['id'])) {
-        $email = new Email();
+        $email = Email::getInstance();
         $email->checkVerifyEmail($_GET);
     }
     else{

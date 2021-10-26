@@ -47,6 +47,13 @@
          * @var mixed
          */
         protected $data;
+        
+        /**
+         * 資料表主鍵
+         *
+         * @var string
+         */
+        protected $primaryKey = 'id';
 
         /**
          * 送回datatable的資料
@@ -88,14 +95,16 @@
          * 如果不對資料做二次處理，直接render()即可
          *
          * @param  string $table 資料表
-         * @param  array $columns 資料欄位 
-         * @param  array $request datatable透過ajax送來的請求
+         * @param  array  $columns 資料欄位 
+         * @param  array  $request datatable透過ajax送來的請求
+         * @param  string $primaryKey 資料表主鍵
          * @return void
          */
-        public function __construct(string $table, array $columns, array $request)
+        public function __construct(string $table, array $columns, array $request, string $primaryKey = 'id')
         {
             $this->columns = $columns;
             $this->table = $table;
+            $this->primaryKey = $primaryKey;
             $this->request = $request;
         }
         
@@ -221,7 +230,7 @@
         {
             $where = $this->filter();
             $this->data = Database::table($this->table)
-                ->select('COUNT(`id`) AS count')
+                ->select("COUNT(`{$this->primaryKey}`) AS count")
                 ->where($where)
                 ->first();
             

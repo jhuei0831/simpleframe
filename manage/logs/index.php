@@ -94,7 +94,6 @@
         {
             "data": "level",
             "render": function(data) {
-                console.log(data);
                 switch (data) {
                     case '100':
                         return 'Debug';

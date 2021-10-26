@@ -10,7 +10,6 @@
     use Kerwin\Core\Support\Facades\Security;
     use Kerwin\Core\Support\Facades\Permission;
 
-
     if (!Permission::can('users-edit')) {
         Message::flash('權限不足!', 'error')->redirect(APP_ADDRESS . 'manage/users');
     }
@@ -20,9 +19,9 @@
     $roles = Database::table('roles')->get();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $userService = new User();
-        $userService->edit($_POST, $id);
-        $errors = $userService->errors;
+        $userInstance = User::getInstance();
+        $userInstance->edit($_POST, $id);
+        $errors = $userInstance->errors;
     }
     
     Message::showFlash();

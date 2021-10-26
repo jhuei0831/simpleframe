@@ -6,12 +6,12 @@
     use _models\Auth\Password;
     use Kerwin\Core\Support\Facades\Message;
 
-    $passwordService = new Password();
-    $passwordService->resetVerify();
+    $passwordInstance = Password::getInstance();
+    $passwordInstance->resetVerify();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $passwordService->reset($_POST);
-        $errors = $passwordService->errors;
+        $passwordInstance->reset($_POST);
+        $errors = $passwordInstance->errors;
     }
 
     Message::showFlash();

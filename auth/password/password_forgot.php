@@ -14,7 +14,7 @@
     }
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $password = new Password();
+        $password = Password::getInstance();
         $forgotPassword = $password->forgot($_POST);
         $password->result($forgotPassword);
     }

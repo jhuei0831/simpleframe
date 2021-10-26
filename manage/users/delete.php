@@ -8,7 +8,7 @@
     use Kerwin\Core\Support\Facades\Security;
     use Kerwin\Core\Support\Facades\Session;
 
-    if (!Permission::can('users-create')) {
+    if (!Permission::can('users-delete')) {
         Message::flash('權限不足!', 'error')->redirect(APP_ADDRESS.'manage/users');
     }
     
@@ -18,6 +18,6 @@
         Message::flash('不能刪除自己', 'warning')->redirect(APP_ADDRESS.'manage/users');
     }
 
-    $user = new User();
+    $user = User::getInstance();
     $delete = $user->delete($id);
     $user->result($delete);

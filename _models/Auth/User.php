@@ -6,6 +6,7 @@
     use _models\Model;
     use _models\Auth\Password;
     use _models\Log\Log;
+    use _models\Traits\Singleton;
     use Kerwin\Core\Mail;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Config;
@@ -17,6 +18,8 @@
 
     class User extends Model
     {  
+        use Singleton;
+        
         /**
          * GUMP驗證後的錯誤訊息
          *
@@ -38,7 +41,7 @@
          */
         public $request;
 
-        public function __construct() {
+        private function __construct() {
             $this->log = new Log('User');
 			$this->request = Request::createFromGlobals();
 		}
@@ -52,37 +55,12 @@
         public function create(array $request): array
         {
             $data = Security::defendFilter($request);
-            $gump = new GUMP();
+            
+            $validation = $this->validation();
 
-            // 輸入驗證
-            $gump->validation_rules([
-                'name'              => 'required|max_len,30',
-                'email'             => 'required|valid_email',
-                'role'              => 'required',
-                'password'          => 'required|max_len,30|min_len,8',
-                'password_confirm'  => 'required|max_len,30|min_len,8',
-            ]);
+            $validData = $validation->run($data);
 
-            // 輸入格式化
-            $gump->filter_rules([
-                'name'              => 'trim|sanitize_string',
-                'email'             => 'trim|sanitize_email',
-                'password'          => 'trim',
-                'password_confirm'  => 'trim',
-            ]);
-
-            // 錯誤訊息
-            $gump->set_fields_error_messages([
-                'name'              => ['required' => '名稱必填', 'max_len' => '名稱必須小於或等於30個字元'],
-                'email'             => ['required' => '電子郵件必填', 'valid_email' => '必須符合電子郵件格式'],
-                'role'              => ['required' => '角色必填'],
-                'password'          => ['required' => '密碼必填', 'max_len' => '密碼必須小於等於30個字元', 'min_len' => '密碼必須大於等於8個字元'],
-                'password_confirm'  => ['required' => '確認密碼必填', 'max_len' => '確認密碼必須小於等於30個字元', 'min_len' => '確認密碼必須大於等於8個字元'],
-            ]);
-
-            $validData = $gump->run($data);
-
-            if (!$gump->errors()) {
+            if (!$validation->errors()) {
                 $checkUser = Database::table('users')->where('email ="'.$validData['email'].'"')->first();
                 // 密碼規則驗證
                 if (PASSWORD_SECURE === 'TRUE') {
@@ -114,7 +92,7 @@
                     return ['msg' => '新增成功。', 'type' => 'success', 'redirect' => Config::getAppAddress().'manage/users'];
                 }
             } else {
-                $this->errors = $gump->get_readable_errors();
+                $this->errors = $validation->get_readable_errors();
                 return ['msg' => '新增失敗，請檢查輸入', 'type' => 'error'];
             }
         }
@@ -271,38 +249,13 @@
          */
         public function register(array $request): array
         {
-            global $errors;
             $data = Security::defendFilter($request);
-            $gump = new GUMP();
+            
+            $validation = $this->validation();
 
-            // 輸入驗證
-            $gump->validation_rules([
-                'name'    => 'required|max_len,30',
-                'email'   => 'required|valid_email',
-                'password'    => 'required|max_len,30|min_len,8',
-                'password_confirm'    => 'required|max_len,30|min_len,8',
-            ]);
+            $validData = $validation->run($data);
 
-            // 輸入格式化
-            $gump->filter_rules([
-                'name'    => 'trim|sanitize_string',
-                'email'   => 'trim|sanitize_email',
-                'password'    => 'trim',
-                'password_confirm'   => 'trim',
-            ]);
-
-            // 錯誤訊息
-            $gump->set_fields_error_messages([
-                'name'              => ['required' => '名稱必填', 'max_len' => '名稱必須小於或等於30個字元'],
-                'email'             => ['required' => '電子郵件必填', 'valid_email' => '必須符合電子郵件格式'],
-                'role'              => ['required' => '角色必填'],
-                'password'          => ['required' => '密碼必填', 'max_len' => '密碼必須小於等於30個字元', 'min_len' => '密碼必須大於等於8個字元'],
-                'password_confirm'  => ['required' => '確認密碼必填', 'max_len' => '確認密碼必須小於等於30個字元', 'min_len' => '確認密碼必須大於等於8個字元'],
-            ]);
-
-            $validData = $gump->run($data);
-
-            if (!$gump->errors()) {
+            if (!$validation->errors()) {
                 $checkUser = Database::table('users')->where('email ="'.$validData['email'].'"')->first();
                 // 密碼規則驗證
                 if ($this->request->server->get('AUTH_PASSWORD_SECURITY') === 'TRUE') {
@@ -349,9 +302,46 @@
                     }
                 }
             } else {
-                $this->errors = $gump->get_readable_errors();
+                $this->errors = $validation->get_readable_errors();
                 return ['msg' => '註冊失敗，請檢查輸入', 'type' => 'error'];
             }
+        }
+
+        /**
+         * 表單驗證
+         *
+         * @return GUMP
+         */
+        private function validation(): GUMP
+        {
+            $gump = new GUMP();
+
+            // 輸入驗證
+            $gump->validation_rules([
+                'name'    => 'required|max_len,30',
+                'email'   => 'required|valid_email',
+                'password'    => 'required|max_len,30|min_len,8',
+                'password_confirm'    => 'required|max_len,30|min_len,8',
+            ]);
+
+            // 輸入格式化
+            $gump->filter_rules([
+                'name'    => 'trim|sanitize_string',
+                'email'   => 'trim|sanitize_email',
+                'password'    => 'trim',
+                'password_confirm'   => 'trim',
+            ]);
+
+            // 錯誤訊息
+            $gump->set_fields_error_messages([
+                'name'              => ['required' => '名稱必填', 'max_len' => '名稱必須小於或等於30個字元'],
+                'email'             => ['required' => '電子郵件必填', 'valid_email' => '必須符合電子郵件格式'],
+                'role'              => ['required' => '角色必填'],
+                'password'          => ['required' => '密碼必填', 'max_len' => '密碼必須小於等於30個字元', 'min_len' => '密碼必須大於等於8個字元'],
+                'password_confirm'  => ['required' => '確認密碼必填', 'max_len' => '確認密碼必須小於等於30個字元', 'min_len' => '確認密碼必須大於等於8個字元'],
+            ]);
+
+            return $gump;
         }
     }
     

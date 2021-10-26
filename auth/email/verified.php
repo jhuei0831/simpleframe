@@ -14,7 +14,7 @@
     }
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $mail = new Email();
+        $mail = Email::getInstance();
         $mail->getVerifyEmail($_POST);
     }
     

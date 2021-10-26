@@ -3,7 +3,7 @@
 
     include($root . '_config/settings.php');
 
-    use _models\Auth\Permission as PermissionService;
+    use _models\Auth\Permission as PermissionInstance;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
@@ -20,9 +20,9 @@
     $roles = Database::table('roles')->get();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $permissionService = new PermissionService();
-        $permissionService->edit($_POST, $id);
-        $errors = $permissionService->errors;
+        $permissionInstance = PermissionInstance::getInstance();
+        $permissionInstance->edit($_POST, $id);
+        $errors = $permissionInstance->errors;
     }
     
     Message::showFlash();
