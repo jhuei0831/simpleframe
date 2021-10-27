@@ -14,7 +14,7 @@
     }
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $permission = PermissionInstance::getInstance();
+        $permission = new PermissionInstance();
         $permission->create($_POST);
         $errors = $permission->errors;
     }

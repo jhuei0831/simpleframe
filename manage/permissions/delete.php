@@ -13,5 +13,5 @@
     
     $id = Security::defendFilter($_GET['id']);
 
-    $permission = PermissionInstance::getInstance();
+    $permission = new PermissionInstance();
     $delete = $permission->delete($id);

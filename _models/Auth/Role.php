@@ -4,7 +4,6 @@
 
     use GUMP;
     use _models\Log\Log;
-    use _models\Traits\Singleton;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
@@ -12,8 +11,6 @@
 
     class Role 
     {      
-        use Singleton;
-        
         /**
          * GUMP驗證後的錯誤訊息
          *
@@ -28,7 +25,7 @@
          */
         public $log;
         
-        private function __construct() {
+        public function __construct() {
             $this->log = new Log('Role');
         }
 

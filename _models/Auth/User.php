@@ -6,7 +6,6 @@
     use _models\Model;
     use _models\Auth\Password;
     use _models\Log\Log;
-    use _models\Traits\Singleton;
     use Kerwin\Core\Mail;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Config;
@@ -18,8 +17,6 @@
 
     class User extends Model
     {  
-        use Singleton;
-        
         /**
          * GUMP驗證後的錯誤訊息
          *
@@ -41,7 +38,7 @@
          */
         public $request;
 
-        private function __construct() {
+        public function __construct() {
             $this->log = new Log('User');
 			$this->request = Request::createFromGlobals();
 		}

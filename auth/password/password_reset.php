@@ -6,7 +6,7 @@
     use _models\Auth\Password;
     use Kerwin\Core\Support\Facades\Message;
 
-    $passwordInstance = Password::getInstance();
+    $passwordInstance = new Password();
     $passwordInstance->resetVerify();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {

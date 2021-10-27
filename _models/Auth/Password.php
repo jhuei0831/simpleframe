@@ -5,7 +5,6 @@
     use GUMP;
     use _models\Model;
     use _models\Log\Log;
-    use _models\Traits\Singleton;
     use Kerwin\Core\Mail;
     use Kerwin\Core\Support\Facades\Config;
     use Kerwin\Core\Support\Facades\Database;
@@ -15,8 +14,6 @@
 
     class Password extends Model
     {        
-        use Singleton;
-        
         /**
          * GUMP驗證後的錯誤訊息
          *

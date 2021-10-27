@@ -18,6 +18,6 @@
         Message::flash('不能刪除自己', 'warning')->redirect(APP_ADDRESS.'manage/users');
     }
 
-    $user = User::getInstance();
+    $user = new User();
     $delete = $user->delete($id);
     $user->result($delete);
