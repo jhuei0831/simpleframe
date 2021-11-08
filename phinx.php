@@ -1,12 +1,12 @@
 <?php
 // 自動載入 Composer 的套件們
-require_once(__DIR__."/_config/autoload.php");
+require_once(__DIR__."/config/autoload.php");
 
 return
 [
     'paths' => [
-        'migrations' => '%%PHINX_CONFIG_DIR%%/_database/migrations',
-        'seeds' => '%%PHINX_CONFIG_DIR%%/_database/seeds'
+        'migrations' => '%%PHINX_CONFIG_DIR%%/database/migrations',
+        'seeds' => '%%PHINX_CONFIG_DIR%%/database/seeds'
     ],
     'environments' => [
         // 'default_migration_table' => 'phinxlog',
