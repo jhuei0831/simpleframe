@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
-use _models\Auth\User;
-use _models\Auth\Password;
+use models\Auth\User;
+use models\Auth\Password;
 use Dotenv\Dotenv;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;

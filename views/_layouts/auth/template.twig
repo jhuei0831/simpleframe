@@ -1,0 +1,21 @@
+<html lang="zh-TW">
+    <head>
+        {# webpack #}
+		<script src="{{ APP_SRC }}dist/reception/bundle.js"></script>
+        {# meta #}
+        {% include "_partials/reception/meta.twig" %}
+		<title>{{ pageTitle ? pageTitle : APP_NAME }}</title>
+		{# debug bar #}
+        {% if IS_DEBUG and in_except_ip_list() %} {{ debug_bar_renderHead() }} {% endif %}
+		{# font #}
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+		<link rel="icon" href="{{ APP_IMG }}favicon.ico">
+    </head>
+    <body style="font-family: 'Noto Sans TC', sans-serif;">
+        {{ show_flash_message() }}
+        {% block content %}{% endblock %}
+        {% if IS_DEBUG and in_except_ip_list() %} {{ debug_bar_render() }} {% endif %}
+    </body>
+</html>

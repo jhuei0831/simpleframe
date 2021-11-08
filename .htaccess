@@ -8,7 +8,11 @@
 # 零、設定基礎路徑
 	Options +FollowSymLinks -MultiViews
 	RewriteEngine On
-	RewriteBase /
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ index.php [L,QSA]
+	
+	RewriteBase /simpleframe
 
 # 一、客製化錯誤頁面
 	ErrorDocument 403 /simpleframe/_error/404.php
@@ -24,11 +28,11 @@
 	</LimitExcept>
 
 # 四、讓所有瀏覽機敏目錄內檔案的請求導向至403
-	RewriteRule ^_config/?$ - [F,L]
-	RewriteRule ^_database/?$ - [F,L]
+	RewriteRule ^config/?$ - [F,L]
+	RewriteRule ^database/?$ - [F,L]
 	RewriteRule ^_error/?$ - [F,L]
 	RewriteRule ^_layouts/?$ - [F,L]
-	RewriteRule ^_models/?$ - [F,L]
+	RewriteRule ^models/?$ - [F,L]
 	RewriteRule ^_partials/?$ - [F,L]
 	RewriteRule ^src/?$ - [F,L]
 	RewriteRule ^vendor/?$ - [F,L]

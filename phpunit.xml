@@ -8,7 +8,7 @@
     </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">_models/</directory>
+            <directory suffix=".php">models/</directory>
         </whitelist>
     </filter>
     <php>

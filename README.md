@@ -64,7 +64,7 @@ npm run serve
 
 ### 5. setting.php
 
-* _config/setting.php 中可以設定允許看見錯誤訊息的ip清單
+* config/setting.php 中可以設定允許看見錯誤訊息的ip清單
 
 ### 6. .htaccess
 

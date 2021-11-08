@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+	<head>
+		{# webpack #}
+		<script src="{{ APP_SRC }}dist/reception/bundle.js"></script>
+        {# meta #}
+        {% include "_partials/reception/meta.twig" %}
+		<title>{{ pageTitle ? pageTitle : APP_NAME }}</title>
+		{# debug bar #}
+        {% if IS_DEBUG and in_except_ip_list() %} {{ debug_bar_renderHead() }} {% endif %}
+		{# font #}
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+		<link rel="icon" href="{{ APP_IMG }}favicon.ico">
+	</head>
+	<body style="font-family: 'Noto Sans TC', sans-serif;">
+		<div class="flex h-screen bg-gray-50 dark:bg-gray-900" :class="{ 'overflow-hidden': isSideMenuOpen }">
+            {% include "_partials/reception/nav.twig" %}
+			<main class="h-full overflow-y-auto">
+				<div class="container px-6 mx-auto">
+					{{ show_flash_message() }}
+                    {% block content %}{% endblock %}
+                </div>
+            </main>
+            </div>
+        </div>
+        {% if IS_DEBUG and in_except_ip_list() %} {{ debug_bar_render() }} {% endif %}
+    </body>
+</html>
