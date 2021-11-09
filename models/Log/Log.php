@@ -14,7 +14,7 @@
          */
         public $logger;
         
-        public function __construct(string $channel) {
+        public function __construct(string $channel = 'MySQL') {
             $this->logger = new Logger($channel);
             $this->logger->pushHandler(new PDOHandler());
         }

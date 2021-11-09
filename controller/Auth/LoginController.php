@@ -16,7 +16,23 @@
     class LoginController
     {
 
-        public function captcha()
+        /**
+         * 登入頁面
+         *
+         * @param  \Twig\Environment $twig
+         * @return void
+         */
+        public function index(Environment $twig)
+        {
+            echo $twig->render('auth/login.twig');
+        }
+                
+        /**
+         * 圖片驗證碼
+         *
+         * @return void
+         */
+        public function captcha(): void
         {
             //設置定義為圖片
             header("Content-type: image/PNG");
@@ -24,51 +40,49 @@
             $captcha = new Captcha();
             $captcha->getImageCode(1,5,130,30);
         }
-
-        public function index(Environment $twig)
-        {
-            echo $twig->render('auth/login.twig');
-        }
-
+  
         /**
-         * login
+         * 會員登入
          *
-         * @param array $request
-         * @return array
+         * @param  \Symfony\Component\HttpFoundation\Request $request
+         * @param  \models\Log\Log $log
+         * @return void
          */
-        public function login(Request $request, Log $log): array
+        public function login(Request $request, Log $log): void
         {
+            // 只取要的值，防止被插入不必要的值
             $post = Toolbox::only($request->request->all(), ['token', 'email', 'password', 'captcha']);
             $data = Security::defendFilter($post);
+            
             $user = Database::table('users')->where('email ="'.$data['email'].'" and password ="'.md5($data['password']).'"')->first();
             if ($data['captcha'] != Session::get('captcha')) {
-                return ['msg' => '驗證碼錯誤', 'type' => 'error', 'redirect' => Config::getAppAddress().'auth/login.php'];
+                Message::flash('驗證碼錯誤', 'error')->redirect(Config::getAppAddress().'auth/login');
             } 
             elseif ($user && empty($user->email_varified_at) && EMAIL_VERIFY === 'TRUE') {
                 Session::set('USER_ID', $user->id);
-                // $this->log->warning('登入成功，尚未完成信箱驗證');
-                return ['msg' => '登入成功，尚未完成信箱驗證', 'type' => 'warning', 'redirect' => Config::getAppAddress().'auth/email/verified.php'];
+                $log->warning('登入成功，尚未完成信箱驗證');
+                Message::flash('登入成功，尚未完成信箱驗證', 'warning')->redirect(Config::getAppAddress().'auth/email/verified');
             } 
             elseif ($user) {
                 Session::set('USER_ID', $user->id);
                 $log->info('登入成功');
                 Message::flash('登入成功', 'success')->redirect(Config::getAppAddress());
-                // return ['msg' => '登入成功', 'type' => 'success', 'redirect' => Config::getAppAddress()];
             } 
             else {
-                // $this->log->error('登入失敗', ['account' => $data['email']]);
-                return ['msg' => '登入失敗', 'type' => 'error', 'redirect' => Config::getAppAddress().'auth/login.php'];
+                $log->error('登入失敗', ['account' => $data['email']]);
+                Message::flash('登入失敗', 'error')->redirect(Config::getAppAddress().'auth/login');
             }
         }
-
+      
         /**
          * 會員登出
          *
+         * @param \models\Log\Log $log
          * @return void
          */
-        public function logout(): void
+        public function logout(Log $log): void
         {
-            // $this->log->info('登出成功');
+            $log->info('登出成功');
             Session::remove('USER_ID');
             Message::flash('登出成功', 'success')->redirect(APP_ADDRESS.'auth/login');
         }

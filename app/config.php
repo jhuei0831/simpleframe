@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 return [
     // Bind an interface to an implementation
-    // ArticleRepository::class => create(InMemoryArticleRepository::class),
+    // LoggerInterface::class => create(InMemoryArticleRepository::class),
 
     Log::class => function() {
-        $log = new Log(__METHOD__);
+        $log = new Log();
         return $log;
     },
 
@@ -28,6 +28,9 @@ return [
         $loader = new FilesystemLoader(__DIR__ . '/../views');
         $twig = new Environment($loader);
         $twig->addExtension(new LayoutExtension());
+        $twig->getExtension(\Twig\Extension\EscaperExtension::class)->setEscaper('html_no_quotes', function($string) {
+            return htmlspecialchars($string, ENT_NOQUOTES);
+        });
         return $twig;
     },
 ];
