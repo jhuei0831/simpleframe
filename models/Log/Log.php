@@ -4,7 +4,6 @@
 
     use models\Log\PDOHandler;
     use Monolog\Logger;
-    use Kerwin\Core\Support\Facades\Database;
 
     class Log
     {        

@@ -3,21 +3,18 @@
     namespace Controller\Auth;
 
     use Twig\Environment;
+    use models\Log\Log;
     use Kerwin\Captcha\Captcha;
+    use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Config;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Session;
     use Kerwin\Core\Support\Facades\Security;
+    use Symfony\Component\HttpFoundation\Request;
 
     class LoginController
     {
-
-        private $twig;
-
-        public function __construct(Environment $twig) {
-            $this->twig = $twig;
-        }
 
         public function captcha()
         {
@@ -28,9 +25,9 @@
             $captcha->getImageCode(1,5,130,30);
         }
 
-        public function index()
+        public function index(Environment $twig)
         {
-            echo $this->twig->render('auth/login.twig');
+            echo $twig->render('auth/login.twig');
         }
 
         /**
@@ -39,9 +36,10 @@
          * @param array $request
          * @return array
          */
-        public function login(): array
+        public function login(Request $request, Log $log): array
         {
-            $data = Security::defendFilter($_REQUEST);
+            $post = Toolbox::only($request->request->all(), ['token', 'email', 'password', 'captcha']);
+            $data = Security::defendFilter($post);
             $user = Database::table('users')->where('email ="'.$data['email'].'" and password ="'.md5($data['password']).'"')->first();
             if ($data['captcha'] != Session::get('captcha')) {
                 return ['msg' => '驗證碼錯誤', 'type' => 'error', 'redirect' => Config::getAppAddress().'auth/login.php'];
@@ -53,7 +51,7 @@
             } 
             elseif ($user) {
                 Session::set('USER_ID', $user->id);
-                // $this->log->info('登入成功');
+                $log->info('登入成功');
                 Message::flash('登入成功', 'success')->redirect(Config::getAppAddress());
                 // return ['msg' => '登入成功', 'type' => 'success', 'redirect' => Config::getAppAddress()];
             } 
