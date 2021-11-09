@@ -43,6 +43,19 @@
             return $constants;
         }
 
+        public function getOperators()
+        {
+            return [
+                [
+                    '!' => ['precedence' => 50, 'class' => \Twig\Node\Expression\Unary\NotUnary::class],
+                ],
+                [
+                    '||' => ['precedence' => 10, 'class' => \Twig\Node\Expression\Binary\OrBinary::class, 'associativity' => \Twig\ExpressionParser::OPERATOR_LEFT],
+                    '&&' => ['precedence' => 15, 'class' => \Twig\Node\Expression\Binary\AndBinary::class, 'associativity' => \Twig\ExpressionParser::OPERATOR_LEFT],
+                ],
+            ];
+        }
+
         public function authUser()
         {
             return Auth::user();

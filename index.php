@@ -7,14 +7,16 @@ use FastRoute\RouteCollector;
 
 $container = require __DIR__ . '/app/bootstrap.php';
 
-$dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $r) {
-    $r->addGroup('/simpleframe', function (RouteCollector $r) {
-        $r->addRoute('GET', '/', 'Controller\HomeController');
-        $r->addRoute('GET', '/captcha', ['Controller\Auth\LoginController', 'captcha']);
-        $r->addGroup('/auth', function (RouteCollector $r) {
-            $r->addRoute('GET', '/login', ['Controller\Auth\LoginController', 'index']);
-            $r->addRoute('POST', '/login', ['Controller\Auth\LoginController', 'login']);
-            $r->addRoute('GET', '/logout', ['Controller\Auth\LoginController', 'logout']);
+$dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $route) {
+    $route->addGroup('/simpleframe', function (RouteCollector $route) {
+        $route->addRoute('GET', '/', 'Controller\HomeController');
+        $route->addRoute('GET', '/captcha', ['Controller\Auth\LoginController', 'captcha']);
+        $route->addGroup('/auth', function (RouteCollector $route) {
+            $route->addRoute('GET', '/login', ['Controller\Auth\LoginController', 'index']);
+            $route->addRoute('POST', '/login', ['Controller\Auth\LoginController', 'login']);
+            $route->addRoute('GET', '/logout', ['Controller\Auth\LoginController', 'logout']);
+            $route->addRoute('GET', '/register', ['Controller\Auth\RegisterController', 'index']);
+            $route->addRoute('POST', '/register', ['Controller\Auth\RegisterController', 'register']);
         });
     });
 });
