@@ -11,12 +11,14 @@
         <style type="text/css">
             a:hover {text-decoration: underline !important;}
         </style>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
     </head>
 
-    <body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0">
+    <body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8; font-family: \'Noto Sans TC\', sans-serif;" leftmargin="0">
         <!--100% body table-->
-        <table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
-            style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: \'Open Sans\', sans-serif;">
+        <table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8">
             <tr>
                 <td>
                     <table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
@@ -49,13 +51,13 @@
                                             <p style="color:#455056; font-size:16px;line-height:24px; margin:0;">
                                                 恭喜您完成註冊，請點選以下按鈕完成信箱驗證：
                                             </p>
-                                            <a href="'.APP_ADDRESS.'auth/email/check_verified.php?auth='.$authCode.'&id='.$id.'" style="background:#009696;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;-webkit-border-radius: 50px;-moz-border-radius: 50px;border-radius: 50px;">
+                                            <a href="'.APP_ADDRESS.'auth/check_email_verified/'.$authCode.'/'.$id.'" style="background:#009696;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;-webkit-border-radius: 50px;-moz-border-radius: 50px;border-radius: 50px;">
                                                 信箱驗證
                                             </a><br><br><br>
                                             <p style="color:#455056; font-size:16px;line-height:24px; margin:0;">
                                                 如果點擊按鈕沒有反應，請複製或點擊下方連結：
                                             </p>
-                                            <a href="'.APP_ADDRESS.'auth/email/check_verified.php?auth='.$authCode.'&id='.$id.'">'.APP_ADDRESS.'auth/email/check_verified.php?auth='.$authCode.'&id='.$id.'</a><br>
+                                            <a href="'.APP_ADDRESS.'auth/check_email_verified/'.$authCode.'/'.$id.'">'.APP_ADDRESS.'auth/check_email_verified/'.$authCode.'/'.$id.'</a><br>
                                             <span style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"></span>
                                         </td>
                                     </tr>

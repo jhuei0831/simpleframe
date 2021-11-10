@@ -1,7 +1,6 @@
 {% extends "_layouts/auth/template.twig" %}
 
 {% block content %}
-
 <script>
     function refresh_code() {
         document.getElementById("imgcode").src = "{{ APP_ADDRESS }}captcha";
@@ -41,7 +40,7 @@
             </div>
 
             <div class="justify-center">
-                <a href="{{ APP_ADDRESS }}auth/password/password_forgot" class="font-medium text-indigo-600 hover:text-indigo-500">
+                <a href="{{ APP_ADDRESS }}auth/password_forgot" class="font-medium text-indigo-600 hover:text-indigo-500">
                     忘記密碼?
                 </a>
             </div>
