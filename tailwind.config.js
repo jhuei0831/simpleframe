@@ -5,6 +5,7 @@ const colors = require('tailwindcss/colors')
 module.exports = {
     purge: [
         './**/*.php',
+        './**/*.twig',
         './src/js/datatable.js',
         './src/js/init-alpine.js',
     ],

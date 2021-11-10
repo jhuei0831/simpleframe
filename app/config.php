@@ -28,9 +28,6 @@ return [
         $loader = new FilesystemLoader(__DIR__ . '/../views');
         $twig = new Environment($loader);
         $twig->addExtension(new LayoutExtension());
-        $twig->getExtension(\Twig\Extension\EscaperExtension::class)->setEscaper('html_no_quotes', function($string) {
-            return htmlspecialchars($string, ENT_NOQUOTES);
-        });
         return $twig;
     },
 ];

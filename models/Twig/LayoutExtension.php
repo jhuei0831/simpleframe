@@ -26,6 +26,7 @@
                 new \Twig\TwigFunction('debug_bar_renderHead', [$this, 'renderHead'], ['is_safe' => ['html']]),
                 new \Twig\TwigFunction('in_except_ip_list', [$this, 'inExceptIpList']),
                 new \Twig\TwigFunction('permission_can', [$this, 'permissionCan']),
+                new \Twig\TwigFunction('header', [$this, 'header']),
                 new \Twig\TwigFunction('role_has', [$this, 'roleHas']),
                 new \Twig\TwigFunction('session_get', [$this, 'sessionGet']),
                 new \Twig\TwigFunction('show_flash_message', [$this, 'showFlashMessage']),
@@ -59,6 +60,11 @@
         public function authUser()
         {
             return Auth::user();
+        }
+
+        public function header(string $args)
+        {
+            return header($args);
         }
 
         public function inExceptIpList()
