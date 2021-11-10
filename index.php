@@ -20,6 +20,10 @@ $dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $route) {
             $route->addRoute('GET', '/email_verified', ['Controller\Auth\EmailVerifiedController', 'index']);
             $route->addRoute('POST', '/email_verified', ['Controller\Auth\EmailVerifiedController', 'getVerifyEmail']);
             $route->addRoute('GET', '/check_email_verified/{auth}/{id}', ['Controller\Auth\EmailVerifiedController', 'checkVerifyEmail']);
+            $route->addRoute('GET', '/password_forgot', ['Controller\Auth\PasswordResetController', 'forgot']);
+            $route->addRoute('POST', '/password_forgot', ['Controller\Auth\PasswordResetController', 'getResetEmail']);
+            $route->addRoute('GET', '/password_reset/{auth}/{id}', ['Controller\Auth\PasswordResetController', 'index']);
+            $route->addRoute('POST', '/password_reset/{auth}/{id}', ['Controller\Auth\PasswordResetController', 'reset']);
         });
     });
 });
@@ -42,7 +46,6 @@ switch ($route[0]) {
     case FastRoute\Dispatcher::FOUND:
         $controller = $route[1];
         $parameters = $route[2];
-
         // We could do $container->get($controller) but $container->call()
         // does that automatically
         $container->call($controller, $parameters);

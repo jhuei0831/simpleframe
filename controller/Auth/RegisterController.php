@@ -89,10 +89,10 @@ class RegisterController
                 if ($request->server->get('AUTH_EMAIL_VERIFY') === 'TRUE') {
                     $name = $validData['name'];
                     $id = $validData['id'];
-                    include_once('./email/content.php');
+                    include_once('./views/auth/email/content.php');
                     Mail::send($subject, $message, $validData['email'], $validData['name']);
                     Message::flash('註冊成功，請前往註冊信箱收取認證信。', 'success')
-                        ->redirect(Config::getAppAddress().'auth/email/verified');
+                        ->redirect(Config::getAppAddress().'auth/email_verified');
                 }
                 else {
                     $log->info('註冊成功');

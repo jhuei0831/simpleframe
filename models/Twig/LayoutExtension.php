@@ -8,6 +8,7 @@
     use Kerwin\Core\Support\Facades\Permission;
     use Kerwin\Core\Support\Facades\Role;
     use Kerwin\Core\Support\Facades\Session;
+    use Kerwin\Core\Support\Facades\Request;
 
     class LayoutExtension extends \Twig\Extension\AbstractExtension implements \Twig\Extension\GlobalsInterface
     {
@@ -28,6 +29,7 @@
                 new \Twig\TwigFunction('permission_can', [$this, 'permissionCan']),
                 new \Twig\TwigFunction('header', [$this, 'header']),
                 new \Twig\TwigFunction('role_has', [$this, 'roleHas']),
+                new \Twig\TwigFunction('request_server', [$this, 'requestServer']),
                 new \Twig\TwigFunction('session_get', [$this, 'sessionGet']),
                 new \Twig\TwigFunction('show_flash_message', [$this, 'showFlashMessage']),
             ];
@@ -95,6 +97,12 @@
         public function roleHas(string $role)
         {
             return Role::has($role);
+        }
+
+        public function requestServer(string $name)
+        {
+            $request = Request::createFromGlobals();
+            return $request->server->get($name);
         }
 
         public function sessionGet(string $name)

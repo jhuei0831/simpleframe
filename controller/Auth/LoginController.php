@@ -65,7 +65,7 @@ class LoginController
         elseif ($user && empty($user->email_varified_at) && EMAIL_VERIFY === 'TRUE') {
             Session::set('USER_ID', $user->id);
             $log->warning('登入成功，尚未完成信箱驗證');
-            Message::flash('登入成功，尚未完成信箱驗證', 'warning')->redirect(Config::getAppAddress().'auth/email/verified');
+            Message::flash('登入成功，尚未完成信箱驗證', 'warning')->redirect(Config::getAppAddress().'auth/email_verified');
         } 
         elseif ($user) {
             Session::set('USER_ID', $user->id);
