@@ -24,6 +24,7 @@ class EmailVerifiedController
      */
     public function index(Environment $twig): void
     {
+        /* 檢查是否已經驗證或沒登入 */
         if (is_null(Session::get('USER_ID')) || !empty(Auth::user()->email_varified_at) || EMAIL_VERIFY==='FALSE') {
             echo $twig->render('_error/404.twig');
             exit;

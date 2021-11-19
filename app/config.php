@@ -30,4 +30,11 @@ return [
         $twig->addExtension(new LayoutExtension());
         return $twig;
     },
+
+    'twig' => function () {
+        $loader = new FilesystemLoader(__DIR__ . '/../views');
+        $twig = new Environment($loader);
+        $twig->addExtension(new LayoutExtension());
+        return $twig;
+    },
 ];
