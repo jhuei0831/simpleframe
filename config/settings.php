@@ -59,7 +59,4 @@
 		include_once(APP_URL.'_error/fix.php');
 		exit;
 	} */
-
-	// 載入類別
-	require_once(__DIR__.'/../models/autoloader.php');
 ?>

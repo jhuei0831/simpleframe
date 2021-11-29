@@ -5,7 +5,7 @@
 
     include($root . 'config/settings.php');
 
-    use models\Config;
+    use App\Models\Config;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Permission;
