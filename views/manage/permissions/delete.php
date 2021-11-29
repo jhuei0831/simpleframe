@@ -2,7 +2,7 @@
     $root = "../../";
     include($root.'config/settings.php');
 
-    use models\Auth\Permission as PermissionInstance;
+    use App\Models\Auth\Permission as PermissionInstance;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Permission;
     use Kerwin\Core\Support\Facades\Security;

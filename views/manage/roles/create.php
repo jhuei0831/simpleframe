@@ -3,7 +3,7 @@
     
     include($root.'config/settings.php');
 
-    use models\Auth\Role;
+    use App\Models\Auth\Role;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;

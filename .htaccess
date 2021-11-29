@@ -12,11 +12,11 @@
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteRule ^(.*)$ index.php [L,QSA]
 	
-	RewriteBase /jhuei0831/simpleframe
+	RewriteBase /simpleframe
 
 # 一、客製化錯誤頁面
-	ErrorDocument 403 /jhuei0831/simpleframe/_error/404.php
-	ErrorDocument 404 /jhuei0831/simpleframe/_error/404.php
+	ErrorDocument 403 /simpleframe/_error/404.php
+	ErrorDocument 404 /simpleframe/_error/404.php
 
 # 二、關閉目錄瀏覽
 	Options -Indexes

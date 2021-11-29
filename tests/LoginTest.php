@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-use models\Auth\User;
+use App\Models\Auth\User;
 use Dotenv\Dotenv;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;

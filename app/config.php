@@ -3,8 +3,8 @@
 use function DI\create;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
-use models\Log\Log;
-use models\Twig\LayoutExtension;
+use App\Models\Log\Log;
+use App\Models\Twig\LayoutExtension;
 use Symfony\Component\HttpFoundation\Request;
 // use SuperBlog\Model\ArticleRepository;
 // use SuperBlog\Persistence\InMemoryArticleRepository;

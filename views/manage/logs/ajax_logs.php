@@ -2,7 +2,7 @@
     $root = '../../';
     include($root.'config/settings.php');
 
-    use models\Datatable;
+    use App\Models\Datatable;
 
     $columns = array( 
         0 => 'id',

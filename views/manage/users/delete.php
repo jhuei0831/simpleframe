@@ -2,7 +2,7 @@
     $root = "../../";
     include($root.'config/settings.php');
 
-    use models\Auth\User;
+    use App\Models\Auth\User;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Permission;
     use Kerwin\Core\Support\Facades\Security;
