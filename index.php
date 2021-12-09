@@ -3,10 +3,11 @@ $root = "./";
 include($root.'config/settings.php');
 
 use Kerwin\Core\Router\RouteCollector;
+use function Kerwin\Core\Router\simpleDispatcher;
 
 $container = require __DIR__ . '/app/bootstrap.php';
 
-$dispatcher = Kerwin\Core\Router\simpleDispatcher(function (RouteCollector $route) {
+$dispatcher = simpleDispatcher(function (RouteCollector $route) {
     $route->middleware(['browser'])->addGroup('/simpleframe', function (RouteCollector $route) {
         $route->get('/', 'App\Http\Controller\HomeController');
         $route->get('/captcha', ['App\Http\Controller\Auth\LoginController', 'captcha']);

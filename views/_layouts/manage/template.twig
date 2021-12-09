@@ -18,7 +18,7 @@
 		<div>
             {% include "_partials/manage/sidebar.twig" %}
             {% include "_partials/manage/nav.twig" %}
-			<main class="h-full overflow-y-auto">
+			<main class="flex-1 relative pb-8 z-0 overflow-y-auto">
 				<div class="container px-6 mx-auto">
 					{{ show_flash_message() }}
                     {% block content %}{% endblock %}
