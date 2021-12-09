@@ -6,13 +6,13 @@ use GUMP;
 use App\Models\Log\Log;
 use Twig\Environment;
 use Kerwin\Core\Mail;
+use Kerwin\Core\Request;
 use Kerwin\Core\Support\Toolbox;
 use Kerwin\Core\Support\Facades\Config;
 use Kerwin\Core\Support\Facades\Message;
 use Kerwin\Core\Support\Facades\Session;
 use Kerwin\Core\Support\Facades\Database;
 use Kerwin\Core\Support\Facades\Security;
-use Symfony\Component\HttpFoundation\Request;
 
 class PasswordResetController
 {
@@ -56,7 +56,7 @@ class PasswordResetController
     /**
      * 獲取重設密碼郵件
      *
-     * @param  \Symfony\Component\HttpFoundation\Request $request
+     * @param  \Kerwin\Core\Request $request
      * @param  \App\Models\Log\Log $log
      * @return void
      */
@@ -158,7 +158,7 @@ class PasswordResetController
     /**
      * 密碼重設資料驗證、更新
      *
-     * @param  \Symfony\Component\HttpFoundation\Request $request
+     * @param  \Kerwin\Core\Request $request
      * @param  \App\Models\Log\Log $log
      * @param  string $auth
      * @param  string $id

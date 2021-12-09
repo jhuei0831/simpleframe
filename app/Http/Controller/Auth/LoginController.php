@@ -5,13 +5,13 @@ namespace App\Http\Controller\Auth;
 use Twig\Environment;
 use App\Models\Log\Log;
 use Kerwin\Captcha\Captcha;
+use Kerwin\Core\Request;
 use Kerwin\Core\Support\Toolbox;
 use Kerwin\Core\Support\Facades\Config;
 use Kerwin\Core\Support\Facades\Database;
 use Kerwin\Core\Support\Facades\Message;
 use Kerwin\Core\Support\Facades\Session;
 use Kerwin\Core\Support\Facades\Security;
-use Symfony\Component\HttpFoundation\Request;
 
 class LoginController
 {
@@ -48,7 +48,7 @@ class LoginController
     /**
      * 會員登入
      *
-     * @param  \Symfony\Component\HttpFoundation\Request $request
+     * @param  \Kerwin\Core\Request $request
      * @param  \App\Models\Log\Log $log
      * @return void
      */
