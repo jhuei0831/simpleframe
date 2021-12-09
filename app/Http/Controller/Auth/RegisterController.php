@@ -7,13 +7,13 @@ use Twig\Environment;
 use App\Models\Log\Log;
 use App\Models\Auth\Password;
 use Kerwin\Core\Mail;
+use Kerwin\Core\Request;
+use Kerwin\Core\Support\Toolbox;
 use Kerwin\Core\Support\Facades\Config;
 use Kerwin\Core\Support\Facades\Database;
 use Kerwin\Core\Support\Facades\Message;
 use Kerwin\Core\Support\Facades\Security;
 use Kerwin\Core\Support\Facades\Session;
-use Kerwin\Core\Support\Toolbox;
-use Symfony\Component\HttpFoundation\Request;
 
 class RegisterController
 {
@@ -38,9 +38,9 @@ class RegisterController
     /**
      * 會員註冊
      *
-     * @param  Symfony\Component\HttpFoundation\Request $request
-     * @param  App\Models\Log\Log $log
-     * @param  Twig\Environment $twig
+     * @param  \Kerwin\Core\Request $request
+     * @param  \App\Models\Log\Log $log
+     * @param  \Twig\Environment $twig
      * @return void
      */
     public function register(Request $request, Log $log, Environment $twig): void
@@ -52,18 +52,13 @@ class RegisterController
         $validation = $this->validation();
 
         $validData = $validation->run($data);
-
         if (!$validation->errors()) {
             $checkUser = Database::table('users')->where('email ="'.$validData['email'].'"')->first();
-            // 密碼規則驗證
-            if ($request->server->get('AUTH_PASSWORD_SECURITY') === 'TRUE') {
-                $safeCheck = Password::rule($validData['password']);
-            }
             if ($checkUser) {
                 $this->errors = ['信箱已被註冊使用'];
                 Message::flash('信箱已被註冊使用', 'error');
             }
-            elseif ($request->server->get('AUTH_PASSWORD_SECURITY') === 'TRUE' && (count($safeCheck) <= 3 || !preg_match('/.{8,}/',$validData['password']))) {
+            elseif ($request->server->get('AUTH_PASSWORD_SECURITY') === 'TRUE' && (count(Password::rule($validData['password'])) <= 3 || !preg_match('/.{8,}/',$validData['password']))) {
                 $this->errors = ['密碼不符合規則，請參考密碼規則並再次確認'];
                 Message::flash('密碼不符合規則，請參考密碼規則並再次確認', 'error');
             }

@@ -5,13 +5,13 @@ namespace App\Http\Controller\Auth;
 use Twig\Environment;
 use App\Models\Log\Log;
 use Kerwin\Core\Mail;
+use Kerwin\Core\Request;
 use Kerwin\Core\Support\Toolbox;
 use Kerwin\Core\Support\Facades\Auth;
 use Kerwin\Core\Support\Facades\Database;
 use Kerwin\Core\Support\Facades\Message;
 use Kerwin\Core\Support\Facades\Security;
 use Kerwin\Core\Support\Facades\Session;
-use Symfony\Component\HttpFoundation\Request;
 
 class EmailVerifiedController
 {
@@ -78,7 +78,7 @@ class EmailVerifiedController
     /**
      * 獲取信箱驗證信
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Kerwin\Core\Request $request
      * @return void
      */
     public function getVerifyEmail(Request $request): void

@@ -37,10 +37,10 @@
                             aria-expanded="false" 
                             aria-haspopup="true" 
                         >
-                            <img class="h-8 w-8 rounded-full" src="https://uybor.uz/borless/avtobor/img/user-images/no-avatar.png" alt="<?php echo APP_NAME ?>">
+                            <img class="h-8 w-8 rounded-full" src="https://uybor.uz/borless/avtobor/img/user-images/no-avatar.png" alt="{{ APP_NAME }}">
                             <span class="hidden ml-3 text-gray-700 text-sm font-medium lg:block">
                                 <span class="sr-only">打開頭像下拉式選單</span>
-                                <?php echo Kerwin\Core\Support\Facades\Auth::user()->name?>
+                                {{ auth_user().name }}
                             </span>
                             <svg 
                                 :class="{ 'transform rotate-180' : profile == true }"
@@ -66,7 +66,7 @@
                         style="display: none;"
                     >
                         <a 
-                            href="<?php echo APP_ADDRESS?>" 
+                            href="{{ APP_ADDRESS }}" 
                             class="flex items-center px-4 py-2 text-sm text-gray-700" 
                             :class="{ 'bg-gray-100': activeIndex === 0 }" 
                             role="menuitem" 
@@ -81,7 +81,7 @@
                             個人資料
                         </a>
                         <!-- <a 
-                            href="<?php echo APP_ADDRESS?>manage/config.php" 
+                            href="{{ APP_ADDRESS }}manage/config" 
                             class="flex items-center px-4 py-2 text-sm text-gray-700" 
                             :class="{ 'bg-gray-100': activeIndex === 1 }" 
                             role="menuitem" 
@@ -97,7 +97,7 @@
                             設定
                         </a> -->
                         <a 
-                            href="<?php echo APP_ADDRESS?>auth/logout.php" 
+                            href="{{ APP_ADDRESS }}auth/logout" 
                             class="flex items-center px-4 py-2 text-sm text-gray-700" 
                             :class="{ 'bg-gray-100': activeIndex === 2 }" 
                             role="menuitem" 

@@ -2,13 +2,14 @@
 
 namespace App\Http\Middleware;
 
-use Kerwin\Core\Request;
-use Kerwin\Core\Support\Facades\Session;
-use Kerwin\Core\Router\Middleware\Middleware;
 use Twig\Environment;
+use Kerwin\Core\Request;
+use Kerwin\Core\Support\Facades\Permission;
+use Kerwin\Core\Router\Middleware\Middleware;
 
-class AuthMiddleware implements Middleware
+class AllowManageMiddleware implements Middleware
 {
+
     private $twig;
 
     public function __construct(Environment $twig) {
@@ -17,7 +18,7 @@ class AuthMiddleware implements Middleware
 
     public function __invoke(Request $request, callable $next)
     {
-        if (!Session::get('USER_ID')) {
+        if (!Permission::can('manage-index')) {
             echo $this->twig->render('_error/404.twig');
             return;
         }

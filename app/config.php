@@ -1,17 +1,13 @@
 <?php
 
 use function DI\create;
+use Kerwin\Core\Request;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 use App\Models\Log\Log;
 use App\Models\Twig\LayoutExtension;
-use Symfony\Component\HttpFoundation\Request;
-// use SuperBlog\Model\ArticleRepository;
-// use SuperBlog\Persistence\InMemoryArticleRepository;
 
 return [
-    // Bind an interface to an implementation
-    // LoggerInterface::class => create(InMemoryArticleRepository::class),
 
     Log::class => function() {
         $log = new Log();
@@ -31,10 +27,14 @@ return [
         return $twig;
     },
 
-    'twig' => function () {
-        $loader = new FilesystemLoader(__DIR__ . '/../views');
-        $twig = new Environment($loader);
-        $twig->addExtension(new LayoutExtension());
-        return $twig;
+    // Middleware
+    'auth' => function (Environment $twig) {
+        return new App\Http\Middleware\AuthMiddleware($twig);
     },
+
+    'allow_manage' => function (Environment $twig) {
+        return new App\Http\Middleware\AllowManageMiddleware($twig);
+    },
+
+    'browser' => create(App\Http\Middleware\BrowserMiddleware::class),
 ];

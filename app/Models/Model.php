@@ -1,6 +1,6 @@
 <?php
 
-    namespace models;
+    namespace App\Models;
 
     use Kerwin\Core\Support\Facades\Message;
 

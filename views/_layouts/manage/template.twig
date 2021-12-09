@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 	<head>
 		{# webpack #}
-		<script src="{{ APP_SRC }}dist/reception/bundle.js"></script>
+		<script src="{{ APP_SRC }}dist/manage/bundle.js"></script>
         {# meta #}
         {% include "_partials/reception/meta.twig" %}
 		<title>{{ pageTitle ? pageTitle : APP_NAME }}</title>
@@ -15,14 +15,15 @@
 		<link rel="icon" href="{{ APP_IMG }}favicon.ico">
 	</head>
 	<body style="font-family: 'Noto Sans TC', sans-serif;">
-		<div class="flex h-screen bg-gray-50 dark:bg-gray-900" :class="{ 'overflow-hidden': isSideMenuOpen }">
-            {% include "_partials/reception/nav.twig" %}
-			<main class="h-full overflow-y-auto">
+		<div>
+            {% include "_partials/manage/sidebar.twig" %}
+            {% include "_partials/manage/nav.twig" %}
+			<main class="flex-1 relative pb-8 z-0 overflow-y-auto">
 				<div class="container px-6 mx-auto">
 					{{ show_flash_message() }}
                     {% block content %}{% endblock %}
                 </div>
-				<footer class="bg-white inset-x-0 bottom-0 fixed">
+                <footer class="bg-white inset-x-0 bottom-0 fixed">
                     <div class="max-w-7xl mx-auto overflow-hidden">
                         <p class="text-center text-base text-gray-800">
                             &copy; 2019-{{ "now"|date('Y') }} Kerwin. All rights reserved.
