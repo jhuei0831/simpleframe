@@ -2,9 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Kerwin\Core\Request;
-use Kerwin\Core\Router\Middleware\Middleware;
 use Jenssegers\Agent\Agent;
+use Kerwin\Core\Router\Middleware\Middleware;
 
 class BrowserMiddleware implements Middleware
 {
@@ -15,7 +16,7 @@ class BrowserMiddleware implements Middleware
         $this->agent = new Agent();
     }
 
-    public function __invoke(Request $request, callable $next)
+    public function __invoke(Request $request, Closure $next, $arg = NULL)
     {
         if ($this->agent->browser() === 'IE') {
             echo '請勿使用IE瀏覽器!';

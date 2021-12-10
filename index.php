@@ -25,8 +25,10 @@ $dispatcher = simpleDispatcher(function (RouteCollector $route) {
             $route->get('/password_reset/{auth}/{id}', ['App\Http\Controller\Auth\PasswordResetController', 'index']);
             $route->post('/password_reset/{auth}/{id}', ['App\Http\Controller\Auth\PasswordResetController', 'reset']);
         });
-        $route->middleware(['auth', 'allow_manage'])->addGroup('/manage', function (RouteCollector $route) {
+        $route->middleware(['auth', 'allow_manage:permssions-list'])->addGroup('/manage', function (RouteCollector $route) {
             $route->get('/', ['App\Http\Controller\Manage\ManageController', 'index']);
+            $route->get('/permissions', ['App\Http\Controller\Manage\PermissionsController', 'index']);
+            $route->post('/permissions/datatable', ['App\Http\Controller\Manage\PermissionsController', 'dataTable']);
         });
     });
 });

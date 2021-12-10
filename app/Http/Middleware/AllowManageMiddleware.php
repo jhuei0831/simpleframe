@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Twig\Environment;
 use Kerwin\Core\Request;
 use Kerwin\Core\Support\Facades\Permission;
@@ -16,7 +17,7 @@ class AllowManageMiddleware implements Middleware
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request, callable $next)
+    public function __invoke(Request $request, Closure $next, $arg = NULL)
     {
         if (!Permission::can('manage-index')) {
             echo $this->twig->render('_error/404.twig');

@@ -1,8 +1,8 @@
 <?php
 
-    namespace _models;
+    namespace App\Models;
 
-    use _App\Models\Log\Log;
+    use App\Models\Log\Log;
     use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Database;
     use Kerwin\Core\Support\Facades\Message;
