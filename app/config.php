@@ -32,8 +32,8 @@ return [
         return new App\Http\Middleware\AuthMiddleware($twig);
     },
 
-    'allow_manage' => function (Environment $twig) {
-        return new App\Http\Middleware\AllowManageMiddleware($twig);
+    'permission' => function (Environment $twig) {
+        return new App\Http\Middleware\PermissionsMiddleware($twig);
     },
 
     'browser' => create(App\Http\Middleware\BrowserMiddleware::class),

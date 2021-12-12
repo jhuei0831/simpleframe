@@ -3,15 +3,13 @@
 {% block content %}
 
 <!-- breadcrumb -->
-{{ breadcrumb(APP_ADDRESS~'manage/', {'權限管理': '#'}) }}
+{{ breadcrumb(APP_ADDRESS~'manage/', {'使用者管理': '#'}) }}
 
 <div class="container px-6 mx-auto">
     <div class="container px-6 mx-auto grid" x-data="filter()">
-        <h2 class="my-6 text-2xl font-semibold text-gray-700">權限管理</h2>
+        <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">使用者管理</h2>
         <div class="flex justify-start mb-2">
-            {% if permission_can('permissions-create') %}
-            <a href="{{ APP_ADDRESS }}manage/permissions/create" class="px-3 py-1 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-cyan-600 border border-transparent rounded-md active:bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"><i class="bi bi-person-plus "></i> 新增</a>
-            {% endif %}
+            <a href="{{ APP_ADDRESS }}manage/users/create" class="px-3 py-1 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-cyan-600 border border-transparent rounded-md active:bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"><i class="bi bi-person-plus "></i> 新增</a>
             <a href="javascript:void(0)" @click="toggleFilter()" class="px-3 py-1 ml-2 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-md active:bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"><i class="bi bi-filter "></i> 篩選</a>
         </div>
         <div id="filter" x-show="open">
@@ -21,6 +19,29 @@
                         <label for="name" class="block text-sm font-medium text-gray-700">名稱</label>
                         <div class="mt-1">
                             <input type="text" name="name" id="name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label for="email" class="block text-sm font-medium text-gray-700">電子信箱</label>
+                        <div class="mt-1">
+                            <input type="text" name="email" id="email" autocomplete="postal-code" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label for="role" class="block text-sm font-medium text-gray-700">角色</label>
+                        <div class="mt-1">
+                            <select id="role" name="role" autocomplete="role" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                <option value="">請選擇</option>
+                                <?php foreach ($roles as $key => $role): ?>
+                                    <option value="<?php echo $role->id?>"><?php echo $role->name?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label for="id" class="block text-sm font-medium text-gray-700">ID</label>
+                        <div class="mt-1">
+                            <input type="text" name="id" id="id" autocomplete="postal-code" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                         </div>
                     </div>
                 </div>
@@ -36,15 +57,21 @@
                 </div>
             </div> 
         </div>
+        
         <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
             <div class="w-full lg:overflow-x-hidden overflow-x-scroll shadow">
-                <table id="table" class="whitespace-nowrap row-border hover">
+            
+                <table id="table" class="whitespace-nowrap row-border hover table-auto">
                     <thead>
-                        <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
+                        <tr
+                            class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
+                        >
                             <th class="px-4 py-3">名稱</th>
-                            <th class="px-4 py-3">敘述</th>
+                            <th class="px-4 py-3">電子信箱</th>
+                            <th class="px-4 py-3">角色</th>
                             <th class="px-4 py-3">建立時間</th>
                             <th class="px-4 py-3">功能</th>
+                            <th class="px-4 py-3 hidden">id</th>
                         </tr>
                     </thead>
                 </table>
@@ -52,14 +79,27 @@
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
-    let url = "permissions/datatable";
-    let columns = [ 
+    let roles = {{ roles|json_encode()|raw }};
+    let url = "users/datatable";
+    let columns = [
         {
             "data": "name"
         },
         {
-            "data": "description"
+            "data": "email"
+        },
+        {
+            "data": "role",
+            "render": function(data) {
+                roles.forEach(function(role) {
+                    if (role.id === data) {
+                        data = role.name;
+                    }
+                });
+                return data;
+            }
         },
         {
             "data": "created_at"
@@ -67,17 +107,18 @@
         {
             "data": null,
             "orderable": false,
-            "defaultContent": 
-            '<div class="flex items-center space-x-4 text-sm">'+ 
-                {% if permission_can('permissions-edit') %}   
+            "defaultContent":
+            '<div class="flex items-center space-x-4 text-sm">'+
                 '<i tabindex="0" role="link" class="bi bi-pencil-fill edit flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-300" style="cursor:pointer"></i>'+
-                {% endif %}
-                {% if permission_can('permissions-delete') %}
                 '<i tabindex="0" role="link" class="bi bi-trash-fill delete flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-300" style="cursor:pointer"></i>'+
-                {% endif %}
             '</div>'
         },
+        {
+            "data": "id",
+            "visible": false,
+        },
     ];
+
     let table = $('#table').DataTable({
         "language": {
             "sProcessing":   "處理中...",
@@ -104,6 +145,9 @@
             type: "post",
             data: function(d) {
                 d.columns[0]['search']['value'] = $("#name").val();
+                d.columns[1]['search']['value'] = $("#email").val();
+                d.columns[2]['search']['value'] = $('#role option:selected').val();
+                d.columns[5]['search']['value'] = $('#id').val();
             },
             error: function(res){
                 console.log(res)
@@ -112,5 +156,4 @@
         "columns": columns
     });
 </script>
-
 {% endblock %}

@@ -8,7 +8,7 @@ use Kerwin\Core\Request;
 use Kerwin\Core\Support\Facades\Permission;
 use Kerwin\Core\Router\Middleware\Middleware;
 
-class AllowManageMiddleware implements Middleware
+class PermissionsMiddleware implements Middleware
 {
 
     private $twig;
@@ -19,7 +19,7 @@ class AllowManageMiddleware implements Middleware
 
     public function __invoke(Request $request, Closure $next, $arg = NULL)
     {
-        if (!Permission::can('manage-index')) {
+        if (!Permission::can($arg)) {
             echo $this->twig->render('_error/404.twig');
             return;
         }

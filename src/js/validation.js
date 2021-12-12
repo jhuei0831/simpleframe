@@ -3,11 +3,15 @@ $(document).ready(function () {
     $("#form_role").validate({
         rules: {
             name: {
+                // max: 30,
                 required: true
             }   
         },
         messages: {
-            name: "名稱必填"
+            name: {
+                max: "名稱最大長度為30",
+                required: "名稱必填"
+            }
         }
     });
 

@@ -1,38 +1,15 @@
-<?php
+{% extends "_layouts/manage/template.twig" %}
 
-    $root = '../';
-    $pageTitle = '設定';
+{% block content %}
 
-    include($root . 'config/settings.php');
-
-    use App\Models\Config;
-    use Kerwin\Core\Support\Toolbox;
-    use Kerwin\Core\Support\Facades\Message;
-    use Kerwin\Core\Support\Facades\Permission;
-    
-    $configInstance = new Config();
-    $config = $configInstance->index();
-    
-    if (!Permission::can('config-edit')) {
-        include_once($root . '_error/404.php');
-        exit;
-    }
-
-    if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $configInstance->edit($_POST, $config->id);
-    }
-    
-    Message::showFlash();
-    include($root . '_layouts/manage/top.php');
-?>
 <!-- breadcrumb -->
-<?php echo Toolbox::breadcrumb(APP_ADDRESS . 'manage', ['網站設定' => '#']) ?>
+{{ breadcrumb(APP_ADDRESS~'manage/', {'網站設定': '#'}) }}
 
 <div class="container px-6 mx-auto grid">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">設定</h2>
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow">
         <div class="w-full overflow-x-auto py-12 px-4 sm:px-6 lg:px-8 bg-white">
-            <form class="space-y-8 divide-y divide-gray-200" method="POST">
+            <form class="space-y-8 divide-y divide-gray-200" action="{{ APP_ADDRESS }}manage/config/edit/{{ configs[0].id }}" method="POST">
                 <div class="space-y-8 sm:space-y-5">
                     <div>
                         <div>
@@ -52,7 +29,7 @@
                                 <div class="mt-1 sm:mt-0 sm:col-span-2">
                                     <label for="toogleButton" class="flex items-center cursor-pointer mt-2">
                                         <div class="relative">
-                                            <input id="toogleButton" name="isOpen" type="checkbox" class="hidden" <?php echo ($config->isOpen==1?'checked':'') ?> />
+                                            <input id="toogleButton" name="isOpen" type="checkbox" class="hidden" {{ configs[0].isOpen==1?'checked':'' }} />
                                             <div class="toggle-path bg-gray-200 w-9 h-5 rounded-full shadow-inner"></div>
                                             <div class="toggle-circle absolute w-3.5 h-3.5 bg-white rounded-full shadow inset-y-0 left-0"></div>
                                         </div>
@@ -62,7 +39,7 @@
                         </div>
                     </div>
                 </div>
-                <input type="hidden" name="token" value="<?php echo TOKEN ?>">
+                <input type="hidden" name="token" value="{{ TOKEN }}">
                 <div class="pt-5">
                     <div class="flex justify-end">
                         <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -76,4 +53,4 @@
     </div>
 </div>
 
-<?php include($root . '_layouts/manage/bottom.php') ?>
+{% endblock %}

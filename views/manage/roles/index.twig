@@ -3,15 +3,13 @@
 {% block content %}
 
 <!-- breadcrumb -->
-{{ breadcrumb(APP_ADDRESS~'manage/', {'權限管理': '#'}) }}
+{{ breadcrumb(APP_ADDRESS~'manage/', {'角色管理': '#'}) }}
 
 <div class="container px-6 mx-auto">
     <div class="container px-6 mx-auto grid" x-data="filter()">
-        <h2 class="my-6 text-2xl font-semibold text-gray-700">權限管理</h2>
+        <h2 class="my-6 text-2xl font-semibold text-gray-700">角色管理</h2>
         <div class="flex justify-start mb-2">
-            {% if permission_can('permissions-create') %}
-            <a href="{{ APP_ADDRESS }}manage/permissions/create" class="px-3 py-1 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-cyan-600 border border-transparent rounded-md active:bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"><i class="bi bi-person-plus "></i> 新增</a>
-            {% endif %}
+            <a href="{{ APP_ADDRESS }}manage/roles/create" class="px-3 py-1 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-cyan-600 border border-transparent rounded-md active:bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"><i class="bi bi-person-plus "></i> 新增</a>
             <a href="javascript:void(0)" @click="toggleFilter()" class="px-3 py-1 ml-2 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-md active:bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"><i class="bi bi-filter "></i> 篩選</a>
         </div>
         <div id="filter" x-show="open">
@@ -42,7 +40,6 @@
                     <thead>
                         <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
                             <th class="px-4 py-3">名稱</th>
-                            <th class="px-4 py-3">敘述</th>
                             <th class="px-4 py-3">建立時間</th>
                             <th class="px-4 py-3">功能</th>
                         </tr>
@@ -52,14 +49,12 @@
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
-    let url = "permissions/datatable";
+    let url = "roles/datatable";
     let columns = [ 
         {
             "data": "name"
-        },
-        {
-            "data": "description"
         },
         {
             "data": "created_at"
@@ -69,12 +64,8 @@
             "orderable": false,
             "defaultContent": 
             '<div class="flex items-center space-x-4 text-sm">'+ 
-                {% if permission_can('permissions-edit') %}   
                 '<i tabindex="0" role="link" class="bi bi-pencil-fill edit flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-300" style="cursor:pointer"></i>'+
-                {% endif %}
-                {% if permission_can('permissions-delete') %}
                 '<i tabindex="0" role="link" class="bi bi-trash-fill delete flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-300" style="cursor:pointer"></i>'+
-                {% endif %}
             '</div>'
         },
     ];
