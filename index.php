@@ -63,5 +63,4 @@ $dispatcher = simpleDispatcher(function (RouteCollector $route) {
         });
     });
 });
-
 $dispatcher->process($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI'], $container);
