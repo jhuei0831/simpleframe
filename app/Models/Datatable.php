@@ -1,6 +1,6 @@
 <?php
 
-    namespace models;
+    namespace App\Models;
 
     use Exception;
     use Kerwin\Core\Support\Facades\Database;

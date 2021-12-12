@@ -19,10 +19,8 @@
             {% include "_partials/manage/sidebar.twig" %}
             {% include "_partials/manage/nav.twig" %}
 			<main class="flex-1 relative pb-8 z-0 overflow-y-auto">
-				<div class="container px-6 mx-auto">
-					{{ show_flash_message() }}
-                    {% block content %}{% endblock %}
-                </div>
+                {{ show_flash_message() }}
+                {% block content %}{% endblock %}
                 <footer class="bg-white inset-x-0 bottom-0 fixed">
                     <div class="max-w-7xl mx-auto overflow-hidden">
                         <p class="text-center text-base text-gray-800">

@@ -1,11 +1,11 @@
 <?php
 
-use function DI\create;
-use Kerwin\Core\Request;
-use Twig\Loader\FilesystemLoader;
-use Twig\Environment;
 use App\Models\Log\Log;
 use App\Models\Twig\LayoutExtension;
+use Kerwin\Core\Request;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use function DI\create;
 
 return [
 
@@ -32,8 +32,8 @@ return [
         return new App\Http\Middleware\AuthMiddleware($twig);
     },
 
-    'allow_manage' => function (Environment $twig) {
-        return new App\Http\Middleware\AllowManageMiddleware($twig);
+    'permission' => function (Environment $twig) {
+        return new App\Http\Middleware\PermissionsMiddleware($twig);
     },
 
     'browser' => create(App\Http\Middleware\BrowserMiddleware::class),

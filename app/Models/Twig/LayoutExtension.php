@@ -3,6 +3,7 @@
     namespace App\Models\Twig;
 
     use DebugBar\StandardDebugBar;
+    use Kerwin\Core\Support\Toolbox;
     use Kerwin\Core\Support\Facades\Auth;
     use Kerwin\Core\Support\Facades\Message;
     use Kerwin\Core\Support\Facades\Permission;
@@ -23,6 +24,7 @@
         {
             return [
                 new \Twig\TwigFunction('auth_user', [$this, 'authUser']),
+                new \Twig\TwigFunction('breadcrumb', [$this, 'breadcrumb'], ['is_safe' => ['html']]),
                 new \Twig\TwigFunction('debug_bar_render', [$this, 'render'], ['is_safe' => ['html']]),
                 new \Twig\TwigFunction('debug_bar_renderHead', [$this, 'renderHead'], ['is_safe' => ['html']]),
                 new \Twig\TwigFunction('in_except_ip_list', [$this, 'inExceptIpList']),
@@ -62,6 +64,11 @@
         public function authUser()
         {
             return Auth::user();
+        }
+
+        public function breadcrumb(string $home, array $breadcrumbs)
+        {
+            return Toolbox::breadcrumb($home, $breadcrumbs);
         }
 
         public function header(string $args)
