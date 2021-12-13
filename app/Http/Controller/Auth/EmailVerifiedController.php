@@ -3,7 +3,7 @@
 namespace App\Http\Controller\Auth;
 
 use Twig\Environment;
-use App\Models\Log\Log;
+use App\Services\Log\Log;
 use Kerwin\Core\Mail;
 use Kerwin\Core\Request;
 use Kerwin\Core\Support\Toolbox;

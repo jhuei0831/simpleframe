@@ -3,7 +3,7 @@
 namespace App\Http\Controller\Manage;
 
 use Twig\Environment;
-use App\Models\Log\Log;
+use App\Services\Log\Log;
 use Kerwin\Core\Request;
 use Kerwin\Core\Support\Toolbox;
 use Kerwin\Core\Support\Facades\Message;
@@ -31,7 +31,7 @@ class ConfigController
      * 網站管理修改
      *
      * @param  \Kerwin\Core\Request $request
-     * @param  \App\Models\Log\Log $log
+     * @param  \App\Services\Log\Log $log
      * @param  string $id
      * @return void
      */

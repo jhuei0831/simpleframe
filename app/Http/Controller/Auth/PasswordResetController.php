@@ -3,7 +3,7 @@
 namespace App\Http\Controller\Auth;
 
 use GUMP;
-use App\Models\Log\Log;
+use App\Services\Log\Log;
 use Twig\Environment;
 use Kerwin\Core\Mail;
 use Kerwin\Core\Request;
@@ -57,7 +57,7 @@ class PasswordResetController
      * 獲取重設密碼郵件
      *
      * @param  \Kerwin\Core\Request $request
-     * @param  \App\Models\Log\Log $log
+     * @param  \App\Services\Log\Log $log
      * @return void
      */
     public function getResetEmail(Request $request, Log $log): void
@@ -159,7 +159,7 @@ class PasswordResetController
      * 密碼重設資料驗證、更新
      *
      * @param  \Kerwin\Core\Request $request
-     * @param  \App\Models\Log\Log $log
+     * @param  \App\Services\Log\Log $log
      * @param  string $auth
      * @param  string $id
      * @return void

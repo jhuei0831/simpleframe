@@ -1,28 +1,3 @@
-{# <?php
-    $root = '../../';
-    $pageTitle = '忘記密碼';
-    include_once($root.'config/settings.php');
-
-    use App\Models\Auth\Password;
-    use Kerwin\Core\Support\Facades\Message;
-    use Kerwin\Core\Support\Facades\Session;
-
-    // 已登入不能訪問此頁面
-    if (!is_null(Session::get('USER_ID'))) {
-        include_once($root.'_error/404.php');
-        exit;
-    }
-
-    if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-        $password = new Password();
-        $forgotPassword = $password->forgot($_POST);
-        $password->result($forgotPassword);
-    }
-    
-    Message::showFlash();
-    include_once($root.'_layouts/auth/top.php');
-?> #}
-
 {% extends "_layouts/auth/template.twig" %}
 
 {% block content %}

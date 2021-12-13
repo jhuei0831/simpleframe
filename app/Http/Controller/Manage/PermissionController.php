@@ -3,8 +3,8 @@
 namespace App\Http\Controller\Manage;
 
 use GUMP;
-use App\Models\Datatable;
-use App\Models\Log\Log;
+use App\Services\Datatable;
+use App\Services\Log\Log;
 use Kerwin\Core\Request;
 use Kerwin\Core\Support\Toolbox;
 use Kerwin\Core\Support\Facades\Database;
@@ -50,7 +50,7 @@ class PermissionController
      * 權限新增
      *
      * @param  \Kerwin\Core\Request $request
-     * @param  \App\Models\Log\Log $request
+     * @param  \App\Services\Log\Log $request
      * @return void
      */
     public function store(Request $request, Log $log)
@@ -104,7 +104,7 @@ class PermissionController
      * 權限更新
      *
      * @param  \Kerwin\Core\Request $request
-     * @param  \App\Models\Log\Log $log
+     * @param  \App\Services\Log\Log $log
      * @param  string $id
      * @return void
      */
@@ -141,7 +141,7 @@ class PermissionController
     /**
      * 權限刪除
      *
-     * @param  \App\Models\Log\Log $log
+     * @param  \App\Services\Log\Log $log
      * @param  string $id
      * @return void
      */

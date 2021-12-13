@@ -1,11 +1,12 @@
 <?php
 
-use App\Models\Log\Log;
-use App\Models\Twig\LayoutExtension;
-use Kerwin\Core\Request;
+use App\Models\User;
 use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 use function DI\create;
+use Kerwin\Core\Request;
+use App\Services\Log\Log;
+use Twig\Loader\FilesystemLoader;
+use App\Services\Twig\LayoutExtension;
 
 return [
 
@@ -37,4 +38,7 @@ return [
     },
 
     'browser' => create(App\Http\Middleware\BrowserMiddleware::class),
+
+    // Models
+    User::class => create(User::class)
 ];

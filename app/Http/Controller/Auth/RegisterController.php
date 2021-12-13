@@ -4,8 +4,8 @@ namespace App\Http\Controller\Auth;
 
 use GUMP;
 use Twig\Environment;
-use App\Models\Log\Log;
-use App\Models\Auth\Password;
+use App\Services\Log\Log;
+use App\Services\Auth\Password;
 use Kerwin\Core\Mail;
 use Kerwin\Core\Request;
 use Kerwin\Core\Support\Toolbox;
@@ -39,7 +39,7 @@ class RegisterController
      * 會員註冊
      *
      * @param  \Kerwin\Core\Request $request
-     * @param  \App\Models\Log\Log $log
+     * @param  \App\Services\Log\Log $log
      * @param  \Twig\Environment $twig
      * @return void
      */

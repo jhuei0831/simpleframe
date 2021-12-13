@@ -3,7 +3,7 @@
 namespace App\Http\Controller\Auth;
 
 use Twig\Environment;
-use App\Models\Log\Log;
+use App\Services\Log\Log;
 use Kerwin\Captcha\Captcha;
 use Kerwin\Core\Request;
 use Kerwin\Core\Support\Toolbox;
@@ -49,7 +49,7 @@ class LoginController
      * 會員登入
      *
      * @param  \Kerwin\Core\Request $request
-     * @param  \App\Models\Log\Log $log
+     * @param  \App\Services\Log\Log $log
      * @return void
      */
     public function login(Request $request, Log $log): void
@@ -81,7 +81,7 @@ class LoginController
     /**
      * 會員登出
      *
-     * @param \App\Models\Log\Log $log
+     * @param \App\Services\Log\Log $log
      * @return void
      */
     public function logout(Log $log): void

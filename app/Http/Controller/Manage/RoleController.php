@@ -3,8 +3,8 @@
 namespace App\Http\Controller\Manage;
 
 use GUMP;
-use App\Models\Datatable;
-use App\Models\Log\Log;
+use App\Services\Datatable;
+use App\Services\Log\Log;
 use Kerwin\Core\Request;
 use Kerwin\Core\Support\Toolbox;
 use Kerwin\Core\Support\Facades\Database;
@@ -53,7 +53,7 @@ class RoleController
      * 角色新增
      *
      * @param  Kerwin\Core\Request $request
-     * @param  App\Models\Log\Log $log
+     * @param  App\Services\Log\Log $log
      * @return void
      */
     public function store(Request $request, Log $log)
@@ -121,7 +121,7 @@ class RoleController
      * 角色編輯
      *
      * @param  Kerwin\Core\Request $request
-     * @param  App\Models\Log\Log $log
+     * @param  App\Services\Log\Log $log
      * @param  string $id
      * @return void
      */
@@ -177,7 +177,7 @@ class RoleController
     /**
      * delete
      *
-     * @param  App\Models\Log\Log $log
+     * @param  App\Services\Log\Log $log
      * @param  string $id
      * @return void
      */
