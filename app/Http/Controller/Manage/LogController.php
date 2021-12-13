@@ -2,7 +2,7 @@
 
 namespace App\Http\Controller\Manage;
 
-use App\Models\Datatable;
+use App\Services\Datatable;
 use Kerwin\Core\Request;
 use Twig\Environment;
 

@@ -1,24 +1,37 @@
 <?php
 
-    namespace App\Models;
+namespace App\Models;
 
-    use Kerwin\Core\Support\Facades\Message;
+abstract class Model
+{
+    protected $connection;
 
-    abstract class Model 
+    protected $table;
+
+    protected $primaryKey = 'id';
+
+    public function all($columns = ['*'])
     {
-        /**
-         * 根據function返回的結果做處理
-         *
-         * @param  array $request
-         * @return void
-         */
-        public function result(array $request): void
-        {
-            if (isset($request['redirect'])) {
-                Message::flash($request['msg'], $request['type'])->redirect($request['redirect']);
-            }
-            else {
-                Message::flash($request['msg'], $request['type']);
-            }
-        }
+        # code...
     }
+
+    public function find($primaryKey = 'id')
+    {
+        # code...
+    }
+
+    public function insert($attributes)
+    {
+        # code...
+    }
+
+    public function update($attributes)
+    {
+        # code...
+    }
+
+    public function delete($primaryKey = 'id')
+    {
+        # code...
+    }
+}

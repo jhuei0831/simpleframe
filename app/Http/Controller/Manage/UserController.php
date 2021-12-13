@@ -3,9 +3,9 @@
 namespace App\Http\Controller\Manage;
 
 use GUMP;
-use App\Models\Datatable;
-use App\Models\Log\Log;
-use App\Models\Auth\Password;
+use App\Services\Datatable;
+use App\Services\Log\Log;
+use App\Services\Auth\Password;
 use Kerwin\Core\Request;
 use Kerwin\Core\Support\Toolbox;
 use Kerwin\Core\Support\Facades\Config;
@@ -64,7 +64,7 @@ class UserController
      * 使用者新增
      *
      * @param  \Kerwin\Core\Request $request
-     * @param  \App\Models\Log\Log $log
+     * @param  \App\Services\Log\Log $log
      * @return void
      */
     public function store(Request $request, Log $log)
@@ -141,7 +141,7 @@ class UserController
      * 使用者修改
      *
      * @param  \Kerwin\Core\Request $request
-     * @param  \App\Models\Log\Log $log
+     * @param  \App\Services\Log\Log $log
      * @param  string $id
      * @return void
      */
@@ -220,15 +220,12 @@ class UserController
             $validData = $gump->run($data);
 
             if ($data['password'] != $data['password_confirm']) {
-                Message::flash('密碼要和確認密碼相同!。', 'error');
-            } elseif ($gump->errors()) {
+                Message::flash('密碼要和確認密碼相同!', 'error');
+                $errors = ['密碼要和確認密碼相同!'];
+            } 
+            elseif ($gump->errors()) {
                 $errors = $gump->get_readable_errors();
                 Message::flash('修改失敗，請檢查輸入。', 'error');
-                echo $this->twig->render('manage/users/create.twig', [
-                    'errors' => $errors,
-                    'post' => Toolbox::only($data, ['name', 'email', 'role']),
-                    'roles' => $this->roles
-                ]);
             } else {
                 unset($validData['password_confirm']);
                 $validData['password'] = md5($validData['password']);
@@ -236,13 +233,18 @@ class UserController
                 $log->info('修改使用者密碼', ['id' => $id]);
                 Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users');
             }
+            echo $this->twig->render('manage/users/create.twig', [
+                'errors' => $errors,
+                'post' => Toolbox::only($data, ['name', 'email', 'role']),
+                'roles' => $this->roles
+            ]);
         }
     }
     
     /**
      * 使用者刪除
      *
-     * @param  \App\Models\Log\Log $log
+     * @param  \App\Services\Log\Log $log
      * @param  string $id
      * @return void
      */

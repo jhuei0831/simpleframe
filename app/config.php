@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Log\Log;
-use App\Models\Twig\LayoutExtension;
+use App\Services\Log\Log;
+use App\Services\Twig\LayoutExtension;
 use Kerwin\Core\Request;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
