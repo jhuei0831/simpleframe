@@ -3,6 +3,7 @@
 namespace App\Http\Controller\Manage;
 
 use App\Services\Datatable;
+use App\Services\Variables;
 use Kerwin\Core\Request;
 use Twig\Environment;
 
@@ -17,7 +18,10 @@ class LogController
      */
     public function index(Environment $twig)
     {
-        echo $twig->render('manage/logs/index.twig');
+        $logMessages = Variables::$logMessages;
+        echo $twig->render('manage/logs/index.twig', [
+            'logMessages' => $logMessages
+        ]);
     }
 
     /**

@@ -34,9 +34,9 @@
                         <div class="mt-1">
                             <select id="role" name="role" autocomplete="role" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                                 <option value="">請選擇</option>
-                                <?php foreach ($roles as $key => $role): ?>
-                                    <option value="<?php echo $role->id?>"><?php echo $role->name?></option>
-                                <?php endforeach; ?>
+                                {% for role in roles %}
+                                    <option value="{{ role.id }}">{{ role.name }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
