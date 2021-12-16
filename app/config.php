@@ -1,12 +1,12 @@
 <?php
 
 use App\Models\User;
+use App\Services\Log\Log;
+use App\Services\Twig\LayoutExtension;
 use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 use function DI\create;
 use Kerwin\Core\Request;
-use App\Services\Log\Log;
-use Twig\Loader\FilesystemLoader;
-use App\Services\Twig\LayoutExtension;
 
 return [
 
