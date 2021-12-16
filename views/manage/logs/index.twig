@@ -30,9 +30,9 @@
                     <div class="mt-1">
                         <select id="message" name="message" autocomplete="message" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                             <option value="">請選擇</option>
-                            <?php foreach (Variable::$logMessages as $key => $message): ?>
-                                <option value="<?php echo $message?>"><?php echo $message?></option>
-                            <?php endforeach; ?>
+                            {% for logMessage in logMessages %}
+                                <option value="{{ logMessage }}">{{ logMessage }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
