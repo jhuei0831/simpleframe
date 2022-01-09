@@ -84,7 +84,7 @@
 
 <script type="text/javascript">
     let roles = {{ roles|json_encode()|raw }};
-    let url = "users/datatable";
+    let url = document.URL+"datatable";
     let columns = [
         {
             "data": "name"

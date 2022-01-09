@@ -73,7 +73,7 @@ class PermissionController
             else {
                 Database::table('permissions')->insert($validData);
                 $log->info('新增權限', Toolbox::except($validData, 'token'));
-                Message::flash('新增成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/permissions');
+                Message::flash('新增成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/permissions/');
             }
         } 
         else {
@@ -126,7 +126,7 @@ class PermissionController
             else {
                 Database::table('permissions')->where("id = '{$id}'")->update($validData);
                 $log->info('修改權限', Toolbox::except($validData, 'token'));
-                Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/permissions');
+                Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/permissions/');
             }
         } else {
             $this->errors = $validation->get_readable_errors();
@@ -149,14 +149,14 @@ class PermissionController
     {
         $check = Database::table('role_has_permissions')->where("permission_id = '{$id}'")->count();
         if ($check > 0) {
-            Message::flash('尚有角色使用此權限', 'warning')->redirect(APP_ADDRESS . 'manage/permissions');
+            Message::flash('尚有角色使用此權限', 'warning')->redirect(APP_ADDRESS . 'manage/permissions/');
         }
         else {
             $permission = Database::table('permissions')->find($id);
         }
         Database::table('permissions')->where("id = '{$id}'")->delete();
         $log->info('刪除權限', ['name' => $permission->name]);
-        Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/permissions');
+        Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/permissions/');
     }
     
     /**

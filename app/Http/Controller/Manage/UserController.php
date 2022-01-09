@@ -105,7 +105,7 @@ class UserController
                 ], false);
                 Database::table('users')->insert($validData, TRUE);
                 $log->info('新增使用者', ['id' => $validData['id']]);
-                Message::flash('新增成功。', 'success')->redirect(Config::getAppAddress().'manage/users');
+                Message::flash('新增成功。', 'success')->redirect(Config::getAppAddress().'manage/users/');
             }
             echo $this->twig->render('manage/users/create.twig', [
                 'post' => Toolbox::only($data, ['name', 'email', 'role']),
@@ -178,7 +178,7 @@ class UserController
             if (!$gump->errors()) {
                 Database::table('users')->where("id = '{$id}'")->update($validData);
                 $log->info('修改使用者資料', ['id' => $id, 'data' => Toolbox::except($validData, 'token')]);
-                Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users');
+                Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users/');
             } else {
                 $errors = $gump->get_readable_errors();
                 Message::flash('修改失敗，請檢查輸入。', 'error');
@@ -231,7 +231,7 @@ class UserController
                 $validData['password'] = md5($validData['password']);
                 Database::table('users')->where("id = '{$id}'")->update($validData);
                 $log->info('修改使用者密碼', ['id' => $id]);
-                Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users');
+                Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users/');
             }
             echo $this->twig->render('manage/users/create.twig', [
                 'errors' => $errors,
@@ -252,7 +252,7 @@ class UserController
     {
         Database::table('users')->where("id='{$id}'")->delete();
         $log->info('刪除使用者', ['id' => $id]);
-        Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users');
+        Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users/');
     }
 
     /**

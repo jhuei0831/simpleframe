@@ -15,8 +15,8 @@ final class CreateLogsTable extends AbstractMigration
         ->addColumn('platform', 'string', ['limit' => 20, 'comment' => '作業系統'])
         ->addColumn('browser', 'string', ['limit' => 20, 'comment' => '瀏覽器'])
         ->addColumn('level', 'string', ['limit' => 3, 'comment' => '訊息等級'])
-        ->addColumn('message', 'string', ['limit' => MysqlAdapter::TEXT_REGULAR, 'comment' => '訊息'])
-        ->addColumn('context', 'string', ['limit' => MysqlAdapter::TEXT_LONG, 'comment' => '內文'])
+        ->addColumn('message', 'text', ['comment' => '訊息'])
+        ->addColumn('context', 'text', ['comment' => '內文'])
         ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
         ->create();
     }
