@@ -31,34 +31,40 @@ $dispatcher = simpleDispatcher(function (RouteCollector $route) {
         $route->middleware(['auth', 'permission:manage-index'])->addGroup('/manage', function (RouteCollector $route) {
             $route->get('/', ['App\Http\Controller\Manage\ManageController', 'index']);
             // 權限
-            $route->middleware(['permission:permissions-list'])->get('/permissions', ['App\Http\Controller\Manage\PermissionController', 'index']);
-            $route->middleware(['permission:permissions-list'])->post('/permissions/datatable', ['App\Http\Controller\Manage\PermissionController', 'dataTable']);
-            $route->middleware(['permission:permissions-create'])->get('/permissions/create', ['App\Http\Controller\Manage\PermissionController', 'create']);
-            $route->middleware(['permission:permissions-create'])->post('/permissions/create', ['App\Http\Controller\Manage\PermissionController', 'store']);
-            $route->middleware(['permission:permissions-edit'])->get('/permissions/edit/{id}', ['App\Http\Controller\Manage\PermissionController', 'edit']);
-            $route->middleware(['permission:permissions-edit'])->post('/permissions/edit/{id}', ['App\Http\Controller\Manage\PermissionController', 'update']);
-            $route->middleware(['permission:permissions-delete'])->get('/permissions/delete/{id}', ['App\Http\Controller\Manage\PermissionController', 'delete']);
+            $route->addGroup('/permissions', function (RouteCollector $route) {
+            	$route->middleware(['permission:permissions-list'])->get('/', ['App\Http\Controller\Manage\PermissionController', 'index']);
+	            $route->middleware(['permission:permissions-list'])->post('/datatable', ['App\Http\Controller\Manage\PermissionController', 'dataTable']);
+	            $route->middleware(['permission:permissions-create'])->get('/create', ['App\Http\Controller\Manage\PermissionController', 'create']);
+	            $route->middleware(['permission:permissions-create'])->post('/create', ['App\Http\Controller\Manage\PermissionController', 'store']);
+	            $route->middleware(['permission:permissions-edit'])->get('/edit/{id}', ['App\Http\Controller\Manage\PermissionController', 'edit']);
+	            $route->middleware(['permission:permissions-edit'])->post('/edit/{id}', ['App\Http\Controller\Manage\PermissionController', 'update']);
+	            $route->middleware(['permission:permissions-delete'])->get('/delete/{id}', ['App\Http\Controller\Manage\PermissionController', 'delete']);
+            });
             // 角色
-            $route->middleware(['permission:roles-list'])->get('/roles', ['App\Http\Controller\Manage\RoleController', 'index']);
-            $route->middleware(['permission:roles-list'])->post('/roles/datatable', ['App\Http\Controller\Manage\RoleController', 'datatable']);
-            $route->middleware(['permission:roles-create'])->get('/roles/create', ['App\Http\Controller\Manage\RoleController', 'create']);
-            $route->middleware(['permission:roles-create'])->post('/roles/create', ['App\Http\Controller\Manage\RoleController', 'store']);
-            $route->middleware(['permission:roles-edit'])->get('/roles/edit/{id}', ['App\Http\Controller\Manage\RoleController', 'edit']);
-            $route->middleware(['permission:roles-edit'])->post('/roles/edit/{id}', ['App\Http\Controller\Manage\RoleController', 'update']);
-            $route->middleware(['permission:roles-delete'])->get('/roles/delete/{id}', ['App\Http\Controller\Manage\RoleController', 'delete']);
+            $route->addGroup('/roles', function (RouteCollector $route) {
+                $route->middleware(['permission:roles-list'])->get('/', ['App\Http\Controller\Manage\RoleController', 'index']);
+                $route->middleware(['permission:roles-list'])->post('/datatable', ['App\Http\Controller\Manage\RoleController', 'datatable']);
+                $route->middleware(['permission:roles-create'])->get('/create', ['App\Http\Controller\Manage\RoleController', 'create']);
+                $route->middleware(['permission:roles-create'])->post('/create', ['App\Http\Controller\Manage\RoleController', 'store']);
+                $route->middleware(['permission:roles-edit'])->get('/edit/{id}', ['App\Http\Controller\Manage\RoleController', 'edit']);
+                $route->middleware(['permission:roles-edit'])->post('/edit/{id}', ['App\Http\Controller\Manage\RoleController', 'update']);
+                $route->middleware(['permission:roles-delete'])->get('/delete/{id}', ['App\Http\Controller\Manage\RoleController', 'delete']);
+            });
             // 使用者
-            $route->middleware(['permission:users-list'])->get('/users', ['App\Http\Controller\Manage\UserController', 'index']);
-            $route->middleware(['permission:users-list'])->post('/users/datatable', ['App\Http\Controller\Manage\UserController', 'datatable']);
-            $route->middleware(['permission:users-create'])->get('/users/create', ['App\Http\Controller\Manage\UserController', 'create']);
-            $route->middleware(['permission:users-create'])->post('/users/create', ['App\Http\Controller\Manage\UserController', 'store']);
-            $route->middleware(['permission:users-edit'])->get('/users/edit/{id}', ['App\Http\Controller\Manage\UserController', 'edit']);
-            $route->middleware(['permission:users-edit'])->post('/users/edit/{id}', ['App\Http\Controller\Manage\UserController', 'update']);
-            $route->middleware(['permission:users-delete'])->get('/users/delete/{id}', ['App\Http\Controller\Manage\UserController', 'delete']);
+            $route->addGroup('/users', function (RouteCollector $route) {
+                $route->middleware(['permission:users-list'])->get('/', ['App\Http\Controller\Manage\UserController', 'index']);
+                $route->middleware(['permission:users-list'])->post('/datatable', ['App\Http\Controller\Manage\UserController', 'datatable']);
+                $route->middleware(['permission:users-create'])->get('/create', ['App\Http\Controller\Manage\UserController', 'create']);
+                $route->middleware(['permission:users-create'])->post('/create', ['App\Http\Controller\Manage\UserController', 'store']);
+                $route->middleware(['permission:users-edit'])->get('/edit/{id}', ['App\Http\Controller\Manage\UserController', 'edit']);
+                $route->middleware(['permission:users-edit'])->post('/edit/{id}', ['App\Http\Controller\Manage\UserController', 'update']);
+                $route->middleware(['permission:users-delete'])->get('/delete/{id}', ['App\Http\Controller\Manage\UserController', 'delete']);
+            });
             // Log
-            $route->middleware(['permission:logs-list'])->get('/logs', ['App\Http\Controller\Manage\LogController', 'index']);
+            $route->middleware(['permission:logs-list'])->get('/logs/', ['App\Http\Controller\Manage\LogController', 'index']);
             $route->middleware(['permission:logs-list'])->post('/logs/datatable', ['App\Http\Controller\Manage\LogController', 'datatable']);
             // 網站設定
-            $route->middleware(['permission:config-edit'])->get('/config', ['App\Http\Controller\Manage\ConfigController', 'index']);
+            $route->middleware(['permission:config-edit'])->get('/config/', ['App\Http\Controller\Manage\ConfigController', 'index']);
             $route->middleware(['permission:config-edit'])->post('/config/edit/{id}', ['App\Http\Controller\Manage\ConfigController', 'edit']);
         });
     });

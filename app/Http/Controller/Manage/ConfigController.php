@@ -59,6 +59,6 @@ class ConfigController
 
         Database::table('configs')->where("id = '{$id}'")->update($data);
         $log->info('修改設定', Toolbox::except($data, 'token'));
-        Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/config');
+        Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/config/');
     }
 }

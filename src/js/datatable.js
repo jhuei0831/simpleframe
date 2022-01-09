@@ -13,7 +13,7 @@ $(document).ready(function () {
         if (e.type === "click" || (e.type === "keypress" && e.keyCode === 13)) {
             let row = $(this).closest('tr');
             let data = table.row(row).data()['id'];
-            window.location.href = document.URL + '/edit/' + data;
+            window.location.href = document.URL + 'edit/' + data;
         }
     });
 
@@ -32,7 +32,7 @@ $(document).ready(function () {
                 background: "#fffbf2",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = document.URL + '/delete/' + data['id'];
+                    window.location.href = document.URL + 'delete/' + data['id'];
                 }
             })
         }

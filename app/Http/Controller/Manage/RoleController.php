@@ -87,7 +87,7 @@ class RoleController
                     ], false);
             }  
             $log->info('新增角色', Toolbox::except($validData, 'token'));
-            Message::flash('新增成功。', 'success')->redirect(APP_ADDRESS.'manage/roles');
+            Message::flash('新增成功。', 'success')->redirect(APP_ADDRESS.'manage/roles/');
         }
         else {
             $this->errors = $validation->get_readable_errors();
@@ -159,7 +159,7 @@ class RoleController
                 Database::table('role_has_permissions')->createOrUpdate($newPermissions, false);
             }
             $log->info('修改角色', Toolbox::except($validData, 'token'));
-            Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/roles');
+            Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/roles/');
         }
         
         else {
@@ -186,7 +186,7 @@ class RoleController
         $id = Security::defendFilter($id);
         $check = Database::table('users')->where('role ='.$id)->count();
         if ($check > 0) {
-            Message::flash('此角色尚有使用者使用', 'warning')->redirect(APP_ADDRESS.'manage/roles');
+            Message::flash('此角色尚有使用者使用', 'warning')->redirect(APP_ADDRESS.'manage/roles/');
         }
         else {
             $role = Database::table('roles')->find($id);
@@ -194,7 +194,7 @@ class RoleController
         
         Database::table('roles')->where("id='{$id}'")->delete();
         $log->info('刪除角色', ['name' => $role->name]);
-        Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/roles');
+        Message::flash('刪除成功，謝謝。', 'success')->redirect(APP_ADDRESS.'manage/roles/');
     }
 
     /**
