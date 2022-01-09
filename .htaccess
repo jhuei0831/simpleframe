@@ -28,13 +28,12 @@
 	</LimitExcept>
 
 # 四、讓所有瀏覽機敏目錄內檔案的請求導向至403
+	RewriteRule ^app/?$ - [F,L]
 	RewriteRule ^config/?$ - [F,L]
 	RewriteRule ^database/?$ - [F,L]
-	RewriteRule ^_error/?$ - [F,L]
-	RewriteRule ^_layouts/?$ - [F,L]
-	RewriteRule ^models/?$ - [F,L]
-	RewriteRule ^_partials/?$ - [F,L]
 	RewriteRule ^src/?$ - [F,L]
+	RewriteRule ^tests/?$ - [F,L]
+	RewriteRule ^view/?$ - [F,L]
 	RewriteRule ^vendor/?$ - [F,L]
 
 	# 將某些特定檔案設定為拒絕存取
