@@ -41,7 +41,7 @@ class LoginController
         //設置定義為圖片
         header("Content-type: image/PNG");
 
-        $captcha = new Captcha();
+        $captcha = new Captcha($_ENV['APP_FOLDER'].'_attributes');
         $captcha->getImageCode(1,5,130,30);
     }
 
@@ -58,16 +58,16 @@ class LoginController
         $post = Toolbox::only($request->request->all(), ['token', 'email', 'password', 'captcha']);
         $data = Security::defendFilter($post);
         
-        $user = Database::table('users')->where('email ="'.$data['email'].'" and password ="'.md5($data['password']).'"')->first();
+        $user = Database::table('users')->where('email ="'.$data['email'].'"')->first();
         if ($data['captcha'] != Session::get('captcha')) {
             Message::flash('驗證碼錯誤', 'error')->redirect(Config::getAppAddress().'auth/login');
         } 
-        elseif ($user && empty($user->email_varified_at) && EMAIL_VERIFY === 'TRUE') {
+        elseif ($user && password_verify($data['password'], $user->password) && empty($user->email_varified_at) && EMAIL_VERIFY === 'TRUE') {
             Session::set('USER_ID', $user->id);
             $log->warning('登入成功，尚未完成信箱驗證');
             Message::flash('登入成功，尚未完成信箱驗證', 'warning')->redirect(Config::getAppAddress().'auth/email_verified');
         } 
-        elseif ($user) {
+        elseif ($user && password_verify($data['password'], $user->password)) {
             Session::set('USER_ID', $user->id);
             $log->info('登入成功');
             Message::flash('登入成功', 'success')->redirect(Config::getAppAddress());

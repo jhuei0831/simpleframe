@@ -94,7 +94,7 @@ class UserController
             else {
                 unset($validData['password_confirm']);
                 $authCode = uniqid(mt_rand());
-                $validData['password'] = md5($validData['password']);
+                $validData['password'] = password_hash($validData['password'], PASSWORD_BCRYPT, ['salt' => 'thiswebsitemadebykerwin']);
                 $validData['id'] = Toolbox::UUIDv4();
                 $validData['auth_code'] = $authCode;
                 /* 在忘記密碼加入資料 */
@@ -228,7 +228,7 @@ class UserController
                 Message::flash('修改失敗，請檢查輸入。', 'error');
             } else {
                 unset($validData['password_confirm']);
-                $validData['password'] = md5($validData['password']);
+                $validData['password'] = password_hash($validData['password'], PASSWORD_BCRYPT, ['salt' => 'thiswebsitemadebykerwin']);
                 Database::table('users')->where("id = '{$id}'")->update($validData);
                 $log->info('修改使用者密碼', ['id' => $id]);
                 Message::flash('修改成功，謝謝。', 'success')->redirect(APP_ADDRESS . 'manage/users/');

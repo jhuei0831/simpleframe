@@ -209,12 +209,12 @@ class PasswordResetController
         elseif ($validData['password'] != $validData['password_confirm']) {
             Message::flash('密碼要和確認密碼相同', 'error');
         }
-        elseif (in_array(md5($validData['password']), $password)) {
+        elseif (in_array(password_hash($validData['password'], PASSWORD_BCRYPT, ['salt' => 'thiswebsitemadebykerwin']), $password)) {
             Message::flash('密碼不能與前三次相同', 'error');
         }
         else {
             unset($validData['password_confirm']);
-            $validData['password'] = md5($validData['password']);
+            $validData['password'] = password_hash($validData['password'], PASSWORD_BCRYPT, ['salt' => 'thiswebsitemadebykerwin']);
             // 如果密碼有三筆，清除第一筆
             if (count($password) == 3) {
                 $shift = array_shift($password);

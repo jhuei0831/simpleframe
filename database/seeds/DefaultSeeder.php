@@ -54,7 +54,7 @@ class DefaultSeeder extends AbstractSeed
             'id' => Uuid::uuid4(),
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
-            'password' => md5('password'),
+            'password' => password_hash('password', PASSWORD_BCRYPT, ['salt' => 'thiswebsitemadebykerwin']),
             'role' => 1
         ];
         
