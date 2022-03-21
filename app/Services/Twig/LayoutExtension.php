@@ -154,7 +154,7 @@ class LayoutExtension extends \Twig\Extension\AbstractExtension implements \Twig
     /**
      * 取得$_SERVER
      *
-     * @param  mixed $name
+     * @param  string $name
      * @return string|array
      */
     public function requestServer(string $name)
@@ -164,7 +164,7 @@ class LayoutExtension extends \Twig\Extension\AbstractExtension implements \Twig
     }
     
     /**
-     * 取得$_SESSION['_sf2_attributes']
+     * 取得$_SESSION[$_ENV['APP_FOLDER']]
      *
      * @param  string $name
      * @return string|array

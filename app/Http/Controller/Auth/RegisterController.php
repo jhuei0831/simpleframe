@@ -69,7 +69,7 @@ class RegisterController
             else {
                 unset($validData['password_confirm']);
                 $authCode = uniqid(mt_rand());
-                $validData['password'] = md5($validData['password']);
+                $validData['password'] = password_hash($validData['password'], PASSWORD_BCRYPT, ['salt' => 'thiswebsitemadebykerwin']);
                 $validData['id'] = Toolbox::UUIDv4();
                 $validData['role'] = 2;
                 $validData['auth_code'] = $authCode;
